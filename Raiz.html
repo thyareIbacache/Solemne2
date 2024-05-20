@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página Principal</title>
+    <script>
+        // Función para redirigir según el tamaño de la pantalla
+        function redirectToPage() {
+            if (window.innerWidth <= 578) {
+                // Si la pantalla es pequeña (menor o igual a 578px)
+                window.location.href = "PerfilMobil.html";
+            } else {
+                // Si la pantalla es grande
+                window.location.href = "PerfilWeb.html";
+            }
+        }
+
+        // Llama a la función cuando se carga la página
+        window.onload = redirectToPage;
+
+        // Opcional: Redirigir también cuando se cambia el tamaño de la ventana
+        window.onresize = redirectToPage;
+    </script>
+</head>
+<body>
+    <h1>Redirigiendo según el tamaño de la pantalla...</h1>
+</body>
+</html>
