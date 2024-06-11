@@ -1,7 +1,8 @@
 # Solemne2
 Thyare Ibacache - Ignacia Moya
 
-Informaticos 
+Informaticos:
+
 Margarita Osorio - La Hechicera de la Nube
 
 Marcos Valderrama - El Artífice del Rendimiento
