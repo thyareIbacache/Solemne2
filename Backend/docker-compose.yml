@@ -1,0 +1,19 @@
+networks:
+  my_network:
+    name: 'my_network'
+
+services:
+  postgres:
+    container_name: 'postgres_container'
+    image: postgres:16.3
+    networks:
+      - my_network
+    volumes:
+      - ./BD.txt:/docker-entrypoint-initdb.d/init.sql
+    env_file:
+      - .env
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    ports:
+      - ${DBPORT}:${PORT}
