@@ -19,7 +19,8 @@ BD.txt es el script para iniciar la base de datos
 
 ## Base de datos
 Primero es necesario tener el archivo .env en la carpeta Backend.
-Para ejecutarlo se debe correr en la carpeta "Backend" el comando:
+
+Para ejecutar la base de datos se debe correr en la carpeta "Backend" el comando:
 ```
 docker compose up
 ```
