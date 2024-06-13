@@ -19,7 +19,7 @@ services:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - POSTGRES_DB=udp_apuntes_en_linea
     ports:
-      - ${DBPORT}:5432
+      - "5433:5432"
 
   app:
     build: .

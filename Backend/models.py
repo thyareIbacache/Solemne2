@@ -1,10 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
-from flask import Flask
-from Backend.config import Config
+from config import Config  # Corregir la importación
 
-app = Flask(__name__)
-app.config.from_object(Config)
-db = SQLAlchemy(app)
+db = SQLAlchemy()
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -18,7 +15,3 @@ class Document(db.Model):
     description = db.Column(db.Text)
     file_path = db.Column(db.String(256))
     uploaded_by = db.Column(db.Integer, db.ForeignKey('user.id'))
-
-# Initialize the database
-with app.app_context():
-    db.create_all()

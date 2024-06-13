@@ -13,7 +13,6 @@ def home():
 @app.route('/test-db')
 def test_db():
     try:
-        # Realiza una consulta simple
         users = User.query.all()
         return jsonify([user.email for user in users])
     except Exception as e:
