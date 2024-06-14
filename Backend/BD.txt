@@ -1,5 +1,5 @@
 -- Crear la base de datos
-CREATE DATABASE udp_apuntes_en_linea;
+-- CREATE DATABASE udp_apuntes_en_linea;
 
 -- Conectar a la base de datos
 \c udp_apuntes_en_linea;
