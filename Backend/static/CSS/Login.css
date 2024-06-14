@@ -126,7 +126,81 @@ label {
     opacity: 0.6000000238418579;
     height: 482px;
     position: relative;
-  }
+}
+
+.boton-ingresa-google,
+.boton-ingresa-google * {
+  box-sizing: border-box;
+}
+
+.boton-ingresa-google {
+  background: #ffffff;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: row;
+  gap: 4px;
+  align-items: flex-start;
+  justify-content: center;
+  height: 34px;
+  position: relative;
+}
+
+.google-g-logo-1 {
+  padding: 5px 10px 5px 10px;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-shrink: 0;
+  width: 44px;
+  height: 34px;
+  position: relative;
+}
+
+.google-g-logo-12 {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  position: relative;
+  object-fit: cover;
+}
+
+.ingresa-con-google {
+  padding: 8px 10px 8px 10px;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 140px;
+  height: 32px;
+  position: relative;
+}
+
+.ingresa-con-google2 {
+  color: var(--moyaibacache-black, #000000);
+  text-align: center;
+  font-family: var(
+    --thyare-ibacache-untitled-h5-14-light-subsecciones-font-family,
+    "Ubuntu-Light",
+    sans-serif
+  );
+  font-size: var(
+    --thyare-ibacache-untitled-h5-14-light-subsecciones-font-size,
+    14px
+  );
+  font-weight: var(
+    --thyare-ibacache-untitled-h5-14-light-subsecciones-font-weight,
+    300
+  );
+  opacity: 0.4000000059604645;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
 input {
     padding: 0.625rem;
