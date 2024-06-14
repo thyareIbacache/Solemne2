@@ -120,6 +120,14 @@ label {
     margin-bottom: 0.5rem;
 }
 
+.rectangle-7 {
+    background: var(--moyaibacache-white, #ffffff);
+    border-radius: 49px;
+    opacity: 0.6000000238418579;
+    height: 482px;
+    position: relative;
+  }
+
 input {
     padding: 0.625rem;
     margin-bottom: 1rem;
