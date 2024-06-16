@@ -9,7 +9,7 @@ services:
     networks:
       - my_network
     volumes:
-      - ./BD.txt:/docker-entrypoint-initdb.d/init.sql
+      - ./DB:/docker-entrypoint-initdb.d
     env_file:
       - .env
     environment:

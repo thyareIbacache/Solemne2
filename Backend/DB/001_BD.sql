@@ -10,7 +10,12 @@ CREATE TABLE Usuarios (
     correo VARCHAR(255) UNIQUE NOT NULL,
     contraseña VARCHAR(255) NOT NULL,
     fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    rol VARCHAR(50) CHECK (rol IN ('estudiante', 'moderador')) NOT NULL
+    rol VARCHAR(50) CHECK (rol IN ('estudiante', 'moderador')) NOT NULL,
+    nombre_completo VARCHAR(255) NOT NULL,
+    nombre_usuario VARCHAR(255) NOT NULL,
+    biografia VARCHAR(1000) NOT NULL,
+    año_ingreso INTEGER DEFAULT EXTRACT(YEAR FROM CURRENT_DATE),
+    año_en_curso VARCHAR(50) NOT NULL
 );
 
 -- Crear la tabla Cursos
@@ -26,12 +31,14 @@ CREATE TABLE Archivos (
     id_archivo SERIAL PRIMARY KEY,
     nombre_archivo VARCHAR(255) NOT NULL,
     tipo VARCHAR(50) NOT NULL,
+    asignatura VARCHAR(255) NOT NULL,
     fecha_subida TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     usuario_que_lo_subio INT REFERENCES Usuarios(id_usuario) ON DELETE CASCADE,
     etiquetas VARCHAR(255), -- JSON o lista separada por comas
     ruta_archivo VARCHAR(255) NOT NULL,
     estado VARCHAR(50) CHECK (estado IN ('pendiente', 'aprobado', 'rechazado')) DEFAULT 'pendiente',
-    comentarios_rechazo VARCHAR(255)
+    comentarios_rechazo VARCHAR(255),
+    unidad VARCHAR(10)
 );
 
 -- Crear la tabla intermedia Archivos_Cursos
