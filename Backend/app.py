@@ -39,8 +39,8 @@ def home():
             return redirect(url_for('perfil', id_usuario=usuario.id_usuario))
         else:
             mensaje = 'Credenciales inválidas'
-            if usuario:
-                mensaje += f'. La contraseña correcta es: {usuario.contraseña}'
+            #if usuario:
+            #    mensaje += f'. La contraseña correcta es: {usuario.contraseña}'
             return mensaje
             #return render_template('Login.html', error_message=mensaje)
 
