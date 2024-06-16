@@ -23,26 +23,19 @@ def uploaded_file(filename):
 @app.route('/', methods=['GET', 'POST'])
 def home():
     if 'id_usuario' in session:
-        id_usuario = session['id_usuario']
-        usuario = Usuarios.query.get(id_usuario)
-        archivos = Archivos.query.filter_by(usuario_que_lo_subio=id_usuario).all()
         return redirect(url_for('perfil'))
     
     if request.method == 'POST':
         correo = request.form['username']
         contraseña = request.form['password']
-
         usuario = Usuarios.query.filter_by(correo=correo).first()
 
         if usuario and (usuario.contraseña == contraseña):
             session['id_usuario'] = usuario.id_usuario
-            return redirect(url_for('perfil', id_usuario=usuario.id_usuario))
+            return redirect(url_for('perfil'))
         else:
             mensaje = 'Credenciales inválidas'
-            #if usuario:
-            #    mensaje += f'. La contraseña correcta es: {usuario.contraseña}'
-            return mensaje
-            #return render_template('Login.html', error_message=mensaje)
+            return render_template('Login.html', error_message=mensaje, username=correo)
 
     return render_template('Login.html')
 

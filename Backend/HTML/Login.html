@@ -5,6 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inicio de Sesión</title>
     <link rel="stylesheet" href="../static/CSS/Login.css">
+    <style>
+        .error-message {
+            display: none;
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #f44336;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+        .error-message.show {
+            display: block;
+            opacity: 1;
+        }
+    </style>
 </head>
 <body>
     <div>
@@ -21,13 +41,13 @@
                                 <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" for="username">
                                     Usuario
                                 </label>
-                                <input class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50" id="username" placeholder="Usuario" type="text" name="username" /> <!-- Cambiado a name="username" -->
+                                <input class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50" id="username" placeholder="Usuario" type="text" name="username" value="{{ username }}" />
                             </div>
                             <div>
                                 <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" for="password">
                                     Contraseña
                                 </label>
-                                <input class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50" id="password" placeholder="Contraseña" type="password" name="password" /> <!-- Cambiado a name="password" -->
+                                <input class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50" id="password" placeholder="Contraseña" type="password" name="password" />
                             </div>
                             <button class="inline-flex items-center justify-center whitespace-nowrap rounded-md font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-10 w-full px-4 py-2 text-sm bg-blue-500 hover:bg-blue-600 text-white ml-auto" type="submit">
                                 Iniciar Sesión
@@ -46,5 +66,26 @@
             </div>
         </div>
     </div>
+
+    <!-- Mostrar mensaje de error si existe -->
+    {% if error_message %}
+        <div class="error-message" id="error-message">{{ error_message }}</div>
+    {% endif %}
+
+    <!-- JavaScript para mostrar y ocultar el mensaje de error -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var errorMessage = document.getElementById("error-message");
+            if (errorMessage) {
+                errorMessage.classList.add("show");
+                setTimeout(function() {
+                    errorMessage.style.opacity = "0";
+                    setTimeout(function() {
+                        errorMessage.style.display = "none";
+                    }, 500); // Esperar 500ms después de la animación para ocultar completamente
+                }, 5000); // Ocultar después de 5 segundos (5000 milisegundos)
+            }
+        });
+    </script>
 </body>
 </html>
