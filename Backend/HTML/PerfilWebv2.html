@@ -1,0 +1,139 @@
+<html>
+    <!DOCTYPE html>
+    <html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <title>Perfil - Facultad de Psicología</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet"/>
+        <style>
+            body {
+                font-family: 'Roboto', sans-serif;
+            }
+            .nav-link {
+                transition: background-color 0.3s, color 0.3s;
+            }
+            .nav-link:hover {
+                background-color: #9b59b6;
+                color: white;
+                border-radius: 0.375rem;
+                padding: 0.25rem 0.5rem;
+            }
+        </style>
+    </head>
+    <body class="bg-white">
+        <div class="max-w-4xl mx-auto p-4">
+            <header class="flex justify-between items-center py-4">
+                <div class="flex items-center">
+                    <img alt="Header image with UDP Facultad de Psicología logo" class="mr-2" height="50" src="https://admision.udp.cl/cms/wp-content/uploads/2022/09/facultad-psicologia-logo@2x.png" width="200"/>
+                </div>
+                <nav class="flex space-x-4">
+                    <a class="nav-link text-gray-500 hover:text-white" href="PerfilWebv2.html">Perfil</a>
+                    <a class="nav-link text-gray-500 hover:text-white" href="#">Biblioteca</a>
+                    <a class="nav-link text-gray-500 hover:text-white" href="#">Anuncios</a>
+                    <a class="nav-link text-gray-500 hover:text-white" href="Cargar.html">Cargar</a>
+                </nav>
+            </header>
+            <div class="bg-white p-6 rounded-lg">
+                <div class="flex items-center space-x-6">
+                    <img alt="Profile picture" class="rounded-full" height="100" src="https://www.pngall.com/wp-content/uploads/5/Profile-PNG-File.png" width="100"/>
+                    <div>
+                        <p class="text-lg font-bold">Nombre completo</p>
+                        <p>Sofía Andrea Martínez Díaz</p>
+                        <p class="text-lg font-bold mt-2">Nombre de usuario</p>
+                        <p>Sofía Andrea Martínez Díaz</p>
+                        <p class="text-lg font-bold mt-2">Biografía</p>
+                        <p>Me gusta estudiar con mi grupo de amigas en la facultad, mi ramo preferido es Psicología social.</p>
+                        <div class="flex space-x-8 mt-4">
+                            <div>
+                                <p class="text-lg font-bold">Año de ingreso</p>
+                                <p>2023</p>
+                            </div>
+                            <div>
+                                <p class="text-lg font-bold">Año en curso</p>
+                                <p>2do año</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <section class="mt-8">
+                <h2 class="text-2xl font-bold">Cursos</h2>
+                <div class="grid grid-cols-3 md:grid-cols-6 gap-4 mt-4">
+                    <!-- Conditionally render these blocks based on user data -->
+                    <div class="flex flex-col items-center">
+                        <a href="path/to/psicologia_infancia.pdf" target="_blank">
+                            <div class="bg-gray-400 h-24 w-24"></div>
+                        </a>
+                        <p class="text-center mt-2">Psicología de la Infancia<br/>2024 - 1</p>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <a href="path/to/psicologia_adole.pdf" target="_blank">
+                            <div class="bg-gray-500 h-24 w-24"></div>
+                        </a>
+                        <p class="text-center mt-2">Psicología de la Adole<br/>2024 - 1</p>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <a href="path/to/psicologia_comu.pdf" target="_blank">
+                            <div class="bg-yellow-200 h-24 w-24"></div>
+                        </a>
+                        <p class="text-center mt-2">Psicología de la Comu<br/>2024 - 1</p>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <a href="path/to/psicologia_social_ii.pdf" target="_blank">
+                            <div class="bg-blue-200 h-24 w-24"></div>
+                        </a>
+                        <p class="text-center mt-2">Psicología Social II<br/>2024 - 1</p>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <a href="path/to/investigacion_i.pdf" target="_blank">
+                            <div class="bg-gray-600 h-24 w-24"></div>
+                        </a>
+                        <p class="text-center mt-2">Investigación I<br/>2024 - 1</p>
+                    </div>
+                </div>
+            </section>
+            <section class="mt-8">
+                <h2 class="text-2xl font-bold">Archivos compartidos</h2>
+                <div class="grid grid-cols-3 md:grid-cols-6 gap-4 mt-4">
+                    <!-- Conditionally render these blocks based on user data -->
+                    <div class="flex flex-col items-center">
+                        <a href="path/to/resumen_libro.pdf" target="_blank">
+                            <div class="bg-green-200 h-24 w-24"></div>
+                        </a>
+                        <p class="text-center mt-2">Resumen libro de xxx<br/>2024 - 1</p>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <a href="path/to/mapa_conceptual.pdf" target="_blank">
+                            <div class="bg-gray-500 h-24 w-24"></div>
+                        </a>
+                        <p class="text-center mt-2">Mapa conceptual teor<br/>2024 - 1</p>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <a href="path/to/teoria_xxxxx.pdf" target="_blank">
+                            <div class="bg-red-200 h-24 w-24"></div>
+                        </a>
+                        <p class="text-center mt-2">Teoría de la xxxxxxxxx<br/>2024 - 1</p>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <a href="path/to/estudio_xxxxx.pdf" target="_blank">
+                            <div class="bg-gray-400 h-24 w-24"></div>
+                        </a>
+                        <p class="text-center mt-2">Estudio de xxxxxxxxx<br/>2023 - 2</p>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <a href="path/to/clase_xxxxx.pdf" target="_blank">
+                            <div class="bg-gray-600 h-24 w-24"></div>
+                        </a>
+                        <p class="text-center mt-2">Clase sobre xxxxxxxxx<br/>2023 - 1</p>
+                    </div>
+                </div>
+            </section>
+            <footer class="mt-8">
+                <img alt="Footer image with udp logo and accreditation information" class="w-full" src="/Backend/static/images/pie.png"/>
+            </footer>
+        </div>
+    </body>
+    </html>
+    
