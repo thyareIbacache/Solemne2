@@ -20,6 +20,12 @@ app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # Tamaño máximo del archi
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
+    if 'id_usuario' in session:
+        id_usuario = session['id_usuario']
+        usuario = Usuarios.query.get(id_usuario)
+        archivos = Archivos.query.filter_by(usuario_que_lo_subio=id_usuario).all()
+        return redirect(url_for('perfil'))
+    
     if request.method == 'POST':
         correo = request.form['username']
         contraseña = request.form['password']
@@ -110,7 +116,7 @@ def perfil():
         archivos = Archivos.query.filter_by(usuario_que_lo_subio=id_usuario).all()
         return render_template('perfilWebv3.html', usuario=usuario, archivos=archivos)
     else:
-        return 'Usuario no autenticado', 401
+        return redirect(url_for('home'))
 
 @app.route('/logout')
 def logout():
