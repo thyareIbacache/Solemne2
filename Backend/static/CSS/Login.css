@@ -121,11 +121,29 @@ label {
 }
 
 .rectangle-7 {
-    background: var(--moyaibacache-white, #ffffff);
+    background: rgba(255, 255, 255, 0.6);
     border-radius: 49px;
-    opacity: 0.6000000238418579;
     height: 400px;
-    position: relative;
+    position: absolute;
+}
+
+.error-message {
+    display: none;
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #f44336;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    z-index: 1000;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+.error-message.show {
+    display: block;
+    opacity: 1;
 }
 
 .boton-ingresa-google,
@@ -134,72 +152,50 @@ label {
 }
 
 .boton-ingresa-google {
-  background: #ffffff;
-  border-radius: 20px;
-  display: flex;
-  flex-direction: row;
-  gap: 4px;
-  align-items: flex-start;
-  justify-content: center;
-  height: 34px;
-  position: relative;
+    background-color: #ffffff; /* Fondo blanco sólido */
+    border-radius: 20px;
+    display: flex;
+    flex-direction: row;
+    gap: 4px;
+    align-items: flex-start;
+    justify-content: center;
+    height: 34px;
+    margin-left: 25%;
+    margin-right: 25%;
+    position: relative;
+    margin-top: 10px; /* Ajusta el margen según sea necesario */
 }
 
 .google-g-logo-1 {
-  padding: 5px 10px 5px 10px;
-  display: flex;
-  flex-direction: row;
-  gap: 10px;
-  align-items: flex-start;
-  justify-content: flex-start;
-  flex-shrink: 0;
-  width: 44px;
-  height: 34px;
-  position: relative;
+    padding: 5px 10px;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    align-items: center; /* Alinea verticalmente con el texto */
 }
 
 .google-g-logo-12 {
-  flex-shrink: 0;
-  width: 24px;
-  height: 24px;
-  position: relative;
-  object-fit: cover;
+    width: 24px;
+    height: 24px;
+    object-fit: cover;
 }
 
 .ingresa-con-google {
-  padding: 8px 10px 8px 10px;
-  display: flex;
-  flex-direction: row;
-  gap: 10px;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  width: 140px;
-  height: 32px;
-  position: relative;
+    padding: 8px 10px;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
 }
 
 .ingresa-con-google2 {
-  color: var(--moyaibacache-black, #000000);
-  text-align: center;
-  font-family: var(
-    --thyare-ibacache-untitled-h5-14-light-subsecciones-font-family,
-    "Ubuntu-Light",
-    sans-serif
-  );
-  font-size: var(
-    --thyare-ibacache-untitled-h5-14-light-subsecciones-font-size,
-    14px
-  );
-  font-weight: var(
-    --thyare-ibacache-untitled-h5-14-light-subsecciones-font-weight,
-    300
-  );
-  opacity: 0.4000000059604645;
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    color: #000000;
+    text-align: center;
+    font-family: "Ubuntu-Light", sans-serif;
+    font-size: 14px;
+    font-weight: 300;
+    opacity: 0.4;
 }
 
 input {
