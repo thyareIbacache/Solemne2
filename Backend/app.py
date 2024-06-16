@@ -100,7 +100,7 @@ def upload_file():
             try:
                 # Confirmar los cambios en la base de datos
                 db.session.commit()
-                return 'Archivo subido y registrado exitosamente'
+                return redirect(url_for('perfil'))
             except Exception as e:
                 # Manejar cualquier error que pueda ocurrir al guardar en la base de datos
                 return f'Error al guardar en la base de datos: {str(e)}', 500

@@ -60,14 +60,37 @@
         <section class="mt-8">
             <h2 class="text-2xl font-bold">Cursos</h2>
             <div class="grid grid-cols-3 md:grid-cols-6 gap-4 mt-4">
-                {% for documento in documentos %}
+                <!-- Conditionally render these blocks based on user data -->
                 <div class="flex flex-col items-center">
-                    <a href="{{ documento.file_path }}" target="_blank">
+                    <a href="path/to/psicologia_infancia.pdf" target="_blank">
                         <div class="bg-gray-400 h-24 w-24"></div>
                     </a>
-                    <p class="text-center mt-2">{{ documento.title }}<br/>{{ documento.description }}</p>
+                    <p class="text-center mt-2">Psicología de la Infancia<br/>2024 - 1</p>
                 </div>
-                {% endfor %}
+                <div class="flex flex-col items-center">
+                    <a href="path/to/psicologia_adole.pdf" target="_blank">
+                        <div class="bg-gray-500 h-24 w-24"></div>
+                    </a>
+                    <p class="text-center mt-2">Psicología de la Adole<br/>2024 - 1</p>
+                </div>
+                <div class="flex flex-col items-center">
+                    <a href="path/to/psicologia_comu.pdf" target="_blank">
+                        <div class="bg-yellow-200 h-24 w-24"></div>
+                    </a>
+                    <p class="text-center mt-2">Psicología de la Comu<br/>2024 - 1</p>
+                </div>
+                <div class="flex flex-col items-center">
+                    <a href="path/to/psicologia_social_ii.pdf" target="_blank">
+                        <div class="bg-blue-200 h-24 w-24"></div>
+                    </a>
+                    <p class="text-center mt-2">Psicología Social II<br/>2024 - 1</p>
+                </div>
+                <div class="flex flex-col items-center">
+                    <a href="path/to/investigacion_i.pdf" target="_blank">
+                        <div class="bg-gray-600 h-24 w-24"></div>
+                    </a>
+                    <p class="text-center mt-2">Investigación I<br/>2024 - 1</p>
+                </div>
             </div>
         </section>
         <section class="mt-8">
