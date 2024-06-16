@@ -1,4 +1,4 @@
-from flask import Flask, session, render_template, request, redirect, url_for
+from flask import Flask, session, render_template, request, redirect, url_for,  send_from_directory
 from config import Config
 from models import db, Usuarios, Archivos
 from werkzeug.utils import secure_filename
@@ -16,7 +16,9 @@ UPLOAD_FOLDER = './uploads/'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # Tamaño máximo del archivo (en bytes)
 
-
+@app.route('/uploads/<filename>')
+def uploaded_file(filename):
+    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
@@ -81,10 +83,13 @@ def upload_file():
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
 
+            # Obtener la extensión del archivo para determinar su tipo
+            file_extension = os.path.splitext(filename)[1][1:].lower()  # Obtener la extensión y convertir a minúsculas
+
             # Crear un nuevo objeto Archivos para almacenar en la base de datos
             nuevo_archivo = Archivos(
                 nombre_archivo=request.form['nombre_archivo'],
-                tipo='',
+                tipo=file_extension,
                 fecha_subida=datetime.utcnow(),
                 usuario_que_lo_subio=id_usuario,  # (ID del usuario actual)
                 etiquetas='',
