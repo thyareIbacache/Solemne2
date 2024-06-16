@@ -10,6 +10,14 @@ db.init_app(app)
 def home():
     return render_template('Login.html')
 
+@app.route('/cargar')
+def cargar():
+    return render_template('Cargar.html')
+
+@app.route('/perfil')
+def perfil():
+    return render_template('PerfilWebv2.html')
+
 @app.route('/test-db')
 def test_db():
     try:
