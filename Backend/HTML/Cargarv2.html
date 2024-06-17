@@ -19,6 +19,24 @@
             border-radius: 0.375rem;
             padding: 0.25rem 0.5rem;
         }
+        .error-message {
+            display: none;
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #f44336;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+        .error-message.show {
+            display: block;
+            opacity: 1;
+        }
     </style>
 </head>
 <body class="bg-white">
@@ -41,15 +59,15 @@
     <form action="/cargar" method="post" enctype="multipart/form-data">
         <div class="mb-4">
             <label class="block text-gray-700 font-semibold mb-2" for="nombre-archivo">Nombre del Archivo</label>
-            <input class="w-full px-3 py-2 border rounded" id="nombre-archivo" name="nombre_archivo" placeholder="Entrevista Dr. Juan Perez" type="text"/>
+            <input class="w-full px-3 py-2 border rounded" id="nombre-archivo" name="nombre_archivo" placeholder="Entrevista Dr. Juan Perez" type="text" value="{{ nombre_archivo }}"/>
         </div>
         <div class="mb-4">
             <label class="block text-gray-700 font-semibold mb-2" for="asignatura">Asignatura</label>
-            <input class="w-full px-3 py-2 border rounded" id="asignatura" name="asignatura" placeholder="Psicología y Salud" type="text"/>
+            <input class="w-full px-3 py-2 border rounded" id="asignatura" name="asignatura" placeholder="Psicología y Salud" type="text" value="{{ asignatura }}"/>
         </div>
         <div class="mb-4">
             <label class="block text-gray-700 font-semibold mb-2" for="unidad">Unidad</label>
-            <input class="w-full px-3 py-2 border rounded" id="unidad" name="unidad" placeholder="II" type="text"/>
+            <input class="w-full px-3 py-2 border rounded" id="unidad" name="unidad" placeholder="II" type="text" value="{{ unidad }}"/>
         </div>
         <div class="mb-6">
             <label class="block text-gray-700 font-semibold mb-2" for="archivo">Archivo</label>
@@ -71,5 +89,25 @@
         <img alt="Footer image with udp logo and accreditation information" class="w-full" src="../static/images/pie.png"/>
     </div>
 </footer>
+
+<!-- Mostrar mensaje de error si existe -->
+{% if error_message %}
+<div class="error-message" id="error-message">{{ error_message }}</div>
+{% endif %}
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    var errorMessage = document.getElementById("error-message");
+    if (errorMessage) {
+        errorMessage.classList.add("show");
+        setTimeout(function() {
+            errorMessage.style.opacity = "0";
+            setTimeout(function() {
+                errorMessage.style.display = "none";
+            }, 500); // Esperar 500ms después de la animación para ocultar completamente
+        }, 3000); // Ocultar después 
+    }
+});
+</script>
 </body>
 </html>

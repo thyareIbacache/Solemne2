@@ -39,26 +39,20 @@ def home():
 
     return render_template('Login.html')
 
-# Función para validar el formulario de carga de archivos
-def validar_formulario(request):
-    nombre_archivo = request.form.get('nombre_archivo')
-    asignatura = request.form.get('asignatura')
-    unidad = request.form.get('unidad')
-
-    if not nombre_archivo or not asignatura or not unidad:
-        return False, 'Por favor, completa todos los campos del formulario.'
-
-    return True, ''
 
 # Ruta para la carga de archivos
 @app.route('/cargar', methods=['GET', 'POST'])
 def upload_file():
     if request.method == 'POST':
         id_usuario = session['id_usuario']
+
         # Validar el formulario antes de procesar la carga de archivos
-        valido, mensaje_error = validar_formulario(request)
-        if not valido:
-            return mensaje_error, 400
+        nombre_archivo = request.form.get('nombre_archivo')
+        asignatura = request.form.get('asignatura')
+        unidad = request.form.get('unidad')
+        if not nombre_archivo or not asignatura or not unidad:
+            mensaje = 'Por favor, completa todos los campos del formulario.'
+            return render_template('Cargarv2.html', error_message=mensaje, nombre_archivo=nombre_archivo, asignatura=asignatura, unidad=unidad)
 
         # Verificar si se ha enviado un archivo en la solicitud
         if 'archivo' not in request.files:
@@ -68,7 +62,9 @@ def upload_file():
 
         # Verificar si no se seleccionó ningún archivo
         if file.filename == '':
-            return 'No se seleccionó ningún archivo', 400
+            mensaje = 'No se seleccionó ningun archivo.'
+            return render_template('Cargarv2.html', error_message=mensaje, nombre_archivo=nombre_archivo, asignatura=asignatura, unidad=unidad)
+
 
         # Si se recibe un archivo y es válido
         if file:
