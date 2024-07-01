@@ -3,8 +3,11 @@ from config import Config
 from models import db, Usuarios, Archivos
 from werkzeug.utils import secure_filename
 from werkzeug.security import check_password_hash
-import os
+from authlib.integrations.flask_client import OAuth
 from datetime import datetime
+
+import os
+
 
 
 app = Flask(__name__, template_folder='HTML')
@@ -36,8 +39,44 @@ def home():
         else:
             mensaje = 'Credenciales inválidas'
             return render_template('Login.html', error_message=mensaje, username=correo)
+    
+    error_message = request.args.get('error', None)
+    if error_message:
+    # Procesar el error, mostrarlo en la página, etc.
+        return render_template('Login.html', error_message=error_message)
 
     return render_template('Login.html')
+
+oauth = OAuth(app)
+google = oauth.register(
+    name='google',
+    server_metadata_url='https://accounts.google.com/.well-known/openid-configuration',
+    client_id='619538477705-k9j7t24s47osli88dq5mmq0lfeq1epih.apps.googleusercontent.com',
+    client_secret='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',
+    client_kwargs={'scope': 'openid email profile'}
+)
+
+
+@app.route('/login-google')
+def login():
+    redirect_uri = url_for('authorize', _external=True)
+    return google.authorize_redirect(redirect_uri)
+
+from flask import redirect, url_for, session
+
+@app.route('/login/callback')
+def authorize():
+    try:
+        token = google.authorize_access_token()
+    except Exception as e:
+        # Manejar excepción si falla la autorización
+        print(e)
+        return f"{e}"
+        #return redirect(url_for('home', error='Falló la autorización'))
+
+    resp = google.get('https://openidconnect.googleapis.com/v1/userinfo') # Usar el endpoint correcto para obtener información del usuario
+    user_info = resp.json()
+    return f"{user_info}"
 
 
 # Ruta para la carga de archivos
