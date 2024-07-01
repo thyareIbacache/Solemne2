@@ -5,6 +5,8 @@ from werkzeug.utils import secure_filename
 from werkzeug.security import check_password_hash
 from authlib.integrations.flask_client import OAuth
 from datetime import datetime
+from dotenv import load_dotenv
+load_dotenv()
 
 import os
 
@@ -51,12 +53,12 @@ oauth = OAuth(app)
 google = oauth.register(
     name='google',
     server_metadata_url='https://accounts.google.com/.well-known/openid-configuration',
-    client_id='619538477705-k9j7t24s47osli88dq5mmq0lfeq1epih.apps.googleusercontent.com',
-    client_secret='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',
+    client_id=os.getenv('GOOGLE_CLIENT_ID'),
+    client_secret=os.getenv('GOOGLE_CLIENT_SECRET'),
     client_kwargs={'scope': 'openid email profile'}
 )
 
-
+# Ingreso con Google
 @app.route('/login-google')
 def login():
     redirect_uri = url_for('authorize', _external=True)
@@ -64,6 +66,7 @@ def login():
 
 from flask import redirect, url_for, session
 
+# Prueba
 @app.route('/login/callback')
 def authorize():
     try:
