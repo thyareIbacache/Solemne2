@@ -52,7 +52,7 @@ def home():
 oauth = OAuth(app)
 google = oauth.register(
     name='google',
-    server_metadata_url='https://accounts.google.com/.well-known/openid-configuration',
+    server_metadata_url=os.getenv('GOOGLE_METADATA_URL'),
     client_id=os.getenv('GOOGLE_CLIENT_ID'),
     client_secret=os.getenv('GOOGLE_CLIENT_SECRET'),
     client_kwargs={'scope': 'openid email profile'}
