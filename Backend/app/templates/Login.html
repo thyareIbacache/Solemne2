@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio de Sesión</title>
+    <link rel="stylesheet" href="../static/CSS/Login.css">
+</head>
+<body>
+    <div>
+        <div>
+            <div class="relative flex min-h-screen w-full items-center justify-center bg-cover bg-center bg-no-repeat" style="background-image: url('../static/images/facultad-psicologia.png');">
+                <div class="absolute inset-0 bg-gray-900/30 backdrop-blur-sm"></div>
+                <div class="relative z-10 w-full max-w-md rounded-lg bg-white/80 p-6 shadow-lg backdrop-blur-sm sm:p-8 rectangle-7">
+                    <div class="space-y-4">
+                        <div class="text-center">
+                            <h1 class="text-2xl font-bold">UDP Apuntes en Línea</h1>
+                        </div>
+                        <form class="space-y-4" method="POST" action="/">
+                            <div>
+                                <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" for="username">
+                                    Usuario
+                                </label>
+                                <input class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50" id="username" placeholder="Usuario" type="text" name="username" value="{{ username }}" />
+                            </div>
+                            <div>
+                                <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" for="password">
+                                    Contraseña
+                                </label>
+                                <input class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50" id="password" placeholder="Contraseña" type="password" name="password" />
+                            </div>
+                            <button class="inline-flex items-center justify-center whitespace-nowrap rounded-md font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-10 w-full px-4 py-2 text-sm bg-blue-500 hover:bg-blue-600 text-white ml-auto" type="submit">
+                                Iniciar Sesión
+                            </button>
+                            <a href="/login-google" style="text-decoration: none; color: inherit;">
+                                <div class="boton-ingresa-google">
+                                    <div class="google-g-logo-1">
+                                        <img class="google-g-logo-12" src="../static/images/google-g-logo-11.png" />
+                                    </div>
+                                    <div class="ingresa-con-google">
+                                        <div class="ingresa-con-google2">Ingresa con Google</div>
+                                    </div>
+                                </div>
+                            </a>                            
+                        </form>   
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mostrar mensaje de error si existe -->
+    {% if error_message %}
+        <div class="error-message" id="error-message">{{ error_message }}</div>
+    {% endif %}
+
+    <!-- JavaScript para mostrar y ocultar el mensaje de error -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var errorMessage = document.getElementById("error-message");
+            if (errorMessage) {
+                errorMessage.classList.add("show");
+                setTimeout(function() {
+                    errorMessage.style.opacity = "0";
+                    setTimeout(function() {
+                        errorMessage.style.display = "none";
+                    }, 500); // Esperar 500ms después de la animación para ocultar completamente
+                }, 5000); // Ocultar después de 5 segundos (5000 milisegundos)
+            }
+        });
+    </script>
+</body>
+</html>

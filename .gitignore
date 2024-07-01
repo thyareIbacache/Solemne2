@@ -1,4 +1,7 @@
+Backend/app/__pycache__
 Backend/__pycache__
 Backend/.env
 Backend/uploads/*
+Backend/app/uploads/*
+!Backend/app/uploads/.gitkeep
 !Backend/uploads/.gitkeep

@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sube tus archivos</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet"/>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+        }
+        .nav-link {
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .nav-link:hover {
+            background-color: #9b59b6;
+            color: white;
+            border-radius: 0.375rem;
+            padding: 0.25rem 0.5rem;
+        }
+        .error-message {
+            display: none;
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #f44336;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+        .error-message.show {
+            display: block;
+            opacity: 1;
+        }
+        .footer {
+            background-color: black;
+            color: white;
+        }
+        .logo-footer {
+            max-height: 80px;
+            width: auto;
+        }
+        .text-footer {
+            max-height: 80px;
+            width: auto;
+            margin-top: 8px;
+        }
+        /* Estilos para el menú hamburguesa */
+        .hamburger-container {
+            padding-right: 1rem; /* Ajusta este valor según lo necesites */
+        }
+        .hamburger {
+            cursor: pointer;
+            display: block;
+            width: 30px;
+            height: 22px;
+            margin-left: auto;
+        }
+        .hamburger div,
+        .hamburger div::before,
+        .hamburger div::after {
+            content: '';
+            background-color: #333;
+            height: 3px;
+            width: 100%;
+            position: absolute;
+            transition: transform 0.3s, top 0.3s, bottom 0.3s;
+        }
+        .hamburger div::before {
+            top: -8px;
+        }
+        .hamburger div::after {
+            bottom: -8px;
+        }
+        .hamburger.open div::before {
+            top: 0;
+            transform: rotate(45deg);
+        }
+        .hamburger.open div::after {
+            bottom: 0;
+            transform: rotate(-45deg);
+        }
+        .mobile-dropdown {
+            display: none;
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 250px;
+            height: 100%;
+            background-color: white;
+            box-shadow: -2px 0 5px rgba(0, 0, 0, 0.5);
+            z-index: 50;
+        }
+        .mobile-dropdown.open {
+            display: block;
+        }
+        .mobile-dropdown ul {
+            list-style: none;
+            padding: 1rem;
+        }
+        .mobile-dropdown ul li {
+            margin-bottom: 1rem;
+        }
+        .mobile-dropdown ul li a {
+            text-decoration: none;
+            color: #333;
+            font-size: 1.2rem;
+        }
+        .mobile-dropdown ul li a:hover {
+            background-color: #9b59b6;
+            color: white;
+            box-sizing: border-box;
+            text-align: left;
+            font-size: 20px;
+        }
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none;
+            z-index: 40;
+        }
+        .overlay.open {
+            display: block;
+        }
+        @media (min-width: 640px) {
+            .mobile-dropdown {
+                display: none; /* Oculta el menú dropdown en pantallas grandes */
+            }
+        }
+    </style>
+</head>
+<body class="bg-white">
+    <div class="max-w-7xl mx-auto">
+        <header class="flex justify-between items-center py-4">
+            <div class="flex items-center pl-4">
+                <img alt="Header image with UDP Facultad de Psicología logo" class="mr-2 logo-header" height="50" src="https://admision.udp.cl/cms/wp-content/uploads/2022/09/facultad-psicologia-logo@2x.png" width="200"/>
+            </div>
+            <nav class="sm:flex space-x-4 relative">  <!-- Agrega relative aquí -->
+                <a href="#" class="block sm:hidden hamburger-container">
+                    <div class="hamburger" id="hamburger">
+                        <div></div>
+                    </div>
+                </a>
+                <div class="nav-list hidden sm:flex space-x-4">
+                    <a href="perfil" class="nav-link text-gray-500 hover:text-white">Perfil</a>
+                    <a href="#" class="nav-link text-gray-500 hover:text-white">Biblioteca</a>
+                    <a href="#" class="nav-link text-gray-500 hover:text-white">Anuncios</a>
+                    <a href="cargar" class="nav-link text-gray-500 hover:text-white">Cargar</a>
+                    <a href="logout" class="nav-link text-gray-500 hover:text-white">Cerrar sesión</a>
+                </div>
+            </nav>
+        </header>
+
+        <!-- Overlay para el menú dropdown móvil -->
+        <div class="overlay" id="overlay"></div>
+
+        <!-- Menú dropdown móvil -->
+        <div class="mobile-dropdown" id="mobileMenu">
+            <ul>
+                <li><a class="nav-link text-gray-500 hover:text-white" href="perfil">Perfil</a></li>
+                <li><a class="nav-link text-gray-500 hover:text-white" href="#">Biblioteca</a></li>
+                <li><a class="nav-link text-gray-500 hover:text-white" href="#">Anuncios</a></li>
+                <li><a class="nav-link text-gray-500 hover:text-white" href="cargar">Cargar</a></li>
+                <li><a class="nav-link text-gray-500 hover:text-white" href="logout">Cerrar sesión</a></li>
+            </ul>
+        </div>
+<div class="bg-white p-8 rounded max-w-lg mx-auto">
+    <h2 class="text-2xl font-bold mb-6">Sube tus archivos</h2>
+    <form action="/cargar" method="post" enctype="multipart/form-data">
+        <div class="mb-4">
+            <label class="block text-gray-700 font-semibold mb-2" for="nombre-archivo">Nombre del Archivo</label>
+            <input class="w-full px-3 py-2 border rounded" id="nombre-archivo" name="nombre_archivo" placeholder="Entrevista Dr. Juan Perez" type="text" value="{{ nombre_archivo }}"/>
+        </div>
+        <div class="mb-4">
+            <label class="block text-gray-700 font-semibold mb-2" for="asignatura">Asignatura</label>
+            <input class="w-full px-3 py-2 border rounded" id="asignatura" name="asignatura" placeholder="Psicología y Salud" type="text" value="{{ asignatura }}"/>
+        </div>
+        <div class="mb-4">
+            <label class="block text-gray-700 font-semibold mb-2" for="unidad">Unidad</label>
+            <input class="w-full px-3 py-2 border rounded" id="unidad" name="unidad" placeholder="II" type="text" value="{{ unidad }}"/>
+        </div>
+        <div class="mb-6">
+            <label class="block text-gray-700 font-semibold mb-2" for="archivo">Archivo</label>
+            <input type="file" id="archivo" name="archivo" class="hidden" style="display: none;" onchange="document.getElementById('archivo-name').innerText = this.files[0].name">
+            <label for="archivo" class="cursor-pointer border-dashed border-gray-300 p-6 text-center rounded">
+            <!--<label for="archivo" class="cursor-pointer border-dashed border-2 border-gray-300 p-6 text-center rounded">-->
+                <i class="fas fa-cloud-upload-alt text-3xl text-gray-400 mb-2 block"></i>
+                <p class="text-gray-600">Selecciona un archivo</p>
+                <p id="archivo-name"></p>
+            </label>
+        </div>
+        <div class="flex justify-center">
+            <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Subir</button>
+        </div>
+    </form>
+</div>
+
+
+<!-- Mostrar mensaje de error si existe -->
+{% if error_message %}
+        <div class="error-message" id="error-message">{{ error_message }}</div>
+        {% endif %}
+    </div>
+<footer class="footer bg-black text-white text-center lg:text-left">
+    <div class="py-4 sm:flex justify-center sm:justify-between items-center">
+        <!-- Sección para dispositivos móviles -->
+        <div class="block sm:hidden">
+            <img class="logo-footer mx-auto" src="../static/images/figma_udp 1.png" alt="Footer logo mobile">
+        </div>
+
+        <!-- Sección para dispositivos grandes -->
+        <div class="hidden sm:flex justify-between items-center w-full max-w-7xl mx-auto px-6">
+            <img class="logo-footer" src="../static/images/udp-logo.png" alt="Footer logo desktop left">
+            <img class="text-footer" src="../static/images/udp-footer.png" alt="Footer text desktop right">
+        </div>
+    </div>
+</footer>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const hamburger = document.getElementById('hamburger');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const overlay = document.getElementById('overlay');
+
+        hamburger.addEventListener('click', function() {
+            mobileMenu.classList.toggle('open');
+            overlay.classList.toggle('open');
+        });
+
+        overlay.addEventListener('click', function() {
+            mobileMenu.classList.remove('open');
+            overlay.classList.remove('open');
+        });
+
+        var errorMessage = document.getElementById("error-message");
+        if (errorMessage) {
+            errorMessage.classList.add("show");
+            setTimeout(function() {
+                errorMessage.style.opacity = "0";
+                setTimeout(function() {
+                    errorMessage.style.display = "none";
+                }, 500); // Esperar 500ms después de la animación para ocultar completamente
+            }, 3000); // Ocultar después de 3 segundos
+        }
+    });
+</script>
+</body>
+</html>
