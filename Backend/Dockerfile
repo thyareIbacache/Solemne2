@@ -8,7 +8,7 @@ WORKDIR /app
 COPY requirements.txt ./
 
 # Instala las dependencias
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir --verbose -r requirements.txt
 
 # Copia el resto del código de la aplicación al contenedor
 COPY . .
@@ -17,4 +17,4 @@ COPY . .
 EXPOSE 5000
 
 # Comando para correr la aplicación
-CMD ["flask", "run", "--host=0.0.0.0"]
+CMD pip install --no-cache-dir -r requirements.txt && flask run --host=0.0.0.0

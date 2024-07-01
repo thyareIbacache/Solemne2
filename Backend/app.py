@@ -51,7 +51,7 @@ def home():
 
 oauth = OAuth(app)
 google = oauth.register(
-    name='google',
+    'google',
     server_metadata_url=os.getenv('GOOGLE_METADATA_URL'),
     client_id=os.getenv('GOOGLE_CLIENT_ID'),
     client_secret=os.getenv('GOOGLE_CLIENT_SECRET'),
