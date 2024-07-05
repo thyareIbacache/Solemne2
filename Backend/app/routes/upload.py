@@ -20,7 +20,7 @@ def upload_file():
         unidad = request.form.get('unidad')
         if not nombre_archivo or not asignatura or not unidad:
             mensaje = 'Por favor, completa todos los campos del formulario.'
-            return render_template('Cargarv2.html', error_message=mensaje, nombre_archivo=nombre_archivo, asignatura=asignatura, unidad=unidad)
+            return render_template('upload.html', error_message=mensaje, nombre_archivo=nombre_archivo, asignatura=asignatura, unidad=unidad)
 
         if 'archivo' not in request.files:
             return 'No se encontró el archivo', 400
@@ -29,7 +29,7 @@ def upload_file():
 
         if file.filename == '':
             mensaje = 'No se seleccionó ningun archivo.'
-            return render_template('Cargarv2.html', error_message=mensaje, nombre_archivo=nombre_archivo, asignatura=asignatura, unidad=unidad)
+            return render_template('upload.html', error_message=mensaje, nombre_archivo=nombre_archivo, asignatura=asignatura, unidad=unidad)
 
         if file:
             # Guardar el archivo en el sistema de archivos del servidor
@@ -61,4 +61,4 @@ def upload_file():
             except Exception as e:
                 return f'Error al guardar en la base de datos: {str(e)}', 500
 
-    return render_template('Cargarv2.html')
+    return render_template('upload.html')

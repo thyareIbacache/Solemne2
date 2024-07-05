@@ -20,13 +20,13 @@ def home():
             return redirect(url_for('profile.perfil'))
         else:
             mensaje = 'Credenciales inválidas'
-            return render_template('Login.html', error_message=mensaje, username=correo)
+            return render_template('login.html', error_message=mensaje, username=correo)
     
     error_message = request.args.get('error', None)
     if error_message:
-        return render_template('Login.html', error_message=error_message)
+        return render_template('login.html', error_message=error_message)
 
-    return render_template('Login.html')
+    return render_template('login.html')
 
 @auth_bp.route('/login-google')
 def login():
