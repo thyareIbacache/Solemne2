@@ -1,31 +1,35 @@
 <style>
     .footer {
-            background-color: black;
-            color: white;
-        }
-        .logo-footer {
-            max-height: 80px;
-            width: auto;
-        }
-        .text-footer {
-            max-height: 80px;
-            width: auto;
-            margin-top: 8px;
-        }
+        margin-top: auto;
+        background-color: black;
+        color: white;
+    }
+
+    .logo-footer {
+        max-height: 80px;
+        width: auto;
+    }
+    
+    .text-footer {
+        max-height: 80px;
+        width: auto;
+    }
 </style>
 
 <footer class="footer text-center lg:text-left">
-    <div class="flex flex-col items-center py-4 sm:hidden">
-        <div class="relative">
-            <img class="logo-footer mx-auto" src="../static/images/figma_udp 1.png" alt="Footer logo mobile">
+    <div class="flex-wrapper">
+        <div class="flex flex-col items-center py-4 sm:hidden">
+            <div class="relative">
+                <img class="logo-footer mx-auto" src="../static/images/figma_udp 1.png" alt="Footer logo mobile">
+            </div>
         </div>
-    </div>
-    <div class="hidden sm:flex justify-between items-center py-4 px-6">
-        <div class="relative">
-            <img class="logo-footer" src="../static/images/udp-logo.png" alt="Footer logo desktop left">
-        </div>
-        <div class="relative">
-            <img class="text-footer" src="../static/images/udp-footer.png" alt="Footer text desktop right">
+        <div class="hidden sm:flex justify-between items-center py-4 px-6">
+            <div class="relative">
+                <img class="logo-footer" src="../static/images/udp-logo.png" alt="Footer logo desktop left">
+            </div>
+            <div class="relative">
+                <img class="text-footer" src="../static/images/udp-footer.png" alt="Footer text desktop right">
+            </div>
         </div>
     </div>
 </footer>

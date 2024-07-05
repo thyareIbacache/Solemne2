@@ -9,6 +9,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet"/>
     <style>
         body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
             font-family: 'Roboto', sans-serif;
             margin: 0;
             padding: 0;
@@ -142,13 +145,13 @@
             hamburger.addEventListener('click', function() {
                 mobileMenu.classList.toggle('open');
                 overlay.classList.toggle('open');
-                hamburger.classList.toggle('open'); // Añadir esto para la animación del botón hamburguesa
+                hamburger.classList.toggle('open'); 
             });
 
             overlay.addEventListener('click', function() {
                 mobileMenu.classList.remove('open');
                 overlay.classList.remove('open');
-                hamburger.classList.remove('open'); // Añadir esto para la animación del botón hamburguesa
+                hamburger.classList.remove('open'); 
             });
         });
         $('#footer_content').load('../static/footer.html');

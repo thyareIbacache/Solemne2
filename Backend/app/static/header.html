@@ -2,6 +2,13 @@
 <html lang="es">
 <head>
     <style>
+        body {
+            min-height: 100vh;
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
         /* Estilos base para todos los enlaces de navegación */
         .nav-link {
             transition: background-color 0.3s, color 0.3s;
@@ -10,6 +17,8 @@
             padding: 0.5rem 1rem; /* Añade algo de relleno para hacer los enlaces más grandes */
             display: inline-block; /* Asegura que padding funcione correctamente */
             border-radius: 0.375rem;
+            min-width: 90px;
+            text-align: center;
         }
 
         .nav-link:hover {
@@ -19,6 +28,7 @@
 
         .nav-link.nav-link-mobile {
             display: block; /* Los enlaces móviles se muestran como bloques */
+            text-align: left;
         }
 
         .nav-link.nav-link-logout:hover {
