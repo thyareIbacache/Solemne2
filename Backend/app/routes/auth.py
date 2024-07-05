@@ -51,3 +51,8 @@ def logout():
     session.pop('id_usuario', None)
     return redirect(url_for('auth.home'))
 
+
+# Prueba
+@auth_bp.route('/test', methods=['GET'])
+def test():
+    return render_template('base.html')

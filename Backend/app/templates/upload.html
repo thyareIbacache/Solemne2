@@ -34,7 +34,7 @@
 <div class="max-w-7xl mx-auto">
     <div class="bg-white p-8 rounded max-w-lg mx-auto">
         <h2 class="text-2xl font-bold mb-6">Sube tus archivos</h2>
-        <form action="/cargar" method="post" enctype="multipart/form-data">
+        <form action="/upload" method="post" enctype="multipart/form-data">
             <div class="mb-4">
                 <label class="block text-gray-700 font-semibold mb-2" for="nombre-archivo">Nombre del Archivo</label>
                 <input class="w-full px-3 py-2 border rounded" id="nombre-archivo" name="nombre_archivo" placeholder="Entrevista Dr. Juan Perez" type="text" value="{{ nombre_archivo }}"/>
@@ -72,20 +72,6 @@
 
 <script>
     document.addEventListener("DOMContentLoaded", function() {
-        const hamburger = document.getElementById('hamburger');
-        const mobileMenu = document.getElementById('mobileMenu');
-        const overlay = document.getElementById('overlay');
-
-        hamburger.addEventListener('click', function() {
-            mobileMenu.classList.toggle('open');
-            overlay.classList.toggle('open');
-        });
-
-        overlay.addEventListener('click', function() {
-            mobileMenu.classList.remove('open');
-            overlay.classList.remove('open');
-        });
-
         var errorMessage = document.getElementById("error-message");
         if (errorMessage) {
             errorMessage.classList.add("show");

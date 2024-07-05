@@ -10,7 +10,7 @@ upload_bp = Blueprint('upload', __name__)
 def uploaded_file(filename):
     return send_from_directory(current_app.config['UPLOAD_FOLDER'], filename)
 
-@upload_bp.route('/cargar', methods=['GET', 'POST'])
+@upload_bp.route('/upload', methods=['GET', 'POST'])
 def upload_file():
     if request.method == 'POST':
         id_usuario = session['id_usuario']
