@@ -94,7 +94,7 @@
 
         <section class="mt-8">
             <h2 class="text-2xl font-bold pl-4">Archivos compartidos</h2>
-            <div class="grid grid-cols-3 md:grid-cols-6 gap-4 mt-4 bottom-page">
+            <div class="grid grid-cols-3 md:grid-cols-6 gap-4 mt-4">
                 {% for archivo in archivos %}
                 <div class="flex flex-col items-center">
                     <a href="{{ archivo.ruta_archivo }}" target="_blank" download>
@@ -133,6 +133,7 @@
                 </div>
                 {% endfor %}
             </div>
+            <div class="bottom-page"></div>
         </section>
     </div>
     <div id="footer_content"></div>
