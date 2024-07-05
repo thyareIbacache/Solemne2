@@ -23,6 +23,9 @@
             object-fit: cover;
             border-radius: 0.375rem;
         }
+        .bottom-page{
+            margin-bottom: 150px;
+        }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
@@ -91,7 +94,7 @@
 
         <section class="mt-8">
             <h2 class="text-2xl font-bold pl-4">Archivos compartidos</h2>
-            <div class="grid grid-cols-3 md:grid-cols-6 gap-4 mt-4">
+            <div class="grid grid-cols-3 md:grid-cols-6 gap-4 mt-4 bottom-page">
                 {% for archivo in archivos %}
                 <div class="flex flex-col items-center">
                     <a href="{{ archivo.ruta_archivo }}" target="_blank" download>

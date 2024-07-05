@@ -2,6 +2,9 @@
     margin-top: auto;
     background-color: black;
     color: white;
+    position: fixed;
+    width: 100%;
+    bottom: 0px;
 }
 
 .logo-footer {
