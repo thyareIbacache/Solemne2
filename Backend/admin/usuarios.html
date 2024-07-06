@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Usuarios - Modo Supervisor</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="administrador.css">
+</head>
+<body>
+    <div id="header-container"></div>
+    <div class="main">
+        <div id="sidebar-container"></div>
+        <main class="content">
+            <h2>Gestión de Usuarios</h2>
+            <button class="btn btn-primary" onclick="mostrarFormulario()">Agregar Usuario</button>
+            <div id="formulario" style="display:none;">
+                <h3>Nuevo Usuario</h3>
+                <form id="nuevoUsuarioForm">
+                    <div class="form-group">
+                        <label for="nombre">Nombre</label>
+                        <input type="text" class="form-control" id="nombre" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Correo Electrónico</label>
+                        <input type="email" class="form-control" id="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="rol">Rol</label>
+                        <select class="form-control" id="rol" required>
+                            <option value="estudiante">Estudiante</option>
+                            <option value="moderador">Moderador</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-success">Agregar</button>
+                </form>
+            </div>
+            <h3>Lista de Usuarios</h3>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Correo Electrónico</th>
+                        <th>Rol</th>
+                    </tr>
+                </thead>
+                <tbody id="usuariosLista">
+                    <!-- Lista de usuarios cargados dinámicamente -->
+                </tbody>
+            </table>
+        </main>
+    </div>
+    <footer class="bg-dark text-white text-center p-3">
+        &copy; 2024 Modo Supervisor
+    </footer>
+    <script src="loadComponents.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            cargarUsuarios();
+            
+            document.getElementById('nuevoUsuarioForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                agregarUsuario();
+            });
+        });
+
+        function mostrarFormulario() {
+            document.getElementById('formulario').style.display = 'block';
+        }
+
+        function cargarUsuarios() {
+            fetch('http://localhost:8000/api/usuarios')
+                .then(response => response.json())
+                .then(data => {
+                    const usuariosLista = document.getElementById('usuariosLista');
+                    usuariosLista.innerHTML = '';
+                    data.forEach(usuario => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `<td>${usuario.nombre}</td><td>${usuario.email}</td><td>${usuario.rol}</td>`;
+                        usuariosLista.appendChild(row);
+                    });
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        function agregarUsuario() {
+            const nombre = document.getElementById('nombre').value;
+            const email = document.getElementById('email').value;
+            const rol = document.getElementById('rol').value;
+
+            fetch('http://localhost:8000/api/usuarios', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ nombre, email, rol })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    cargarUsuarios();
+                    document.getElementById('formulario').style.display = 'none';
+                    document.getElementById('nuevoUsuarioForm').reset();
+                })
+                .catch(error => console.error('Error:', error));
+        }
+    </script>
+</body>
+</html>
