@@ -47,20 +47,22 @@ def authorize():
 
     resp = oauth.google.get('https://openidconnect.googleapis.com/v1/userinfo')
     user_info = resp.json()
-    usuario = Usuarios.query.filter_by(google_id=user_info['sub']).first()
+    google_id = user_info['sub']
+    usuario = Usuarios.query.filter_by(google_id=google_id).first()
 
     if usuario:
         session['id_usuario'] = usuario.id_usuario
+        if token.get('refresh_token'):
+            usuario.refresh_token = token.get('refresh_token')
+            db.session.commit()
         return redirect(url_for('profile.perfil'))
-    #return f"{user_info['sub']}"
-    google_id_verifiq = Usuarios.query.filter_by(google_id=user_info['sub']).first()
-    #return f"{google_id_verifiq}"
 
-    if google_id_verifiq == None:
+    google_id_verifiq = Usuarios.query.filter_by(google_id=google_id).first()
+    if google_id_verifiq is None:
         session['allow_register'] = user_info
+        session['refresh_token'] = token.get('refresh_token')
         return redirect(url_for('auth.register'))
     else:
-        #if 'id_usuario' in session:
         return redirect(url_for('profile.perfil'))
 
 @auth_bp.route('/register', methods=['GET', 'POST'])
@@ -72,32 +74,33 @@ def register():
         biografia = request.form.get('biografia')
         google_id = request.form.get('google_id')
         google_image_url = request.form.get('google_image_url')
-
         contraseña = request.form.get('contraseña')
         rep_contraseña = request.form.get('rep_contraseña')
+
         if not nombre_completo or not email or not biografia or not contraseña or not rep_contraseña:
             mensaje = 'Por favor, completa todos los campos del formulario.'
             return render_template('register.html', error_message=mensaje, nombre_completo=nombre_completo, nombre_usuario=nombre_usuario, email=email, biografia=biografia, google_id=google_id, google_image_url=google_image_url)
+        
         if contraseña != rep_contraseña:
             mensaje = 'Las contraseñas deben coincidir.'
             return render_template('register.html', error_message=mensaje, nombre_completo=nombre_completo, nombre_usuario=nombre_usuario, email=email, biografia=biografia, google_id=google_id, google_image_url=google_image_url)
-       
+
         nuevo_usuario = Usuarios(
-        correo=email,
-        contraseña=contraseña,
-        rol='estudiante',
-        nombre_completo=nombre_completo,
-        nombre_usuario=nombre_usuario,
-        año_en_curso="2do año",
-        biografia=biografia,
-        google_id=google_id,
-        google_image_url=google_image_url
+            correo=email,
+            contraseña=contraseña,
+            rol='estudiante',
+            nombre_completo=nombre_completo,
+            nombre_usuario=nombre_usuario,
+            año_en_curso="2do año",
+            biografia=biografia,
+            google_id=google_id,
+            google_image_url=google_image_url,
+            refresh_token=session.get('refresh_token')
         )
         db.session.add(nuevo_usuario)
         db.session.commit()
         
         usuario = Usuarios.query.filter_by(google_id=google_id).first()
-        
         session['id_usuario'] = usuario.id_usuario
         return redirect(url_for('profile.perfil'))
 
@@ -105,9 +108,6 @@ def register():
         return redirect(url_for('auth.home'))
      
     user_info = session.get('allow_register')
-    # Limpia la clave temporal para que no se pueda reutilizar
-    #session.pop('allow_register', None)
-    
     nombre = format_name(user_info['given_name']).split()
     return render_template('register.html', 
                             nombre_completo=format_name(user_info['name']),
@@ -122,6 +122,13 @@ def logout():
     session.pop('id_usuario', None)
     return redirect(url_for('auth.home'))
 
+def refresh_google_token(user):
+    oauth = current_app.oauth
+    token = oauth.google.refresh_token(
+        'https://accounts.google.com/o/oauth2/token',
+        refresh_token=user.refresh_token
+    )
+    return token
 
 # Prueba
 @auth_bp.route('/test', methods=['GET'])

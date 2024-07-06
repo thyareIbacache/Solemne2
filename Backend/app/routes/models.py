@@ -15,8 +15,9 @@ class Usuarios(db.Model):
     biografia = db.Column(db.Text, nullable=True)
     año_ingreso = db.Column(db.Integer, nullable=False)
     año_en_curso = db.Column(db.String(50), nullable=False)
-    google_id = db.Column(db.String(255), unique=True, nullable=True) 
+    google_id = db.Column(db.String(255), unique=True, nullable=True)
     google_image_url = db.Column(db.String(255), nullable=True)
+    refresh_token = db.Column(db.String(255), nullable=True)
 
 class Archivos(db.Model):
     __tablename__ = 'archivos'

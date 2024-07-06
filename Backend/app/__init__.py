@@ -25,7 +25,7 @@ def create_app():
         server_metadata_url=os.getenv('GOOGLE_METADATA_URL'),
         client_id=os.getenv('GOOGLE_CLIENT_ID'),
         client_secret=os.getenv('GOOGLE_CLIENT_SECRET'),
-        client_kwargs={'scope': 'openid email profile'}
+        client_kwargs={'scope': 'openid email profile', 'prompt': 'consent'}
     )
 
     app.register_blueprint(auth_bp)
