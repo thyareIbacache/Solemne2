@@ -6,13 +6,34 @@
     <title>Usuarios - Modo Supervisor</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="administrador.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <style>
+        .error-message {
+            display: none;
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #f44336;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+        .error-message.show {
+            display: block;
+            opacity: 1;
+        }
+    </style>
 </head>
-<body>
+<body class="bg-white">
     <div id="header-container"></div>
     <div class="main">
         <div id="sidebar-container"></div>
         <main class="content">
-            <h2>Gestión de Usuarios</h2>
+            <h1>Gestión de Usuarios</h1>
             <button class="btn btn-primary" onclick="mostrarFormulario()">Agregar Usuario</button>
             <div id="formulario" style="display:none;">
                 <h3>Nuevo Usuario</h3>
@@ -53,11 +74,21 @@
     <footer class="bg-dark text-white text-center p-3">
         &copy; 2024 Modo Supervisor
     </footer>
-    <script src="loadComponents.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        function loadHTML(id, url) {
+            fetch(url)
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById(id).innerHTML = data;
+                })
+                .catch(error => console.error('Error cargando el archivo:', error));
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            loadHTML('header-container', 'header.html');
+            loadHTML('sidebar-container', 'sidebar.html');
             cargarUsuarios();
-            
+
             document.getElementById('nuevoUsuarioForm').addEventListener('submit', function(e) {
                 e.preventDefault();
                 agregarUsuario();
