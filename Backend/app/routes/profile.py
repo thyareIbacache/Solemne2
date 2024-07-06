@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, session, redirect, url_for
+from flask import Blueprint, render_template, session, redirect, url_for, request
 from .models import Usuarios, Archivos
 from datetime import datetime
 
@@ -52,6 +52,17 @@ def perfil(id_usuario):
 
 @profile_bp.route('/update-perfil', methods=['GET', 'POST'])
 def update_perfil():
+    if request.method == 'POST':
+        nombre_completo = request.form.get('nombre_completo')
+        nombre_usuario = request.form.get('nombre_usuario')
+        biografia = request.form.get('biografia')
+        año_ingreso = int(request.form.get('año_ingreso'))
+        años_ingreso = [year for year in range(datetime.now().year, datetime.now().year - 21, -1)]
+    
+    if not nombre_completo or not nombre_usuario or not biografia or not año_ingreso:
+        mensaje = 'Por favor, completa todos los campos del formulario.'
+        return render_template('editarPerfil.html', error_message=mensaje, año_ingreso=año_ingreso, años_ingreso=años_ingreso, nombre_completo=nombre_completo, nombre_usuario=nombre_usuario, biografia=biografia)
+    
     return redirect(url_for('auth.home'))
 
 @profile_bp.route('/update-clave', methods=['GET', 'POST'])
@@ -71,6 +82,7 @@ def editar_perfil():
                             nombre_completo=usuario.nombre_completo,
                             nombre_usuario=usuario.nombre_usuario,
                             email=usuario.correo,
+                            biografia=usuario.biografia,
                             año_ingreso=usuario.año_ingreso,
                             años_ingreso=años_ingreso
                             ) 

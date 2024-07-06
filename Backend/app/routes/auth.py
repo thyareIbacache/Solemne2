@@ -85,7 +85,7 @@ def register():
         año_ingreso = int(request.form.get('año_ingreso'))
         años_ingreso = [year for year in range(datetime.now().year, datetime.now().year - 21, -1)]
 
-        if not nombre_completo or not email or not biografia or not contraseña or not rep_contraseña or not año_ingreso:
+        if not nombre_completo or not email or not biografia or not contraseña or not rep_contraseña or not año_ingreso or not nombre_usuario:
             mensaje = 'Por favor, completa todos los campos del formulario.'
             return render_template('register.html', error_message=mensaje, año_ingreso=año_ingreso, años_ingreso=años_ingreso, nombre_completo=nombre_completo, nombre_usuario=nombre_usuario, email=email, biografia=biografia, google_id=google_id, google_image_url=google_image_url)
         
