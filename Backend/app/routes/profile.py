@@ -52,4 +52,17 @@ def perfil(id_usuario):
 
 @profile_bp.route('/editar-perfil')
 def editar_perfil():
-    return redirect(url_for('auth.home'))
+    id_usuario = session['id_usuario']
+    if id_usuario:
+        usuario = Usuarios.query.get(id_usuario)
+    else:
+        redirect(url_for('auth.home'))
+
+    años_ingreso = [year for year in range(datetime.now().year, datetime.now().year - 21, -1)]
+    return render_template('editarPerfil.html', 
+                            nombre_completo=usuario.nombre_completo,
+                            nombre_usuario=usuario.nombre_usuario,
+                            email=usuario.correo,
+                            año_ingreso=usuario.año_ingreso,
+                            años_ingreso=años_ingreso
+                            ) 
