@@ -23,7 +23,7 @@ def perfil(id_usuario):
 
             # Determinar el texto correspondiente
             if years_passed == 0:
-                texto = "Primer año"
+                texto = "1er año"
             elif years_passed == 1:
                 texto = "2do año"
             elif years_passed == 2:
