@@ -50,12 +50,12 @@ def perfil(id_usuario):
     else:
         return redirect(url_for('auth.home'))
 
-@profile_bp.route('/update-perfil')
-def editar_perfil():
+@profile_bp.route('/update-perfil', methods=['GET', 'POST'])
+def update_perfil():
     return redirect(url_for('auth.home'))
 
-@profile_bp.route('/update-clave')
-def editar_perfil():
+@profile_bp.route('/update-clave', methods=['GET', 'POST'])
+def update_clave():
     return redirect(url_for('auth.home'))
 
 @profile_bp.route('/editar-perfil')
