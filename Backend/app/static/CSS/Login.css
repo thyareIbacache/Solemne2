@@ -123,7 +123,7 @@ label {
 .rectangle-7 {
     background: rgba(255, 255, 255, 0.6);
     border-radius: 49px;
-    height: 400px;
+    height: 370px;
     position: absolute;
 }
 
@@ -146,6 +146,15 @@ label {
     opacity: 1;
 }
 
+.boton-ingresar{
+    width: 75%;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    margin-top: 25px;
+    position: relative;
+}
+
 .boton-ingresa-google,
 .boton-ingresa-google * {
   box-sizing: border-box;
@@ -153,7 +162,7 @@ label {
 
 .boton-ingresa-google {
     width: 220px;
-    background-color: #ffffff; /* Fondo blanco sólido */
+    background-color: #ffffff;
     border-radius: 20px;
     display: flex;
     flex-direction: row;
@@ -161,10 +170,10 @@ label {
     align-items: flex-start;
     justify-content: center;
     height: 34px;
-    margin-left: 25%;
-    margin-right: 25%;
+    margin-left: auto;
+    margin-right: auto;
     position: relative;
-    margin-top: 10px; /* Ajusta el margen según sea necesario */
+    margin-top: 30px;
 }
 
 .google-g-logo-1 {
@@ -185,7 +194,6 @@ label {
     padding: 8px 10px;
     display: flex;
     flex-direction: row;
-    gap: 10px;
     width: 200px;
     align-items: center;
     justify-content: center;
