@@ -1,9 +1,12 @@
 from flask import Blueprint, render_template, request, redirect, url_for, session, current_app
-from .models import Usuarios
+from .models import Usuarios, db
 from authlib.integrations.flask_client import OAuth
 import os
 
 auth_bp = Blueprint('auth', __name__)
+
+def format_name(name):
+    return ' '.join(word.capitalize() for word in name.split())
 
 @auth_bp.route('/', methods=['GET', 'POST'])
 def home():
@@ -44,7 +47,75 @@ def authorize():
 
     resp = oauth.google.get('https://openidconnect.googleapis.com/v1/userinfo')
     user_info = resp.json()
-    return f"{user_info}"
+    usuario = Usuarios.query.filter_by(google_id=user_info['sub']).first()
+
+    if usuario:
+        session['id_usuario'] = usuario.id_usuario
+        return redirect(url_for('profile.perfil'))
+    #return f"{user_info['sub']}"
+    google_id_verifiq = Usuarios.query.filter_by(google_id=user_info['sub']).first()
+    #return f"{google_id_verifiq}"
+
+    if google_id_verifiq == None:
+        session['allow_register'] = user_info
+        return redirect(url_for('auth.register'))
+    else:
+        #if 'id_usuario' in session:
+        return redirect(url_for('profile.perfil'))
+
+@auth_bp.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        nombre_completo = request.form.get('nombre_completo')
+        nombre_usuario = request.form.get('nombre_usuario')
+        email = request.form.get('email')
+        biografia = request.form.get('biografia')
+        google_id = request.form.get('google_id')
+        google_image_url = request.form.get('google_image_url')
+
+        contraseña = request.form.get('contraseña')
+        rep_contraseña = request.form.get('rep_contraseña')
+        if not nombre_completo or not email or not biografia or not contraseña or not rep_contraseña:
+            mensaje = 'Por favor, completa todos los campos del formulario.'
+            return render_template('register.html', error_message=mensaje, nombre_completo=nombre_completo, nombre_usuario=nombre_usuario, email=email, biografia=biografia, google_id=google_id, google_image_url=google_image_url)
+        if contraseña != rep_contraseña:
+            mensaje = 'Las contraseñas deben coincidir.'
+            return render_template('register.html', error_message=mensaje, nombre_completo=nombre_completo, nombre_usuario=nombre_usuario, email=email, biografia=biografia, google_id=google_id, google_image_url=google_image_url)
+       
+        nuevo_usuario = Usuarios(
+        correo=email,
+        contraseña=contraseña,
+        rol='estudiante',
+        nombre_completo=nombre_completo,
+        nombre_usuario=nombre_usuario,
+        año_en_curso="2do año",
+        biografia=biografia,
+        google_id=google_id,
+        google_image_url=google_image_url
+        )
+        db.session.add(nuevo_usuario)
+        db.session.commit()
+        
+        usuario = Usuarios.query.filter_by(google_id=google_id).first()
+        
+        session['id_usuario'] = usuario.id_usuario
+        return redirect(url_for('profile.perfil'))
+
+    if not session.get('allow_register'):
+        return redirect(url_for('auth.home'))
+     
+    user_info = session.get('allow_register')
+    # Limpia la clave temporal para que no se pueda reutilizar
+    #session.pop('allow_register', None)
+    
+    nombre = format_name(user_info['given_name']).split()
+    return render_template('register.html', 
+                            nombre_completo=format_name(user_info['name']),
+                            nombre_usuario=nombre[0],
+                            email=user_info['email'],
+                            google_id=user_info['sub'],
+                            google_image_url=user_info['picture']
+                            ) 
 
 @auth_bp.route('/logout')
 def logout():

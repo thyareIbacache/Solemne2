@@ -6,7 +6,9 @@ INSERT INTO Usuarios (
     nombre_completo,
     nombre_usuario,
     biografia,
-    año_en_curso
+    año_en_curso,
+    google_id,
+    google_image_url
 ) VALUES (
     'sofia.martinez@mail.udp.cl',
     '12345',
@@ -14,7 +16,9 @@ INSERT INTO Usuarios (
     'Sofía Andrea Martínez Díaz',
     'Sofía Andrea Martínez Díaz',
     'Me gusta estudiar con mi grupo de amigas en la facultad, mi ramo preferido es Psicología social.',
-    '2do año'
+    '2do año',
+    NULL,
+    NULL
 );
 
 INSERT INTO Usuarios (
@@ -24,7 +28,9 @@ INSERT INTO Usuarios (
     nombre_completo,
     nombre_usuario,
     biografia,
-    año_en_curso
+    año_en_curso,
+    google_id,
+    google_image_url
 ) VALUES (
     'sandra.perez@mail.udp.cl',
     '12345',
@@ -32,7 +38,9 @@ INSERT INTO Usuarios (
     'Sandra Pérez',
     'Sandra Pérez',
     'Mi ramo menos preferido es Psicología social.',
-    '2do año'
+    '2do año',
+    NULL,
+    NULL
 );
 
 /* INSERT INTO Archivos (

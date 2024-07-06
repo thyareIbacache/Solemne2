@@ -15,7 +15,9 @@ CREATE TABLE Usuarios (
     nombre_usuario VARCHAR(255) NOT NULL,
     biografia VARCHAR(1000) NOT NULL,
     año_ingreso INTEGER DEFAULT EXTRACT(YEAR FROM CURRENT_DATE),
-    año_en_curso VARCHAR(50) NOT NULL
+    año_en_curso VARCHAR(50) NOT NULL,
+    google_id VARCHAR(255) UNIQUE,
+    google_image_url VARCHAR(500)
 );
 
 -- Crear la tabla Cursos

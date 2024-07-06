@@ -37,7 +37,11 @@
             <div class="sm:flex items-center space-x-6">
                 <!-- Imagen de perfil -->
                 <div class="sm:w-1/4 sm:text-center mb-4 sm:mb-0">
-                    <img alt="Profile picture" class="rounded-full mx-auto" height="100" src="https://www.pngall.com/wp-content/uploads/5/Profile-PNG-File.png" width="100"/>
+                    {% if usuario.google_image_url %}
+                        <img alt="Profile picture" class="rounded-full mx-auto" height="175px" width="175px" src="{{ usuario.google_image_url }}"/>
+                    {% else %}
+                        <img alt="Profile picture" class="rounded-full mx-auto" height="175px" width="175px" src="https://www.pngall.com/wp-content/uploads/5/Profile-PNG-File.png"/>                   
+                    {% endif %}                
                 </div>
                 <!-- Información del usuario -->
                 <div class="sm:w-3/4">
@@ -45,8 +49,8 @@
                     <p>{{ usuario.nombre_completo }}</p>
                     <p class="text-lg font-bold mt-2">Nombre de usuario</p>
                     <p>{{ usuario.nombre_usuario }}</p>
-                    <p class="text-lg font-bold mt-2">Correo electrónico</p>
-                    <p>{{ usuario.correo_electronico }}</p>
+                    <p class="text-lg font-bold mt-2">Biografía</p>
+                    <p>{{ usuario.biografia }}</p>
                     <div class="flex space-x-8 mt-4">
                         <div>
                             <p class="text-lg font-bold">Año de ingreso</p>
@@ -95,6 +99,9 @@
         <section class="mt-8">
             <h2 class="text-2xl font-bold pl-4">Archivos compartidos</h2>
             <div class="grid grid-cols-3 md:grid-cols-6 gap-4 mt-4">
+                {% if archivos|length == 0 %}
+                    <p class="pl-4" style=" width: 300px">No hay archivos compartidos.</p>
+                {% else %}
                 {% for archivo in archivos %}
                 <div class="flex flex-col items-center">
                     <a href="{{ archivo.ruta_archivo }}" target="_blank" download>
@@ -132,6 +139,7 @@
                     <p class="text-center mt-2">{{ archivo.nombre_archivo }}<br/>{{ archivo.asignatura }}</p>
                 </div>
                 {% endfor %}
+                {% endif %}
             </div>
             <div class="bottom-page"></div>
         </section>

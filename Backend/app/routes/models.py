@@ -7,7 +7,7 @@ class Usuarios(db.Model):
     __tablename__ = 'usuarios'
     id_usuario = db.Column(db.Integer, primary_key=True)
     correo = db.Column(db.String(255), unique=True, nullable=False)
-    contraseña = db.Column(db.String(255), nullable=False)
+    contraseña = db.Column(db.String(255), nullable=True)  # Puede ser nulo para usuarios de Google
     fecha_registro = db.Column(db.TIMESTAMP, default=db.func.current_timestamp())
     rol = db.Column(db.String(50), nullable=False)
     nombre_completo = db.Column(db.String(255), nullable=False)
@@ -15,6 +15,8 @@ class Usuarios(db.Model):
     biografia = db.Column(db.Text, nullable=True)
     año_ingreso = db.Column(db.Integer, nullable=False)
     año_en_curso = db.Column(db.String(50), nullable=False)
+    google_id = db.Column(db.String(255), unique=True, nullable=True) 
+    google_image_url = db.Column(db.String(255), nullable=True)
 
 class Archivos(db.Model):
     __tablename__ = 'archivos'
