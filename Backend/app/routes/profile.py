@@ -81,7 +81,6 @@ def editar_perfil():
     return render_template('editarPerfil.html', 
                             nombre_completo=usuario.nombre_completo,
                             nombre_usuario=usuario.nombre_usuario,
-                            email=usuario.correo,
                             biografia=usuario.biografia,
                             año_ingreso=usuario.año_ingreso,
                             años_ingreso=años_ingreso
