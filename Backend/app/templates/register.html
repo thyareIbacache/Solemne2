@@ -66,6 +66,18 @@
                     </div>
                 </div>
                 <div class="mb-4">
+                    <label class="block text-gray-700 font-semibold mb-2" for="año_ingreso">Año de Ingreso</label>
+                    <select class="w-full px-3 py-2 border rounded" id="año_ingreso" name="año_ingreso">
+                        {% for year in años_ingreso %}
+                            {% if year == año_ingreso %}
+                                <option value="{{ year }}" selected>{{ year }}</option>
+                            {% else %}
+                                <option value="{{ year }}">{{ year }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>                    
+                </div>
+                <div class="mb-4">
                     <label class="block text-gray-700 font-semibold mb-2" for="biografia">Biografía</label>
                     <textarea class="w-full px-3 py-2 border rounded" id="biografia" name="biografia" placeholder="Me gusta estudiar con mi grupo de amigos en la facultad, mi ramo preferido es Psicología social." style="width: 100%; height: 100px; max-height: 300px; min-height: 100px;" maxlength="500" rows="10" cols="50">{{ biografia }}</textarea>
                 </div>                              

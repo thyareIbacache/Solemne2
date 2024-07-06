@@ -1,7 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for, session, current_app
 from .models import Usuarios, db
-from authlib.integrations.flask_client import OAuth
-import os
+from datetime import datetime
 
 auth_bp = Blueprint('auth', __name__)
 
@@ -52,8 +51,15 @@ def authorize():
 
     if usuario:
         session['id_usuario'] = usuario.id_usuario
+        updated = False
+
+        if usuario.google_image_url != user_info['picture']:
+            usuario.google_image_url = user_info['picture']
+            updated = True
         if token.get('refresh_token'):
             usuario.refresh_token = token.get('refresh_token')
+            updated = True
+        if updated:
             db.session.commit()
         return redirect(url_for('profile.perfil'))
 
@@ -76,14 +82,16 @@ def register():
         google_image_url = request.form.get('google_image_url')
         contraseña = request.form.get('contraseña')
         rep_contraseña = request.form.get('rep_contraseña')
+        año_ingreso = int(request.form.get('año_ingreso'))
+        años_ingreso = [year for year in range(datetime.now().year, datetime.now().year - 21, -1)]
 
-        if not nombre_completo or not email or not biografia or not contraseña or not rep_contraseña:
+        if not nombre_completo or not email or not biografia or not contraseña or not rep_contraseña or not año_ingreso:
             mensaje = 'Por favor, completa todos los campos del formulario.'
-            return render_template('register.html', error_message=mensaje, nombre_completo=nombre_completo, nombre_usuario=nombre_usuario, email=email, biografia=biografia, google_id=google_id, google_image_url=google_image_url)
+            return render_template('register.html', error_message=mensaje, año_ingreso=año_ingreso, años_ingreso=años_ingreso, nombre_completo=nombre_completo, nombre_usuario=nombre_usuario, email=email, biografia=biografia, google_id=google_id, google_image_url=google_image_url)
         
         if contraseña != rep_contraseña:
             mensaje = 'Las contraseñas deben coincidir.'
-            return render_template('register.html', error_message=mensaje, nombre_completo=nombre_completo, nombre_usuario=nombre_usuario, email=email, biografia=biografia, google_id=google_id, google_image_url=google_image_url)
+            return render_template('register.html', error_message=mensaje, año_ingreso=año_ingreso, años_ingreso=años_ingreso, nombre_completo=nombre_completo, nombre_usuario=nombre_usuario, email=email, biografia=biografia, google_id=google_id, google_image_url=google_image_url)
 
         nuevo_usuario = Usuarios(
             correo=email,
@@ -91,7 +99,7 @@ def register():
             rol='estudiante',
             nombre_completo=nombre_completo,
             nombre_usuario=nombre_usuario,
-            año_en_curso="2do año",
+            año_ingreso=año_ingreso,
             biografia=biografia,
             google_id=google_id,
             google_image_url=google_image_url,
@@ -109,12 +117,15 @@ def register():
      
     user_info = session.get('allow_register')
     nombre = format_name(user_info['given_name']).split()
+    session.pop('allow_register')
+    años_ingreso = [year for year in range(datetime.now().year, datetime.now().year - 21, -1)]
     return render_template('register.html', 
                             nombre_completo=format_name(user_info['name']),
                             nombre_usuario=nombre[0],
                             email=user_info['email'],
                             google_id=user_info['sub'],
-                            google_image_url=user_info['picture']
+                            google_image_url=user_info['picture'],
+                            años_ingreso=años_ingreso
                             ) 
 
 @auth_bp.route('/logout')

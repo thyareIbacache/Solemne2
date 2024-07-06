@@ -7,26 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet"/>
-    <style>
-        body {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            font-family: 'Roboto', sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f0f0f0;
-        }
-        .file-preview {
-            height: 6rem;
-            width: 6rem;  
-            object-fit: cover;
-            border-radius: 0.375rem;
-        }
-        .bottom-page{
-            margin-bottom: 150px;
-        }
-    </style>
+    <link rel="stylesheet" href="../static/CSS/perfil.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
 </head>
@@ -41,6 +22,16 @@
                         <img alt="Profile picture" class="rounded-full mx-auto" height="175px" width="175px" src="{{ usuario.google_image_url }}"/>
                     {% else %}
                         <img alt="Profile picture" class="rounded-full mx-auto" height="175px" width="175px" src="https://www.pngall.com/wp-content/uploads/5/Profile-PNG-File.png"/>                   
+                    {% endif %}
+                    {% if session['id_usuario'] == usuario.id_usuario %}
+                        <!-- versión PC -->
+                        <a class="editar-perfil hidden md:block font-bold" href="editar-perfil">
+                            Editar Perfil
+                        </a>
+                        <!-- versión móvil -->
+                        <a class="version-mobile editar-perfil block md:hidden font-bold" href="editar-perfil">
+                            Editar Perfil
+                        </a>
                     {% endif %}                
                 </div>
                 <!-- Información del usuario -->
@@ -58,7 +49,7 @@
                         </div>
                         <div>
                             <p class="text-lg font-bold">Año en curso</p>
-                            <p>{{ usuario.año_en_curso }}</p>
+                            <p>{{ año_cursando }}</p>
                         </div>
                     </div>
                 </div>
