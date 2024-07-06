@@ -50,13 +50,21 @@ def perfil(id_usuario):
     else:
         return redirect(url_for('auth.home'))
 
+@profile_bp.route('/update-perfil')
+def editar_perfil():
+    return redirect(url_for('auth.home'))
+
+@profile_bp.route('/update-clave')
+def editar_perfil():
+    return redirect(url_for('auth.home'))
+
 @profile_bp.route('/editar-perfil')
 def editar_perfil():
     id_usuario = session['id_usuario']
     if id_usuario:
         usuario = Usuarios.query.get(id_usuario)
     else:
-        redirect(url_for('auth.home'))
+        return redirect(url_for('auth.home'))
 
     años_ingreso = [year for year in range(datetime.now().year, datetime.now().year - 21, -1)]
     return render_template('editarPerfil.html', 
