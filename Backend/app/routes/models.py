@@ -15,7 +15,7 @@ class Usuarios(db.Model):
     biografia = db.Column(db.Text, nullable=False)
     año_ingreso = db.Column(db.Integer, nullable=False)
     google_id = db.Column(db.String(255), unique=True, nullable=True)
-    google_image_url = db.Column(db.String(500), nullable=True) 
+    google_image_url = db.Column(db.String(500), nullable=True)
     refresh_token = db.Column(db.String(255), nullable=True)
 
 class Cursos(db.Model):
@@ -26,7 +26,7 @@ class Cursos(db.Model):
     semestre = db.Column(db.String(50), nullable=False)
 
 class Cursos_Usuarios(db.Model):
-    __tablename__= 'cursos_usuarios'
+    __tablename__ = 'cursos_usuarios'
     id_usuario = db.Column(db.Integer, db.ForeignKey('usuarios.id_usuario'), primary_key=True)
     id_curso = db.Column(db.Integer, db.ForeignKey('cursos.id_curso'), primary_key=True)
 
@@ -43,11 +43,12 @@ class Archivos(db.Model):
     ruta_archivo = db.Column(db.String(255), nullable=False)
     estado = db.Column(db.String(50), default='pendiente')
     unidad = db.Column(db.String(10))
-    comentarios_rechazo = db.Column(db.String(255)
-                                    )
+    comentarios_rechazo = db.Column(db.String(255))
+    auditado = db.Column(db.Boolean, default=False)  # Añadir la columna auditado
+
     usuario = db.relationship('Usuarios', backref=db.backref('archivos', lazy=True))
 
 class Archivos_Cursos(db.Model):
-    __tablename__= 'archivos_cursos'
+    __tablename__ = 'archivos_cursos'
     id_curso = db.Column(db.Integer, db.ForeignKey('cursos.id_curso'), primary_key=True)
     id_archivo = db.Column(db.Integer, db.ForeignKey('archivos.id_archivo'), primary_key=True)
