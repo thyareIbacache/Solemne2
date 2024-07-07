@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inicio de Sesión</title>
     <link rel="stylesheet" href="../static/CSS/Login.css">
+    <link rel="stylesheet" href="../static/CSS/messageBox.css">
 </head>
 <body>
     <div>
@@ -49,23 +50,24 @@
         </div>
     </div>
 
-    <!-- Mostrar mensaje de error si existe -->
-    {% if error_message %}
-        <div class="error-message" id="error-message">{{ error_message }}</div>
+    </script>
+    <!-- Mostrar mensaje si existe -->
+    {% if message %}
+        <div class="message-box {{ msgType }}" id="message-box">{{ message }}</div>
     {% endif %}
 
-    <!-- JavaScript para mostrar y ocultar el mensaje de error -->
+    <!-- JavaScript para mostrar y ocultar el mensaje -->
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            var errorMessage = document.getElementById("error-message");
-            if (errorMessage) {
-                errorMessage.classList.add("show");
+            var messageBox = document.getElementById("message-box");
+            if (messageBox) {
+                messageBox.classList.add("show");
                 setTimeout(function() {
-                    errorMessage.style.opacity = "0";
+                    messageBox.style.opacity = "0";
                     setTimeout(function() {
-                        errorMessage.style.display = "none";
+                        messageBox.style.display = "none";
                     }, 500); // Esperar 500ms después de la animación para ocultar completamente
-                }, 5000); // Ocultar después de 5 segundos (5000 milisegundos)
+                }, 7000); // Ocultar después de 7 segundos (7000 milisegundos)
             }
         });
     </script>

@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="../static/CSS/perfil.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
+    <link rel="stylesheet" href="../static/CSS/messageBox.css">
 </head>
 <body class="bg-white">
     <div id="header_content"></div>
@@ -132,6 +133,27 @@
         </div>
     </div>
     <div id="footer_content"></div>
+    </script>
+    <!-- Mostrar mensaje si existe -->
+    {% if message %}
+        <div class="message-box {{ msgType }}" id="message-box">{{ message }}</div>
+    {% endif %}
+
+    <!-- JavaScript para mostrar y ocultar el mensaje -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var messageBox = document.getElementById("message-box");
+            if (messageBox) {
+                messageBox.classList.add("show");
+                setTimeout(function() {
+                    messageBox.style.opacity = "0";
+                    setTimeout(function() {
+                        messageBox.style.display = "none";
+                    }, 500); // Esperar 500ms después de la animación para ocultar completamente
+                }, 7000); // Ocultar después de 7 segundos (7000 milisegundos)
+            }
+        });
+    </script>
 </body>
 <script>
     $(document).ready(function() {

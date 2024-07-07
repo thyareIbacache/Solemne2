@@ -44,7 +44,6 @@ class Archivos(db.Model):
     estado = db.Column(db.String(50), default='pendiente')
     unidad = db.Column(db.String(10))
     comentarios_rechazo = db.Column(db.String(255))
-    auditado = db.Column(db.Boolean, default=False)  # Añadir la columna auditado
 
     usuario = db.relationship('Usuarios', backref=db.backref('archivos', lazy=True))
 

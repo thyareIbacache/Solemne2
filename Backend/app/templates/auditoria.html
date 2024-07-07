@@ -7,26 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="../static/CSS/administrador.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <style>
-        .error-message {
-            display: none;
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: #f44336;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 5px;
-            z-index: 1000;
-            opacity: 0;
-            transition: opacity 0.5s ease-in-out;
-        }
-        .error-message.show {
-            display: block;
-            opacity: 1;
-        }
-    </style>
+    <link rel="stylesheet" href="../static/CSS/messageBox.css">
 </head>
 <body class="bg-white">
     <div id="header-container"></div>
@@ -117,6 +98,27 @@
             })
             .catch(error => console.error('Error:', error));
         }
+    </script>
+    </script>
+    <!-- Mostrar mensaje si existe -->
+    {% if message %}
+        <div class="message-box {{ msgType }}" id="message-box">{{ message }}</div>
+    {% endif %}
+
+    <!-- JavaScript para mostrar y ocultar el mensaje -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var messageBox = document.getElementById("message-box");
+            if (messageBox) {
+                messageBox.classList.add("show");
+                setTimeout(function() {
+                    messageBox.style.opacity = "0";
+                    setTimeout(function() {
+                        messageBox.style.display = "none";
+                    }, 500); // Esperar 500ms después de la animación para ocultar completamente
+                }, 7000); // Ocultar después de 7 segundos (7000 milisegundos)
+            }
+        });
     </script>
 </body>
 </html>

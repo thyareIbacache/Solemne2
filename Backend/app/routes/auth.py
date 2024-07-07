@@ -22,11 +22,11 @@ def home():
             return redirect(url_for('profile.perfil'))
         else:
             mensaje = 'Credenciales inválidas'
-            return render_template('login.html', error_message=mensaje, username=correo)
+            return render_template('login.html', message=mensaje, msgType='alert' , username=correo)
     
     error_message = request.args.get('error', None)
     if error_message:
-        return render_template('login.html', error_message=error_message)
+        return render_template('login.html', message=error_message, msgType='alert')
 
     return render_template('login.html')
 
@@ -89,19 +89,19 @@ def register():
 
         if not nombre_completo or not email or not biografia or not contraseña or not rep_contraseña or not año_ingreso or not nombre_usuario:
             mensaje = 'Por favor, completa todos los campos del formulario.'
-            return render_template('register.html', error_message=mensaje, cursos_inscritos=cursos_inscritos, cursos=cursos, año_ingreso=año_ingreso, años_ingreso=años_ingreso, nombre_completo=nombre_completo, nombre_usuario=nombre_usuario, email=email, biografia=biografia, google_id=google_id, google_image_url=google_image_url)
+            return render_template('register.html', message=mensaje, msgType='alert', cursos_inscritos=cursos_inscritos, cursos=cursos, año_ingreso=año_ingreso, años_ingreso=años_ingreso, nombre_completo=nombre_completo, nombre_usuario=nombre_usuario, email=email, biografia=biografia, google_id=google_id, google_image_url=google_image_url)
         
         if contraseña != rep_contraseña:
             mensaje = 'Las contraseñas deben coincidir.'
-            return render_template('register.html', error_message=mensaje, cursos_inscritos=cursos_inscritos, cursos=cursos, año_ingreso=año_ingreso, años_ingreso=años_ingreso, nombre_completo=nombre_completo, nombre_usuario=nombre_usuario, email=email, biografia=biografia, google_id=google_id, google_image_url=google_image_url)
+            return render_template('register.html', message=mensaje, msgType='alert', cursos_inscritos=cursos_inscritos, cursos=cursos, año_ingreso=año_ingreso, años_ingreso=años_ingreso, nombre_completo=nombre_completo, nombre_usuario=nombre_usuario, email=email, biografia=biografia, google_id=google_id, google_image_url=google_image_url)
 
         if not cursos_inscritos:
             mensaje = 'Debes seleccionar almenos un curso.'
-            return render_template('register.html', error_message=mensaje, cursos_inscritos=cursos_inscritos, cursos=cursos, año_ingreso=año_ingreso, años_ingreso=años_ingreso, nombre_completo=nombre_completo, nombre_usuario=nombre_usuario, email=email, biografia=biografia, google_id=google_id, google_image_url=google_image_url)
+            return render_template('register.html', message=mensaje, msgType='alert', cursos_inscritos=cursos_inscritos, cursos=cursos, año_ingreso=año_ingreso, años_ingreso=años_ingreso, nombre_completo=nombre_completo, nombre_usuario=nombre_usuario, email=email, biografia=biografia, google_id=google_id, google_image_url=google_image_url)
 
         if len(cursos_inscritos) > 6:
             mensaje = 'Puedes seleccionar maximo 6 cursos.'
-            return render_template('register.html', error_message=mensaje, cursos_inscritos=cursos_inscritos, cursos=cursos, año_ingreso=año_ingreso, años_ingreso=años_ingreso, nombre_completo=nombre_completo, nombre_usuario=nombre_usuario, email=email, biografia=biografia, google_id=google_id, google_image_url=google_image_url)
+            return render_template('register.html', message=mensaje, msgType='alert', cursos_inscritos=cursos_inscritos, cursos=cursos, año_ingreso=año_ingreso, años_ingreso=años_ingreso, nombre_completo=nombre_completo, nombre_usuario=nombre_usuario, email=email, biografia=biografia, google_id=google_id, google_image_url=google_image_url)
 
 
         nuevo_usuario = Usuarios(
@@ -139,7 +139,7 @@ def register():
      
     user_info = session.get('allow_register')
     nombre = format_name(user_info['given_name']).split()
-    #session.pop('allow_register')
+    session.pop('allow_register')
     años_ingreso = [year for year in range(datetime.now().year, datetime.now().year - 21, -1)]
     cursos = Cursos.query.with_entities(Cursos.nombre_curso).all()
     return render_template('register.html', 
@@ -149,7 +149,9 @@ def register():
                             google_id=user_info['sub'],
                             google_image_url=user_info['picture'],
                             años_ingreso=años_ingreso,
-                            cursos=cursos
+                            cursos=cursos,
+                            message='Debes registrarte antes de continuar.',
+                            msgType='black'
                             ) 
 
 @auth_bp.route('/logout')

@@ -19,7 +19,6 @@ def aprobar_archivo(id):
     archivo = Archivos.query.get(id)
     if archivo:
         archivo.estado = 'aprobado'
-        archivo.auditado = True  # Cambiar a auditado
         db.session.commit()
         return jsonify({'message': 'Archivo aprobado'}), 200
     return jsonify({'message': 'Archivo no encontrado'}), 404

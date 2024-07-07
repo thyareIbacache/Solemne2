@@ -6,12 +6,12 @@ biblioteca_bp = Blueprint('biblioteca', __name__)
 
 @biblioteca_bp.route('/biblioteca')
 def biblioteca():
-    archivos = Archivos.query.all()
+    archivos = Archivos.query.filter_by(estado="aprobado").all()
     return render_template('biblioteca.html', archivos=archivos)
 
 @biblioteca_bp.route('/biblioteca-cursos-<int:id_curso>')
 def biblioteca_cursos(id_curso):
-    archivos = Archivos.query.filter_by(id_curso=id_curso).all()
+    archivos = Archivos.query.filter_by(id_curso=id_curso, estado="aprobado").all()
     nombre_curso = Cursos.query.filter_by(id_curso=id_curso).first().nombre_curso
     return render_template('bibliocursos.html', archivos=archivos, nombre_curso=nombre_curso)
 
@@ -19,7 +19,7 @@ def biblioteca_cursos(id_curso):
 def shared():
     if 'id_usuario' in session:
         id_usuario = session['id_usuario']
-        archivos = Archivos.query.filter_by(usuario_que_lo_subio=id_usuario).all()
+        archivos = Archivos.query.filter_by(usuario_que_lo_subio=id_usuario, estado="aprobado").all()
         return render_template('shared_files.html', archivos=archivos)
     else:
         return redirect(url_for('auth.home'))

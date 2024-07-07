@@ -18,8 +18,8 @@ def perfil(id_usuario):
             return redirect(url_for('biblioteca.biblioteca'))
     
         if usuario:
-            archivos = Archivos.query.filter_by(usuario_que_lo_subio=id_usuario).limit(6).all()
-            total_archivos = Archivos.query.filter_by(usuario_que_lo_subio=id_usuario).count()
+            archivos = Archivos.query.filter_by(usuario_que_lo_subio=id_usuario, estado="aprobado").limit(6).all()
+            total_archivos = Archivos.query.filter_by(usuario_que_lo_subio=id_usuario, estado="aprobado").count()
 
             id_cursos = Cursos_Usuarios.query.filter_by(id_usuario=usuario.id_usuario).all()
             lista_id_cursos = [curso.id_curso for curso in id_cursos]

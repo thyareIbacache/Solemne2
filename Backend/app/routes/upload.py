@@ -52,7 +52,6 @@ def upload_file():
                 estado='pendiente',
                 asignatura=asignatura,
                 unidad=request.form['unidad'],
-                auditado=False  # Inicialmente no auditado
             )
 
             db.session.add(nuevo_archivo)
