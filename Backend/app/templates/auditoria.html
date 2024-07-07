@@ -1,39 +1,122 @@
-from flask import Blueprint, render_template, request, jsonify
-from .models import Archivos, db
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auditoría - Modo Supervisor</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../static/CSS/administrador.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <style>
+        .error-message {
+            display: none;
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #f44336;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+        .error-message.show {
+            display: block;
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="bg-white">
+    <div id="header-container"></div>
+    <div class="main">
+        <div id="sidebar-container"></div>
+        <main class="content">
+            <h1>Archivos Pendientes de Revisión</h1>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Nombre del Archivo</th>
+                        <th>Usuario</th>
+                        <th>Fecha de Carga</th>
+                        <th>Acción</th>
+                    </tr>
+                </thead>
+                <tbody id="archivosLista">
+                    <!-- Lista de archivos cargados dinámicamente -->
+                </tbody>
+            </table>
+        </main>
+    </div>
+    <footer class="bg-dark text-white text-center p-3">
+        &copy; 2024 Modo Supervisor
+    </footer>
+    <script>
+        function loadHTML(id, url) {
+            fetch(url)
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById(id).innerHTML = data;
+                })
+                .catch(error => console.error('Error cargando el archivo:', error));
+        }
 
-auditoria_bp = Blueprint('auditoria', __name__)
+        $(document).ready(function() {
+            $('#header-container').load('../static/headerAd.html');
+            $('#sidebar-container').load('../static/sidebar.html');
+            cargarArchivos();
+        });
 
-@auditoria_bp.route('/api/archivos', methods=['GET'])
-def get_archivos():
-    archivos = Archivos.query.filter_by(estado='pendiente').all()
-    archivos_list = [{
-        'id': archivo.id_archivo,
-        'nombre': archivo.nombre_archivo,
-        'usuario': archivo.usuario_que_lo_subio,
-        'fecha_carga': archivo.fecha_subida.strftime("%Y-%m-%d %H:%M:%S")
-    } for archivo in archivos]
-    return jsonify(archivos_list)
+        function cargarArchivos() {
+            fetch('/api/archivos')
+                .then(response => response.json())
+                .then(data => {
+                    const archivosLista = document.getElementById('archivosLista');
+                    archivosLista.innerHTML = '';
+                    data.forEach(archivo => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${archivo.nombre}</td>
+                            <td>${archivo.usuario}</td>
+                            <td>${archivo.fecha_carga}</td>
+                            <td>
+                                <button class="btn btn-success" onclick="aprobarArchivo(${archivo.id})">✔️</button>
+                                <button class="btn btn-danger" onclick="rechazarArchivo(${archivo.id})">❌</button>
+                            </td>`;
+                        archivosLista.appendChild(row);
+                    });
+                })
+                .catch(error => console.error('Error:', error));
+        }
 
-@auditoria_bp.route('/api/archivos/<int:id>/aprobar', methods=['POST'])
-def aprobar_archivo(id):
-    archivo = Archivos.query.get(id)
-    if archivo:
-        archivo.estado = 'aprobado'
-        archivo.auditado = True  # Cambiar a auditado
-        db.session.commit()
-        return jsonify({'message': 'Archivo aprobado'}), 200
-    return jsonify({'message': 'Archivo no encontrado'}), 404
+        function aprobarArchivo(id) {
+            fetch(`/api/archivos/${id}/aprobar`, {
+                method: 'POST'
+            })
+            .then(response => {
+                if (response.ok) {
+                    cargarArchivos();
+                } else {
+                    console.error('Error al aprobar el archivo');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
 
-@auditoria_bp.route('/api/archivos/<int:id>/rechazar', methods=['POST'])
-def rechazar_archivo(id):
-    archivo = Archivos.query.get(id)
-    if archivo:
-        archivo.estado = 'rechazado'
-        archivo.auditado = False  # Asegurar que no esté auditado
-        db.session.commit()
-        return jsonify({'message': 'Archivo rechazado'}), 200
-    return jsonify({'message': 'Archivo no encontrado'}), 404
-
-@auditoria_bp.route('/auditoria', methods=['GET'])
-def auditoria():
-    return render_template('auditoria.html')
+        function rechazarArchivo(id) {
+            fetch(`/api/archivos/${id}/rechazar`, {
+                method: 'POST'
+            })
+            .then(response => {
+                if (response.ok) {
+                    cargarArchivos();
+                } else {
+                    console.error('Error al rechazar el archivo');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    </script>
+</body>
+</html>
