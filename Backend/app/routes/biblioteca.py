@@ -6,4 +6,5 @@ biblioteca_bp = Blueprint('biblioteca', __name__)
 
 @biblioteca_bp.route('/biblioteca')
 def biblioteca():
-    return render_template('biblioteca.html')
+    archivos = Archivos.query.all()
+    return render_template('biblioteca.html', archivos=archivos)

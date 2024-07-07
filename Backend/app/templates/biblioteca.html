@@ -3,72 +3,64 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Biblioteca</title>
+    <title>Biblioteca de Archivos - Facultad de Psicología</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet"/>
+    <link rel="stylesheet" href="../static/CSS/perfil.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <style>
-        .error-message {
-            display: none;
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: #f44336;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 5px;
-            z-index: 1000;
-            opacity: 0;
-            transition: opacity 0.5s ease-in-out;
-        }
-        .error-message.show {
-            display: block;
-            opacity: 1;
-        }
-    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
 </head>
-
 <body class="bg-white">
-
     <div id="header_content"></div>
-    <section class="mt-8">
-        <h2 class="text-2xl font-bold pl-4">Biblioteca</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
-            <div class="bg-white shadow-md rounded-lg overflow-hidden">
-                <img class="w-full h-32 object-cover object-center" src="https://images.unsplash.com/photo-1556740739-887f6717d7e4" alt="blog">
-                <div class="p-6">
-                    <h2 class="tracking-widest text-xs title-font font-medium text-gray-400 mb-1">CATEGORIA</h2>
-                    <h1 class="title-font text-lg font-medium text-gray-900 mb-3">Titulo del libro</h1>
-                    <p class="leading-relaxed mb-3">Descripcion del libro</p>
-                    <div class="flex items-center flex-wrap ">
-                        <a class="text-indigo-500 inline-flex items-center md:mb-2 lg:mb-0">Leer más</a>
-                    </div>
-                </div>
-            </div>
-           
-    </section>
-    <!-- Mostrar mensaje de error si existe -->
-    {% if error_message %}
-            <div class="error-message" id="error-message">{{ error_message }}</div>
-            {% endif %}
-        </div>
+    <div class="max-w-7xl mx-auto">
+        <section class="mt-8">
+            <h2 class="text-2xl font-bold pl-4">Archivos compartidos</h2>
+            <div class="grid grid-cols-3 md:grid-cols-6 gap-4 mt-4">
+                {% if archivos|length == 0 %}
+                    <p class="pl-4" style=" width: 300px">No hay archivos compartidos.</p>
+                {% else %}
+                {% for archivo in archivos %}
+                <div class="flex flex-col items-center">
+                    <a href="{{ archivo.ruta_archivo }}" target="_blank" download>
+                        {% if archivo.tipo in ['jpg', 'jpeg', 'png', 'gif'] %}
+                            <img src="{{ archivo.ruta_archivo }}" alt="{{ archivo.nombre_archivo }}" class="file-preview"/>
+                        {% elif archivo.tipo == 'pdf' %}
+                            <canvas id="pdf-canvas-{{ archivo.id }}" class="file-preview"></canvas>
+                            <script>
+                                document.addEventListener('DOMContentLoaded', function() {
+                                    const url = "{{ archivo.ruta_archivo }}";
+                                    const canvas = document.getElementById('pdf-canvas-{{ archivo.id }}');
+                                    const context = canvas.getContext('2d');
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            var errorMessage = document.getElementById("error-message");
-            if (errorMessage) {
-                errorMessage.classList.add("show");
-                setTimeout(function() {
-                    errorMessage.style.opacity = "0";
-                    setTimeout(function() {
-                        errorMessage.style.display = "none";
-                    }, 500); // Esperar 500ms después de la animación para ocultar completamente
-                }, 3000); // Ocultar después de 3 segundos
-            }
-        });
-    </script>
+                                    pdfjsLib.getDocument(url).promise.then((pdf) => {
+                                        pdf.getPage(1).then((page) => {
+                                            const viewport = page.getViewport({ scale: 1.0 });
+                                            canvas.height = viewport.height;
+                                            canvas.width = viewport.width;
+
+                                            const renderContext = {
+                                                canvasContext: context,
+                                                viewport: viewport
+                                            };
+                                            page.render(renderContext);
+                                        });
+                                    });
+                                });
+                            </script>
+                        {% else %}
+                            <div class="flex items-center justify-center file-preview">
+                                <i class="fas fa-file-alt text-3xl text-gray-600"></i>
+                            </div>
+                        {% endif %}
+                    </a>
+                    <p class="text-center mt-2">{{ archivo.nombre_archivo }}<br/>{{ archivo.asignatura }}</p>
+                </div>
+                {% endfor %}
+                {% endif %}
+            </div>
+        </section>
+    </div>
     <div id="footer_content"></div>
 </body>
 <script>

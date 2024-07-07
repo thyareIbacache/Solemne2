@@ -18,7 +18,8 @@ def perfil(id_usuario):
             return redirect(url_for('biblioteca.biblioteca'))
     
         if usuario:
-            archivos = Archivos.query.filter_by(usuario_que_lo_subio=id_usuario).all()
+            archivos = Archivos.query.filter_by(usuario_que_lo_subio=id_usuario).limit(6).all()
+            total_archivos = Archivos.query.filter_by(usuario_que_lo_subio=id_usuario).count()
             current_year = datetime.now().year
 
             # Calcular los años pasados desde el año de ingreso del usuario
@@ -47,7 +48,7 @@ def perfil(id_usuario):
                 texto = "10mo año"
             else:
                 texto = "Más de 10 años"
-            return render_template('perfil.html', usuario=usuario, archivos=archivos, año_cursando=texto)
+            return render_template('perfil.html', usuario=usuario, archivos=archivos, total_archivos=total_archivos, año_cursando=texto)
         else:
             return redirect(url_for('auth.home'))
     else:

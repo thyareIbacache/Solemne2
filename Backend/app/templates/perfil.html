@@ -88,11 +88,18 @@
         </section>
 
         <section class="mt-8">
-            <h2 class="text-2xl font-bold pl-4">Archivos compartidos</h2>
+            <div class="flex justify-between items-center"> 
+                <h2 class="text-2xl font-bold pl-4">Archivos compartidos</h2>
+                {% if total_archivos > 6 %}
+                <a href="biblioteca" class="text-blue-500 font-semibold">Ver más</a>
+                {% endif %}
+            </div>
+     
             <div class="grid grid-cols-3 md:grid-cols-6 gap-4 mt-4">
                 {% if archivos|length == 0 %}
                     <p class="pl-4" style=" width: 300px">No hay archivos compartidos.</p>
                 {% else %}
+                
                 {% for archivo in archivos %}
                 <div class="flex flex-col items-center">
                     <a href="{{ archivo.ruta_archivo }}" target="_blank" download>
