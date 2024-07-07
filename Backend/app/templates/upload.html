@@ -1,74 +1,119 @@
-from flask import Blueprint, render_template, request, redirect, url_for, session, send_from_directory, current_app
-from werkzeug.utils import secure_filename
-from datetime import datetime
-import os
-from .models import Archivos, Cursos, Archivos_Cursos, db
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sube tus archivos</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <style>
+        .error-message {
+            display: none;
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #f44336;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+        .error-message.show {
+            display: block;
+            opacity: 1;
+        }
+        .bottom-page {
+            margin-bottom: 150px;
+        }
+    </style>
+</head>
+<body class="bg-white">
+<div id="header_content"></div>
+<div class="max-w-7xl mx-auto">
+    <div class="bg-white p-8 rounded max-w-lg mx-auto">
+        <h2 class="text-2xl font-bold mb-6">Sube tus archivos</h2>
+        <form action="/upload" method="post" enctype="multipart/form-data">
+            <div class="mb-4">
+                <label class="block text-gray-700 font-semibold mb-2" for="nombre-archivo">Nombre del Archivo</label>
+                <input class="w-full px-3 py-2 border rounded" id="nombre-archivo" name="nombre_archivo" placeholder="Entrevista Dr. Juan Perez" type="text" value="{{ nombre_archivo }}"/>
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700 font-semibold mb-2" for="curso">Asignatura</label>
+                <select class="w-full px-3 py-2 border rounded" id="curso" name="curso">
+                    {% for curso in cursos %}
+                        {% if curso == curso_seleccionado %}
+                            <option value="{{ curso.nombre_curso }}" selected>{{ curso.nombre_curso }}</option>
+                        {% else %}
+                            <option value="{{ curso.nombre_curso }}">{{ curso.nombre_curso }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700 font-semibold mb-2" for="unidad">Unidad</label>
+                <input class="w-full px-3 py-2 border rounded" id="unidad" name="unidad" placeholder="II" type="text" value="{{ unidad }}"/>
+            </div>
+            <div class="mb-6">
+                <label class="block text-gray-700 font-semibold mb-2" for="archivo">Archivo</label>
+                <input type="file" id="archivo" name="archivo" class="hidden" style="display: none;" onchange="document.getElementById('archivo-name').innerText = this.files[0].name">
+                <label for="archivo" class="cursor-pointer border-dashed border-gray-300 p-6 text-center rounded">
+                    <i class="fas fa-cloud-upload-alt text-3xl text-gray-400 mb-2 block"></i>
+                    <p class="text-gray-600">Selecciona un archivo</p>
+                    <p id="archivo-name"></p>
+                </label>
+            </div>
+            <div class="flex justify-center">
+                <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Subir</button>
+            </div>
+        </form>
+    </div>
+</div>
 
-upload_bp = Blueprint('upload', __name__)
+<!-- Mostrar mensaje de error si existe -->
+{% if error_message %}
+<div class="error-message" id="error-message">{{ error_message }}</div>
+{% endif %}
+<div class="bottom-page"></div>
+<div id="footer_content"></div>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var errorMessage = document.getElementById("error-message");
+        if (errorMessage) {
+            errorMessage.classList.add("show");
+            setTimeout(function() {
+                errorMessage.style.opacity = "0";
+                setTimeout(function() {
+                    errorMessage.style.display = "none";
+                }, 500);
+            }, 3000);
+        }
+    });
 
-@upload_bp.route('/uploads/<filename>')
-def uploaded_file(filename):
-    return send_from_directory(current_app.config['UPLOAD_FOLDER'], filename)
+    $(document).ready(function() {
+        $('#header_content').load('../static/header.html', function() {
+            const hamburger = document.getElementById('hamburger');
+            const mobileMenu = document.getElementById('mobileMenu');
+            const overlay = document.getElementById('overlay');
 
-@upload_bp.route('/upload', methods=['GET', 'POST'])
-def upload_file():
-    cursos = Cursos.query.with_entities(Cursos.nombre_curso).all()
+            hamburger.addEventListener('click', function() {
+                mobileMenu.classList.toggle('open');
+                overlay.classList.toggle('open');
+                hamburger.classList.toggle('open');
+            });
 
-    if request.method == 'POST':
-        id_usuario = session['id_usuario']
-
-        nombre_archivo = request.form.get('nombre_archivo')
-        asignatura = request.form.get('curso')
-        unidad = request.form.get('unidad')
-        curso_seleccionado = request.form.get('curso')
-
-        if not nombre_archivo or not asignatura or not unidad:
-            mensaje = 'Por favor, completa todos los campos del formulario.'
-            return render_template('upload.html', error_message=mensaje, curso_seleccionado=curso_seleccionado, cursos=cursos, nombre_archivo=nombre_archivo, asignatura=asignatura, unidad=unidad)
-
-        if 'archivo' not in request.files:
-            return 'No se encontró el archivo', 400
-
-        file = request.files['archivo']
-
-        if file.filename == '':
-            mensaje = 'No se seleccionó ningun archivo.'
-            return render_template('upload.html', error_message=mensaje, nombre_archivo=nombre_archivo, asignatura=asignatura, unidad=unidad)
-
-        if file:
-            filename = secure_filename(file.filename)
-            file.save(os.path.join(current_app.config['UPLOAD_FOLDER'], filename))
-
-            file_extension = os.path.splitext(filename)[1][1:].lower()
-
-            nuevo_archivo = Archivos(
-                nombre_archivo=request.form['nombre_archivo'],
-                id_curso=Cursos.query.filter_by(nombre_curso=asignatura).first().id_curso,
-                tipo=file_extension,
-                fecha_subida=datetime.utcnow(),
-                usuario_que_lo_subio=id_usuario,
-                etiquetas='',
-                ruta_archivo=os.path.join(current_app.config['UPLOAD_FOLDER'], filename),
-                estado='pendiente',
-                asignatura=asignatura,
-                unidad=request.form['unidad'],
-                auditado=False  # Inicialmente no auditado
-            )
-
-            db.session.add(nuevo_archivo)
-            db.session.commit()
-
-            nuevo_archivo_curso = Archivos_Cursos(
-                id_archivo=Archivos.query.filter(
-                    Archivos.nombre_archivo == nombre_archivo,
-                    Archivos.usuario_que_lo_subio == id_usuario
-                ).first().id_archivo,
-                id_curso=Cursos.query.filter_by(nombre_curso=asignatura).first().id_curso
-            )
-
-            db.session.add(nuevo_archivo_curso)
-            db.session.commit()
-
-            return redirect(url_for('profile.perfil'))
-
-    return render_template('upload.html', cursos=cursos)
+            overlay.addEventListener('click', function() {
+                mobileMenu.classList.remove('open');
+                overlay.classList.remove('open');
+                hamburger.classList.remove('open');
+            });
+        });
+        $('#footer_content').load('../static/footer.html');
+    });
+</script>
+</body>
+</html>
