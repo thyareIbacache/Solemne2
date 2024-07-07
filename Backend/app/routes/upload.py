@@ -12,7 +12,6 @@ def uploaded_file(filename):
 
 @upload_bp.route('/upload', methods=['GET', 'POST'])
 def upload_file():
-
     cursos = Cursos.query.with_entities(Cursos.nombre_curso).all()
 
     if request.method == 'POST':
@@ -25,7 +24,7 @@ def upload_file():
 
         if not nombre_archivo or not asignatura or not unidad:
             mensaje = 'Por favor, completa todos los campos del formulario.'
-            return render_template('upload.html', error_message=mensaje, curso_seleccionado=curso_seleccionado ,cursos=cursos, nombre_archivo=nombre_archivo, asignatura=asignatura, unidad=unidad)
+            return render_template('upload.html', error_message=mensaje, curso_seleccionado=curso_seleccionado, cursos=cursos, nombre_archivo=nombre_archivo, asignatura=asignatura, unidad=unidad)
 
         if 'archivo' not in request.files:
             return 'No se encontró el archivo', 400
@@ -37,43 +36,39 @@ def upload_file():
             return render_template('upload.html', error_message=mensaje, nombre_archivo=nombre_archivo, asignatura=asignatura, unidad=unidad)
 
         if file:
-            # Guardar el archivo en el sistema de archivos del servidor
             filename = secure_filename(file.filename)
             file.save(os.path.join(current_app.config['UPLOAD_FOLDER'], filename))
 
-            # Obtener la extensión del archivo para determinar su tipo
-            file_extension = os.path.splitext(filename)[1][1:].lower()  # Obtener la extensión y convertir a minúsculas
+            file_extension = os.path.splitext(filename)[1][1:].lower()
 
-            # Crear un nuevo objeto Archivos para almacenar en la base de datos
             nuevo_archivo = Archivos(
                 nombre_archivo=request.form['nombre_archivo'],
-                id_curso = Cursos.query.filter_by(nombre_curso=asignatura).first().id_curso,
+                id_curso=Cursos.query.filter_by(nombre_curso=asignatura).first().id_curso,
                 tipo=file_extension,
                 fecha_subida=datetime.utcnow(),
-                usuario_que_lo_subio=id_usuario,  # (ID del usuario actual)
+                usuario_que_lo_subio=id_usuario,
                 etiquetas='',
                 ruta_archivo=os.path.join(current_app.config['UPLOAD_FOLDER'], filename),
                 estado='pendiente',
                 asignatura=asignatura,
                 unidad=request.form['unidad'],
+                auditado=False  # Inicialmente no auditado
             )
 
-            # Agregar el nuevo archivo a la sesión de la base de datos
             db.session.add(nuevo_archivo)
             db.session.commit()
 
             nuevo_archivo_curso = Archivos_Cursos(
-                id_archivo = Archivos.query.filter(
+                id_archivo=Archivos.query.filter(
                     Archivos.nombre_archivo == nombre_archivo,
                     Archivos.usuario_que_lo_subio == id_usuario
                 ).first().id_archivo,
-                id_curso= Cursos.query.filter_by(nombre_curso=asignatura).first().id_curso
+                id_curso=Cursos.query.filter_by(nombre_curso=asignatura).first().id_curso
             )
 
             db.session.add(nuevo_archivo_curso)
             db.session.commit()
 
             return redirect(url_for('profile.perfil'))
-
 
     return render_template('upload.html', cursos=cursos)
