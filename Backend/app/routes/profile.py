@@ -53,6 +53,21 @@ def perfil(id_usuario):
             return redirect(url_for('auth.home'))
     else:
         return redirect(url_for('auth.home'))
+    
+@profile_bp.route('/shared-files')
+def shared_files():
+    if 'id_usuario' in session:
+        id_usuario = session['id_usuario']
+        archivos = Archivos.query.filter_by(usuario_que_lo_subio=id_usuario).all()
+        return render_template('sharedFiles.html', archivos=archivos)
+    else:
+        return redirect(url_for('auth.home'))
+    
+
+@profile_bp.route('/bibliocursos/<nombre_curso>')
+def bibliocursos(nombre_curso):
+    archivos = Archivos.query.filter_by(curso=nombre_curso).all()
+    return render_template('bibliocursos.html', archivos=archivos, nombre_curso=nombre_curso)
 
 @profile_bp.route('/update-perfil', methods=['GET', 'POST'])
 def update_perfil():
