@@ -63,13 +63,13 @@
         }
 
         $(document).ready(function() {
-        $('#header-container').load('../static/headerAd.html');
-        $('#sidebar-container').load('../static/sidebar.html');
-        $('#footer_content').load('../static/footer.html');
-    });
+            $('#header-container').load('../static/headerAd.html');
+            $('#sidebar-container').load('../static/sidebar.html');
+            cargarArchivos();
+        });
 
         function cargarArchivos() {
-            fetch('http://localhost:8000/api/archivos')
+            fetch('/api/archivos')
                 .then(response => response.json())
                 .then(data => {
                     const archivosLista = document.getElementById('archivosLista');
@@ -91,7 +91,7 @@
         }
 
         function aprobarArchivo(id) {
-            fetch(`http://localhost:8000/api/archivos/${id}/aprobar`, {
+            fetch(`/api/archivos/${id}/aprobar`, {
                 method: 'POST'
             })
             .then(response => {
@@ -105,7 +105,7 @@
         }
 
         function rechazarArchivo(id) {
-            fetch(`http://localhost:8000/api/archivos/${id}/rechazar`, {
+            fetch(`/api/archivos/${id}/rechazar`, {
                 method: 'POST'
             })
             .then(response => {
