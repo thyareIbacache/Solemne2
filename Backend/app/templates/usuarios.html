@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Usuarios - Modo Supervisor</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="administrador.css">
+    <link rel="stylesheet" href="/static/CSS/administrador.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <style>
         .error-message {
@@ -91,12 +91,11 @@
                 .catch(error => console.error('Error cargando el archivo:', error));
         }
 
-
         $(document).ready(function() {
-        $('#header-container').load('../static/headerAd.html');
-        $('#sidebar-container').load('../static/sidebar.html');
-        $('#footer_content').load('../static/footer.html');
-    });
+            $('#header-container').load('/static/headerAd.html');
+            $('#sidebar-container').load('/static/sidebar.html');
+        });
+
         function mostrarFormulario() {
             document.getElementById('formulario').style.display = 'block';
         }
