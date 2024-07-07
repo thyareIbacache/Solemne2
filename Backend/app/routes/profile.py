@@ -78,10 +78,12 @@ def update_perfil():
         return render_template('editarPerfil.html', error_message=mensaje, cursos=cursos, cursos_inscritos=cursos_inscritos, usuario=usuario, año_ingreso=año_ingreso, años_ingreso=años_ingreso, nombre_completo=nombre_completo, nombre_usuario=nombre_usuario, biografia=biografia)
     
     if not cursos_inscritos:
-            mensaje = 'Debes seleccionar almenos un curso.'
-            return render_template('editarPerfil.html', error_message=mensaje, cursos=cursos, cursos_inscritos=cursos_inscritos, usuario=usuario, año_ingreso=año_ingreso, años_ingreso=años_ingreso, nombre_completo=nombre_completo, nombre_usuario=nombre_usuario, biografia=biografia)
+        mensaje = 'Debes seleccionar almenos un curso.'
+        return render_template('editarPerfil.html', error_message=mensaje, cursos=cursos, cursos_inscritos=cursos_inscritos, usuario=usuario, año_ingreso=año_ingreso, años_ingreso=años_ingreso, nombre_completo=nombre_completo, nombre_usuario=nombre_usuario, biografia=biografia)
 
-
+    if len(cursos_inscritos) > 6:
+        mensaje = 'Puedes seleccionar maximo 6 cursos.'
+        return render_template('editarPerfil.html', error_message=mensaje, cursos=cursos, cursos_inscritos=cursos_inscritos, usuario=usuario, año_ingreso=año_ingreso, años_ingreso=años_ingreso, nombre_completo=nombre_completo, nombre_usuario=nombre_usuario, biografia=biografia)
 
     id_usuario = session['id_usuario']
     usuario = Usuarios.query.get(id_usuario)

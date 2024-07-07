@@ -99,6 +99,10 @@ def register():
             mensaje = 'Debes seleccionar almenos un curso.'
             return render_template('register.html', error_message=mensaje, cursos_inscritos=cursos_inscritos, cursos=cursos, año_ingreso=año_ingreso, años_ingreso=años_ingreso, nombre_completo=nombre_completo, nombre_usuario=nombre_usuario, email=email, biografia=biografia, google_id=google_id, google_image_url=google_image_url)
 
+        if len(cursos_inscritos) > 6:
+            mensaje = 'Puedes seleccionar maximo 6 cursos.'
+            return render_template('register.html', error_message=mensaje, cursos_inscritos=cursos_inscritos, cursos=cursos, año_ingreso=año_ingreso, años_ingreso=años_ingreso, nombre_completo=nombre_completo, nombre_usuario=nombre_usuario, email=email, biografia=biografia, google_id=google_id, google_image_url=google_image_url)
+
 
         nuevo_usuario = Usuarios(
             correo=email,
