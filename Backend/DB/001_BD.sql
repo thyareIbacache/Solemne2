@@ -37,6 +37,7 @@ CREATE TABLE Cursos_Usuarios (
 -- Crear la tabla Archivos
 CREATE TABLE Archivos (
     id_archivo SERIAL PRIMARY KEY,
+    id_curso INTEGER REFERENCES Cursos(id_curso),
     nombre_archivo VARCHAR(255) NOT NULL,
     tipo VARCHAR(50) NOT NULL,
     asignatura VARCHAR(255) NOT NULL,

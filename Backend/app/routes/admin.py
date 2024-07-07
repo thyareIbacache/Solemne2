@@ -5,5 +5,6 @@ from datetime import datetime
 admin_bp = Blueprint('admin', __name__)
 
 @admin_bp.route('/usuarios', methods=['GET', 'POST'])
-def usuarios():
-    return render_template('usuarios.html')
+def get_usuarios():
+    usuarios = Usuarios.query.all()
+    return render_template('usuarios.html', usuarios=usuarios)

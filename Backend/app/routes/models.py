@@ -33,6 +33,7 @@ class Cursos_Usuarios(db.Model):
 class Archivos(db.Model):
     __tablename__ = 'archivos'
     id_archivo = db.Column(db.Integer, primary_key=True)
+    id_curso = db.Column(db.Integer, db.ForeignKey('cursos.id_curso'), nullable=False)
     nombre_archivo = db.Column(db.String(255), nullable=False)
     tipo = db.Column(db.String(50), nullable=False)
     asignatura = db.Column(db.String(255), nullable=False)

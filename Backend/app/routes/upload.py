@@ -47,13 +47,14 @@ def upload_file():
             # Crear un nuevo objeto Archivos para almacenar en la base de datos
             nuevo_archivo = Archivos(
                 nombre_archivo=request.form['nombre_archivo'],
+                id_curso = Cursos.query.filter_by(nombre_curso=asignatura).first().id_curso,
                 tipo=file_extension,
                 fecha_subida=datetime.utcnow(),
                 usuario_que_lo_subio=id_usuario,  # (ID del usuario actual)
                 etiquetas='',
                 ruta_archivo=os.path.join(current_app.config['UPLOAD_FOLDER'], filename),
                 estado='pendiente',
-                asignatura=request.form['curso'],
+                asignatura=asignatura,
                 unidad=request.form['unidad'],
             )
 
