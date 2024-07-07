@@ -28,6 +28,12 @@ CREATE TABLE Cursos (
     semestre VARCHAR(50) NOT NULL
 );
 
+CREATE TABLE Cursos_Usuarios (
+    id_usuario INTEGER REFERENCES Usuarios(id_usuario),
+    id_curso INTEGER REFERENCES Cursos(id_curso),
+    PRIMARY KEY (id_usuario, id_curso)
+);
+
 -- Crear la tabla Archivos
 CREATE TABLE Archivos (
     id_archivo SERIAL PRIMARY KEY,

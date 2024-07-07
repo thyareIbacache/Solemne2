@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, redirect, url_for, session, current_app
-from .models import Usuarios, db
+from .models import Usuarios, Cursos, db, Cursos_Usuarios
 from datetime import datetime
 
 auth_bp = Blueprint('auth', __name__)
@@ -84,15 +84,21 @@ def register():
         rep_contraseña = request.form.get('rep_contraseña')
         año_ingreso = int(request.form.get('año_ingreso'))
         años_ingreso = [year for year in range(datetime.now().year, datetime.now().year - 21, -1)]
-        #cursos = 
+        cursos = Cursos.query.with_entities(Cursos.nombre_curso).all()
+        cursos_inscritos = request.form.getlist('curso_inscrito')
 
         if not nombre_completo or not email or not biografia or not contraseña or not rep_contraseña or not año_ingreso or not nombre_usuario:
             mensaje = 'Por favor, completa todos los campos del formulario.'
-            return render_template('register.html', error_message=mensaje, año_ingreso=año_ingreso, años_ingreso=años_ingreso, nombre_completo=nombre_completo, nombre_usuario=nombre_usuario, email=email, biografia=biografia, google_id=google_id, google_image_url=google_image_url)
+            return render_template('register.html', error_message=mensaje, cursos_inscritos=cursos_inscritos, cursos=cursos, año_ingreso=año_ingreso, años_ingreso=años_ingreso, nombre_completo=nombre_completo, nombre_usuario=nombre_usuario, email=email, biografia=biografia, google_id=google_id, google_image_url=google_image_url)
         
         if contraseña != rep_contraseña:
             mensaje = 'Las contraseñas deben coincidir.'
-            return render_template('register.html', error_message=mensaje, año_ingreso=año_ingreso, años_ingreso=años_ingreso, nombre_completo=nombre_completo, nombre_usuario=nombre_usuario, email=email, biografia=biografia, google_id=google_id, google_image_url=google_image_url)
+            return render_template('register.html', error_message=mensaje, cursos_inscritos=cursos_inscritos, cursos=cursos, año_ingreso=año_ingreso, años_ingreso=años_ingreso, nombre_completo=nombre_completo, nombre_usuario=nombre_usuario, email=email, biografia=biografia, google_id=google_id, google_image_url=google_image_url)
+
+        if not cursos_inscritos:
+            mensaje = 'Debes seleccionar almenos un curso.'
+            return render_template('register.html', error_message=mensaje, cursos_inscritos=cursos_inscritos, cursos=cursos, año_ingreso=año_ingreso, años_ingreso=años_ingreso, nombre_completo=nombre_completo, nombre_usuario=nombre_usuario, email=email, biografia=biografia, google_id=google_id, google_image_url=google_image_url)
+
 
         nuevo_usuario = Usuarios(
             correo=email,
@@ -107,10 +113,21 @@ def register():
             refresh_token=session.get('refresh_token')
         )
         db.session.add(nuevo_usuario)
+
         db.session.commit()
         
         usuario = Usuarios.query.filter_by(google_id=google_id).first()
-        session['id_usuario'] = usuario.id_usuario
+        id_usuario = usuario.id_usuario
+        session['id_usuario'] = id_usuario
+
+        for curso in cursos_inscritos:
+            inscripcion_curso = Cursos_Usuarios(
+                id_usuario=id_usuario,
+                id_curso=Cursos.query.filter_by(nombre_curso=curso).first().id_curso
+            )
+            db.session.add(inscripcion_curso)
+        db.session.commit()
+        
         return redirect(url_for('profile.perfil'))
 
     if not session.get('allow_register'):
@@ -120,13 +137,15 @@ def register():
     nombre = format_name(user_info['given_name']).split()
     #session.pop('allow_register')
     años_ingreso = [year for year in range(datetime.now().year, datetime.now().year - 21, -1)]
+    cursos = Cursos.query.with_entities(Cursos.nombre_curso).all()
     return render_template('register.html', 
                             nombre_completo=format_name(user_info['name']),
                             nombre_usuario=nombre[0],
                             email=user_info['email'],
                             google_id=user_info['sub'],
                             google_image_url=user_info['picture'],
-                            años_ingreso=años_ingreso
+                            años_ingreso=años_ingreso,
+                            cursos=cursos
                             ) 
 
 @auth_bp.route('/logout')

@@ -79,6 +79,97 @@ INSERT INTO Cursos (
     '2024 - 1'
 );
 
+INSERT INTO Cursos (
+    nombre_curso,
+    facultad,
+    semestre
+) VALUES (
+    'Curso Ejemplo I',
+    'Psicologia',
+    '2024 - 1'
+);
+
+INSERT INTO Cursos (
+    nombre_curso,
+    facultad,
+    semestre
+) VALUES (
+    'Curso Ejemplo II',
+    'Psicologia',
+    '2024 - 1'
+);
+
+INSERT INTO Cursos (
+    nombre_curso,
+    facultad,
+    semestre
+) VALUES (
+    'Curso Ejemplo III',
+    'Psicologia',
+    '2024 - 1'
+);
+
+INSERT INTO Cursos (
+    nombre_curso,
+    facultad,
+    semestre
+) VALUES (
+    'Curso Ejemplo IV',
+    'Psicologia',
+    '2024 - 1'
+);
+
+INSERT INTO Cursos (
+    nombre_curso,
+    facultad,
+    semestre
+) VALUES (
+    'Curso Ejemplo V',
+    'Psicologia',
+    '2024 - 1'
+);
+
+INSERT INTO Cursos (
+    nombre_curso,
+    facultad,
+    semestre
+) VALUES (
+    'Curso Ejemplo VI',
+    'Psicologia',
+    '2024 - 1'
+);
+
+INSERT INTO Cursos_Usuarios (
+    id_usuario,
+    id_curso
+) VALUES (
+    1,
+    1
+);
+
+INSERT INTO Cursos_Usuarios (
+    id_usuario,
+    id_curso
+) VALUES (
+    1,
+    2
+);
+
+INSERT INTO Cursos_Usuarios (
+    id_usuario,
+    id_curso
+) VALUES (
+    1,
+    3
+);
+
+INSERT INTO Cursos_Usuarios (
+    id_usuario,
+    id_curso
+) VALUES (
+    1,
+    4
+);
 /* INSERT INTO Archivos (
         nombre_archivo, 
         tipo,

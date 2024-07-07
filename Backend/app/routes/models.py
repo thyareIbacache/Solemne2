@@ -24,7 +24,12 @@ class Cursos(db.Model):
     nombre_curso = db.Column(db.String(255), nullable=False)
     facultad = db.Column(db.String(255), nullable=False)
     semestre = db.Column(db.String(50), nullable=False)
-    
+
+class Cursos_Usuarios(db.Model):
+    __tablename__= 'Cursos_Usuarios'
+    id_usuario = db.Column(db.Integer, db.ForeignKey('usuarios.id_usuario'), primary_key=True)
+    id_curso = db.Column(db.Integer, db.ForeignKey('cursos.id_curso'), primary_key=True)
+
 class Archivos(db.Model):
     __tablename__ = 'archivos'
     id_archivo = db.Column(db.Integer, primary_key=True)
