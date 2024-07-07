@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biblioteca</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <style>
+        .error-message {
+            display: none;
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #f44336;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+        .error-message.show {
+            display: block;
+            opacity: 1;
+        }
+    </style>
+</head>
+
+<body class="bg-white">
+
+    <div id="header_content"></div>
+    <section class="mt-8">
+        <h2 class="text-2xl font-bold pl-4">Biblioteca</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
+            <div class="bg-white shadow-md rounded-lg overflow-hidden">
+                <img class="w-full h-32 object-cover object-center" src="https://images.unsplash.com/photo-1556740739-887f6717d7e4" alt="blog">
+                <div class="p-6">
+                    <h2 class="tracking-widest text-xs title-font font-medium text-gray-400 mb-1">CATEGORIA</h2>
+                    <h1 class="title-font text-lg font-medium text-gray-900 mb-3">Titulo del libro</h1>
+                    <p class="leading-relaxed mb-3">Descripcion del libro</p>
+                    <div class="flex items-center flex-wrap ">
+                        <a class="text-indigo-500 inline-flex items-center md:mb-2 lg:mb-0">Leer más</a>
+                    </div>
+                </div>
+            </div>
+           
+    </section>
+    <!-- Mostrar mensaje de error si existe -->
+    {% if error_message %}
+            <div class="error-message" id="error-message">{{ error_message }}</div>
+            {% endif %}
+        </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var errorMessage = document.getElementById("error-message");
+            if (errorMessage) {
+                errorMessage.classList.add("show");
+                setTimeout(function() {
+                    errorMessage.style.opacity = "0";
+                    setTimeout(function() {
+                        errorMessage.style.display = "none";
+                    }, 500); // Esperar 500ms después de la animación para ocultar completamente
+                }, 3000); // Ocultar después de 3 segundos
+            }
+        });
+    </script>
+    <div id="footer_content"></div>
+</body>
+<script>
+    $(document).ready(function() {
+        $('#header_content').load('../static/header.html', function() {
+            // Reattach the event listeners after loading the content
+            const hamburger = document.getElementById('hamburger');
+            const mobileMenu = document.getElementById('mobileMenu');
+            const overlay = document.getElementById('overlay');
+
+            hamburger.addEventListener('click', function() {
+                mobileMenu.classList.toggle('open');
+                overlay.classList.toggle('open');
+                hamburger.classList.toggle('open'); 
+            });
+
+            overlay.addEventListener('click', function() {
+                mobileMenu.classList.remove('open');
+                overlay.classList.remove('open');
+                hamburger.classList.remove('open'); 
+            });
+        });
+        $('#footer_content').load('../static/footer.html');
+    });
+</script>
+</html>
