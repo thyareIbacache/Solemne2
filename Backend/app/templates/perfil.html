@@ -60,30 +60,17 @@
             <h2 class="text-2xl font-bold pl-4">Cursos</h2>
             <div class="grid grid-cols-3 md:grid-cols-6 gap-4 mt-4">
                 <!-- Condiciona la representación de estos bloques según los datos del usuario -->
-                <div class="flex flex-col items-center">
-                    <a href="" target="_blank">
-                        <div class="bg-gray-400 h-24 w-24"></div>
-                    </a>
-                    <p class="text-center mt-2">Psicología de la Infancia<br/>2024 - 1</p>
-                </div>
-                <div class="flex flex-col items-center">
-                    <a href="path/to/psicologia_adole.pdf" target="_blank">
-                        <div class="bg-gray-500 h-24 w-24"></div>
-                    </a>
-                    <p class="text-center mt-2">Psicología de la Adole<br/>2024 - 1</p>
-                </div>
-                <div class="flex flex-col items-center">
-                    <a href="path/to/psicologia_comu.pdf" target="_blank">
-                        <div class="bg-yellow-200 h-24 w-24"></div>
-                    </a>
-                    <p class="text-center mt-2">Psicología Comu II<br/>2024 - 1</p>
-                </div>
-                <div class="flex flex-col items-center">
-                    <a href="path/to/psicologia_inves.pdf" target="_blank">
-                        <div class="bg-blue-200 h-24 w-24"></div>
-                    </a>
-                    <p class="text-center mt-2">Investigación I<br/>2024 - 1</p>
-                </div>
+                {% set colors = ['bg-gray-400', 'bg-gray-500', 'bg-yellow-200', 'bg-blue-200', 'bg-purple-400', 'bg-pink-400'] %}
+
+                {% for curso in cursos %}
+                    {% set color = colors[loop.index0 % colors|length] %}
+                    <div class="flex flex-col items-center">
+                        <a href="" target="_blank">
+                            <div class="{{ color }} h-24 w-24"></div>
+                        </a>
+                        <p class="text-center mt-2">{{ curso.nombre_curso }}<br/>{{ curso.semestre }}</p>
+                    </div>
+                {% endfor %}
             </div>
         </section>
 

@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, redirect, url_for, session, current_app
-from .models import Usuarios, Cursos, db, Cursos_Usuarios
+from .models import Usuarios, Cursos, Cursos_Usuarios, db 
 from datetime import datetime
 
 auth_bp = Blueprint('auth', __name__)
@@ -127,7 +127,7 @@ def register():
             )
             db.session.add(inscripcion_curso)
         db.session.commit()
-        
+
         return redirect(url_for('profile.perfil'))
 
     if not session.get('allow_register'):

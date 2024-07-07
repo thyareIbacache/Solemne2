@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, session, redirect, url_for, request
-from .models import Usuarios, Archivos, db
+from .models import Usuarios, Archivos, Cursos_Usuarios, Cursos, db
 from datetime import datetime
 
 profile_bp = Blueprint('profile', __name__)
@@ -20,6 +20,11 @@ def perfil(id_usuario):
         if usuario:
             archivos = Archivos.query.filter_by(usuario_que_lo_subio=id_usuario).limit(6).all()
             total_archivos = Archivos.query.filter_by(usuario_que_lo_subio=id_usuario).count()
+
+            id_cursos = Cursos_Usuarios.query.filter_by(id_usuario=usuario.id_usuario).all()
+            lista_id_cursos = [curso.id_curso for curso in id_cursos]
+            cursos = Cursos.query.filter(Cursos.id_curso.in_(lista_id_cursos)).all()
+
             current_year = datetime.now().year
 
             # Calcular los años pasados desde el año de ingreso del usuario
@@ -48,47 +53,52 @@ def perfil(id_usuario):
                 texto = "10mo año"
             else:
                 texto = "Más de 10 años"
-            return render_template('perfil.html', usuario=usuario, archivos=archivos, total_archivos=total_archivos, año_cursando=texto)
+            return render_template('perfil.html', usuario=usuario, cursos=cursos, archivos=archivos, total_archivos=total_archivos, año_cursando=texto)
         else:
             return redirect(url_for('auth.home'))
     else:
         return redirect(url_for('auth.home'))
-    
-@profile_bp.route('/shared-files')
-def shared_files():
-    if 'id_usuario' in session:
-        id_usuario = session['id_usuario']
-        archivos = Archivos.query.filter_by(usuario_que_lo_subio=id_usuario).all()
-        return render_template('sharedFiles.html', archivos=archivos)
-    else:
-        return redirect(url_for('auth.home'))
-    
-
-@profile_bp.route('/bibliocursos/<nombre_curso>')
-def bibliocursos(nombre_curso):
-    archivos = Archivos.query.filter_by(curso=nombre_curso).all()
-    return render_template('bibliocursos.html', archivos=archivos, nombre_curso=nombre_curso)
 
 @profile_bp.route('/update-perfil', methods=['GET', 'POST'])
 def update_perfil():
     if request.method == 'POST':
+        usuario = request.form.get('usuario')
         nombre_completo = request.form.get('nombre_completo')
         nombre_usuario = request.form.get('nombre_usuario')
         biografia = request.form.get('biografia')
         año_ingreso = int(request.form.get('año_ingreso'))
         años_ingreso = [year for year in range(datetime.now().year, datetime.now().year - 21, -1)]
+
+        cursos_inscritos = request.form.getlist('curso_inscrito')
+
+        cursos = Cursos.query.with_entities(Cursos.nombre_curso).all()
     
     if not nombre_completo or not nombre_usuario or not biografia or not año_ingreso:
         mensaje = 'Por favor, completa todos los campos del formulario.'
-        return render_template('editarPerfil.html', error_message=mensaje, año_ingreso=año_ingreso, años_ingreso=años_ingreso, nombre_completo=nombre_completo, nombre_usuario=nombre_usuario, biografia=biografia)
+        return render_template('editarPerfil.html', error_message=mensaje, cursos=cursos, cursos_inscritos=cursos_inscritos, usuario=usuario, año_ingreso=año_ingreso, años_ingreso=años_ingreso, nombre_completo=nombre_completo, nombre_usuario=nombre_usuario, biografia=biografia)
     
+    if not cursos_inscritos:
+            mensaje = 'Debes seleccionar almenos un curso.'
+            return render_template('editarPerfil.html', error_message=mensaje, cursos=cursos, cursos_inscritos=cursos_inscritos, usuario=usuario, año_ingreso=año_ingreso, años_ingreso=años_ingreso, nombre_completo=nombre_completo, nombre_usuario=nombre_usuario, biografia=biografia)
+
+
+
     id_usuario = session['id_usuario']
     usuario = Usuarios.query.get(id_usuario)
 
     usuario.nombre_usuario = nombre_usuario
     usuario.biografia = biografia
-    usuario.año_ingreso = año_ingreso
+    usuario.año_ingreso = int(año_ingreso)
 
+    Cursos_Usuarios.query.filter(Cursos_Usuarios.id_usuario == id_usuario).delete()
+    db.session.commit()
+
+    for curso in cursos_inscritos:
+        inscripcion_curso = Cursos_Usuarios(
+            id_usuario=id_usuario,
+            id_curso=Cursos.query.filter_by(nombre_curso=curso).first().id_curso
+        )
+        db.session.add(inscripcion_curso)
     db.session.commit()
 
     return redirect(url_for('auth.home'))
@@ -125,12 +135,23 @@ def editar_perfil():
         usuario = Usuarios.query.get(id_usuario)
     else:
         return redirect(url_for('auth.home'))
+    
+    id_cursos = Cursos_Usuarios.query.filter_by(id_usuario=usuario.id_usuario).all()
+    lista_id_cursos = [curso.id_curso for curso in id_cursos]
+    cursos_inscritos = Cursos.query.with_entities(Cursos.nombre_curso).filter(Cursos.id_curso.in_(lista_id_cursos)).all()
+    nombres_cursos = [curso[0] for curso in cursos_inscritos]
+
+    cursos = Cursos.query.with_entities(Cursos.nombre_curso).all()
+
 
     años_ingreso = [year for year in range(datetime.now().year, datetime.now().year - 21, -1)]
-    return render_template('editarPerfil.html', 
+    return render_template('editarPerfil.html',
+                            usuario=usuario, 
                             nombre_completo=usuario.nombre_completo,
                             nombre_usuario=usuario.nombre_usuario,
                             biografia=usuario.biografia,
                             año_ingreso=usuario.año_ingreso,
-                            años_ingreso=años_ingreso
+                            años_ingreso=años_ingreso,
+                            cursos_inscritos=nombres_cursos,
+                            cursos=cursos
                             ) 
