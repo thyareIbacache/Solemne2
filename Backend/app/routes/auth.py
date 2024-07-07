@@ -84,6 +84,7 @@ def register():
         rep_contraseña = request.form.get('rep_contraseña')
         año_ingreso = int(request.form.get('año_ingreso'))
         años_ingreso = [year for year in range(datetime.now().year, datetime.now().year - 21, -1)]
+        #cursos = 
 
         if not nombre_completo or not email or not biografia or not contraseña or not rep_contraseña or not año_ingreso or not nombre_usuario:
             mensaje = 'Por favor, completa todos los campos del formulario.'
@@ -117,7 +118,7 @@ def register():
      
     user_info = session.get('allow_register')
     nombre = format_name(user_info['given_name']).split()
-    session.pop('allow_register')
+    #session.pop('allow_register')
     años_ingreso = [year for year in range(datetime.now().year, datetime.now().year - 21, -1)]
     return render_template('register.html', 
                             nombre_completo=format_name(user_info['name']),

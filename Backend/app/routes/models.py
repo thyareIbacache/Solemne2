@@ -18,6 +18,13 @@ class Usuarios(db.Model):
     google_image_url = db.Column(db.String(500), nullable=True) 
     refresh_token = db.Column(db.String(255), nullable=True)
 
+class Cursos(db.Model):
+    __tablename__ = 'cursos'
+    id_curso = db.Column(db.Integer, primary_key=True)
+    nombre_curso = db.Column(db.String(255), nullable=False)
+    facultad = db.Column(db.String(255), nullable=False)
+    semestre = db.Column(db.String(50), nullable=False)
+    
 class Archivos(db.Model):
     __tablename__ = 'archivos'
     id_archivo = db.Column(db.Integer, primary_key=True)

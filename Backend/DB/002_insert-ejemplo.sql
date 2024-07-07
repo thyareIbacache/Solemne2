@@ -39,6 +39,46 @@ INSERT INTO Usuarios (
     NULL
 );
 
+INSERT INTO Cursos (
+    nombre_curso,
+    facultad,
+    semestre
+) VALUES (
+    'Psicología de la Infancia',
+    'Psicologia',
+    '2024 - 1'
+);
+
+INSERT INTO Cursos (
+    nombre_curso,
+    facultad,
+    semestre
+) VALUES (
+    'Psicología de la Adole',
+    'Psicologia',
+    '2024 - 1'
+);
+
+INSERT INTO Cursos (
+    nombre_curso,
+    facultad,
+    semestre
+) VALUES (
+    'Psicología Comu II',
+    'Psicologia',
+    '2024 - 1'
+);
+
+INSERT INTO Cursos (
+    nombre_curso,
+    facultad,
+    semestre
+) VALUES (
+    'Investigación I',
+    'Psicologia',
+    '2024 - 1'
+);
+
 /* INSERT INTO Archivos (
         nombre_archivo, 
         tipo,
