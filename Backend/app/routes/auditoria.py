@@ -35,4 +35,4 @@ def rechazar_archivo(id):
 
 @auditoria_bp.route('/auditoria', methods=['GET'])
 def auditoria():
-    return render_template('auditoria.html')
+    return render_template('admin/auditoria.html')

@@ -25,4 +25,26 @@ def get_usuarios():
         return redirect(url_for('admin.get_usuarios'))
 
     usuarios = Usuarios.query.all()
-    return render_template('usuarios.html', usuarios=usuarios)
+    return render_template('admin/usuarios.html', usuarios=usuarios)
+
+@admin_bp.route('/admin-anuncios', methods=['GET', 'POST'])
+def admin_anuncios():
+    if request.method == 'POST':
+        nombre_completo = request.form['nombre_completo']
+        correo = request.form['correo']
+        rol = request.form['rol']
+        nuevo_usuario = Usuarios(
+            nombre_completo=nombre_completo,
+            correo=correo,
+            rol=rol,
+            contraseña=generate_password_hash('defaultpassword'),
+            nombre_usuario='',
+            biografia='',
+            año_ingreso=datetime.now().year
+        )
+        db.session.add(nuevo_usuario)
+        db.session.commit()
+        return redirect(url_for('admin.get_usuarios'))
+
+    usuarios = Usuarios.query.all()
+    return render_template('admin/anuncios.html', usuarios=usuarios)

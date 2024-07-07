@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Usuarios - Modo Supervisor</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/CSS/administrador.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="../static/CSS/messageBox.css">
+</head>
+<body class="bg-white">
+    <div id="header-container"></div>
+    <div class="main">
+        <div id="sidebar-container"></div>
+        <main class="content">
+            <h1>Gestión de Anuncios</h1>
+            <button class="btn btn-primary" onclick="mostrarFormulario()">Agregar Anuncio</button>
+            <div id="formulario" style="display:none;">
+                <h3>Nuevo Anuncio</h3>
+                <form id="nuevoUsuarioForm" action="/usuarios" method="POST">
+                    <div class="form-group">
+                        <label for="nombre">Nombre</label>
+                        <input type="text" class="form-control" id="nombre" name="nombre_completo" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Mensaje</label>
+                        <input type="email" class="form-control" id="email" name="correo" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="rol">Imagen</label>
+                    </div>
+                    <button type="submit" class="btn btn-success">Agregar</button>
+                </form>
+            </div>
+            <h3>Lista de Usuarios</h3>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Correo Electrónico</th>
+                        <th>Rol</th>
+                    </tr>
+                </thead>
+                <tbody id="usuariosLista">
+                    {% for usuario in usuarios %}
+                    <tr>
+                        <td>{{ usuario.nombre_completo }}</td>
+                        <td>{{ usuario.correo }}</td>
+                        <td>{{ usuario.rol }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </main>
+    </div>
+    <footer class="bg-dark text-white text-center p-3">
+        &copy; 2024 Modo Supervisor
+    </footer>
+    <!-- Mostrar mensaje si existe -->
+    {% if message %}
+        <div class="message-box {{ msgType }}" id="message-box">{{ message }}</div>
+    {% endif %}
+
+    <!-- JavaScript para mostrar y ocultar el mensaje -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var messageBox = document.getElementById("message-box");
+            if (messageBox) {
+                messageBox.classList.add("show");
+                setTimeout(function() {
+                    messageBox.style.opacity = "0";
+                    setTimeout(function() {
+                        messageBox.style.display = "none";
+                    }, 500); // Esperar 500ms después de la animación para ocultar completamente
+                }, 7000); // Ocultar después de 7 segundos (7000 milisegundos)
+            }
+        });
+    </script>
+    <script>
+        function loadHTML(id, url) {
+            fetch(url)
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById(id).innerHTML = data;
+                })
+                .catch(error => console.error('Error cargando el archivo:', error));
+        }
+
+        $(document).ready(function() {
+            $('#header-container').load('/static/headerAd.html');
+            $('#sidebar-container').load('/static/sidebar.html');
+        });
+
+        function mostrarFormulario() {
+            document.getElementById('formulario').style.display = 'block';
+        }
+    </script>
+</body>
+</html>

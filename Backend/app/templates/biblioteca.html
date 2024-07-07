@@ -7,7 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet"/>
-    <link rel="stylesheet" href="../static/CSS/perfil.css">
+    <link rel="stylesheet" href="../static/CSS/biblioteca.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
 </head>
@@ -16,7 +16,22 @@
     <div id="page-content">
         <div class="max-w-7xl mx-auto">
             <section class="mt-8">
-                <h2 class="text-2xl font-bold pl-4">Archivos compartidos</h2>
+                <div class="buscador">
+                    <h2 class="titulo text-2xl font-bold pl-4">Archivos compartidos</h2>
+                        <div class="seleccion">
+                        <label class="block text-gray-700 font-semibold mb-2" for="curso">Asignatura: </label>
+                        <select id="miSelect" onchange="redirigir(this)" style="width: 400px; margin-left: 10px;" class=" px-3 py-2 border rounded" id="curso" name="curso">
+                            <option value="todos" selected>Todos</option>
+                            {% for curso in cursos %}
+                                {% if curso.nombre_curso == nombre_curso %}
+                                    <option value="{{ loop.index }}" selected>{{ curso.nombre_curso }}</option>
+                                {% else %}
+                                    <option value="{{ loop.index }}">{{ curso.nombre_curso }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
                 <div class="grid grid-cols-3 md:grid-cols-6 gap-4 mt-4">
                     {% if archivos|length == 0 %}
                         <p class="pl-4" style=" width: 300px">No hay archivos compartidos.</p>
@@ -64,6 +79,17 @@
         </div>
     </div>
     <div id="footer_content"></div>
+    <script>
+        function redirigir(select) {
+            var valorSeleccionado = select.value;
+    
+            if (valorSeleccionado === "todos") {
+                window.location.href = "biblioteca";
+            }else{
+                window.location.href = `biblioteca-cursos-${valorSeleccionado}`;
+            }
+        }
+    </script>
 </body>
 <script>
     $(document).ready(function() {
