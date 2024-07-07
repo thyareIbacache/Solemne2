@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, session, redirect, url_for, request
-from .models import Usuarios, Archivos
+from .models import Usuarios, Archivos, db
 from datetime import datetime
 
 profile_bp = Blueprint('profile', __name__)
@@ -63,10 +63,40 @@ def update_perfil():
         mensaje = 'Por favor, completa todos los campos del formulario.'
         return render_template('editarPerfil.html', error_message=mensaje, año_ingreso=año_ingreso, años_ingreso=años_ingreso, nombre_completo=nombre_completo, nombre_usuario=nombre_usuario, biografia=biografia)
     
+    id_usuario = session['id_usuario']
+    usuario = Usuarios.query.get(id_usuario)
+
+    usuario.nombre_usuario = nombre_usuario
+    usuario.biografia = biografia
+    usuario.año_ingreso = año_ingreso
+
+    db.session.commit()
+
     return redirect(url_for('auth.home'))
 
 @profile_bp.route('/update-clave', methods=['GET', 'POST'])
 def update_clave():
+    contraseña_actual = request.form.get('contraseña_actual')
+    contraseña_nueva = request.form.get('contraseña')
+    rep_contraseña_nueva = request.form.get('rep_contraseña')
+    if not contraseña_actual or not contraseña_nueva or not rep_contraseña_nueva:
+        mensaje = 'Por favor, completa todos los campos del formulario.'
+        return render_template('editarPerfil.html', error_message=mensaje)
+    
+    if contraseña_nueva != rep_contraseña_nueva:
+        mensaje = 'Por favor, las contraseñas nuevas deben coincidir.'
+        return render_template('editarPerfil.html', error_message=mensaje)
+    
+    id_usuario = session['id_usuario']
+    usuario = Usuarios.query.get(id_usuario)
+
+    if contraseña_actual != usuario.contraseña:
+        mensaje = 'Por favor, debes escribir tu contraseña actual correctamente.'
+        return render_template('editarPerfil.html', error_message=mensaje)
+
+    usuario.contraseña = contraseña_nueva
+    db.session.commit()
+    
     return redirect(url_for('auth.home'))
 
 @profile_bp.route('/editar-perfil')
