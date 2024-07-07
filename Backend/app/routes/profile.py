@@ -14,6 +14,9 @@ def perfil(id_usuario):
             id_usuario = session['id_usuario']
         usuario = Usuarios.query.get(id_usuario)
 
+        if usuario.rol == 'moderador' and session['id_usuario'] != usuario.id_usuario:
+            return redirect(url_for('biblioteca.biblioteca'))
+    
         if usuario:
             archivos = Archivos.query.filter_by(usuario_que_lo_subio=id_usuario).all()
             current_year = datetime.now().year
