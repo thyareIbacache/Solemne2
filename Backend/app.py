@@ -1,8 +1,8 @@
-from flask import Flask, session, render_template, request, redirect, url_for, send_from_directory,jsonify
+from flask import Flask, session, render_template, request, redirect, url_for, send_from_directory, jsonify
 from config import Config
 from models import db, Usuarios, Archivos
 from werkzeug.utils import secure_filename
-from werkzeug.security import check_password_hash
+from werkzeug.security import check_password_hash, generate_password_hash
 from authlib.integrations.flask_client import OAuth
 from datetime import datetime
 import os
@@ -70,13 +70,14 @@ def cargar():
                 # Guardar en la base de datos
                 nuevo_archivo = Archivos(
                     nombre_archivo=filename,
+                    tipo=archivo.mimetype,
+                    asignatura=request.form['asignatura'],
                     fecha_subida=datetime.now(),
                     usuario_que_lo_subio=id_usuario,
-                    etiquetas='',
+                    etiquetas=request.form.get('etiquetas', ''),
                     ruta_archivo=os.path.join(user_upload_folder, filename),
                     estado='pendiente',
-                    asignatura=request.form['asignatura'],
-                    unidad=request.form['unidad'],
+                    unidad=request.form.get('unidad', '')
                 )
                 db.session.add(nuevo_archivo)
                 try:
@@ -118,5 +119,30 @@ def test_db():
     except Exception as e:
         return str(e), 500
 
+@app.route('/usuarios', methods=['GET'])
+def get_usuarios():
+    usuarios = Usuarios.query.all()
+    return render_template('usuarios.html', usuarios=usuarios)
+
+@app.route('/usuarios', methods=['POST'])
+def add_usuario():
+    nombre_completo = request.form['nombre_completo']
+    correo = request.form['correo']
+    rol = request.form['rol']
+    nuevo_usuario = Usuarios(
+        nombre_completo=nombre_completo,
+        correo=correo,
+        rol=rol,
+        contraseña=generate_password_hash('defaultpassword'),  # Set a default password, user should change it later
+        nombre_usuario='',
+        biografia='',
+        año_ingreso=datetime.now().year
+    )
+    db.session.add(nuevo_usuario)
+    db.session.commit()
+    return redirect(url_for('get_usuarios'))
+
 if __name__ == '__main__':
+    with app.app_context():
+        db.create_all()  # Crear tablas en la base de datos
     app.run(debug=True, host='0.0.0.0', port=5000)
