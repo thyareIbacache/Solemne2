@@ -65,7 +65,6 @@
 <script>
     $(document).ready(function() {
         $('#header_content').load('../static/header.html', function() {
-            // Reattach the event listeners after loading the content
             const hamburger = document.getElementById('hamburger');
             const mobileMenu = document.getElementById('mobileMenu');
             const overlay = document.getElementById('overlay');
@@ -82,7 +81,10 @@
                 hamburger.classList.remove('open'); 
             });
         });
-        $('#footer_content').load('../static/footer.html');
+
+        $('#footer_content').load('../static/footer.html', function() {
+            adjustFooter();
+        });
     });
 </script>
 </html>

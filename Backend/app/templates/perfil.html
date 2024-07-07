@@ -13,128 +13,129 @@
 </head>
 <body class="bg-white">
     <div id="header_content"></div>
-    <div class="max-w-7xl mx-auto">
-        <div class="bg-white p-6 rounded-lg">
-            <div class="sm:flex items-center space-x-6">
-                <!-- Imagen de perfil -->
-                <div class="sm:w-1/4 sm:text-center mb-4 sm:mb-0">
-                    {% if usuario.google_image_url %}
-                        <img alt="Profile picture" class="rounded-full mx-auto" height="175px" width="175px" src="{{ usuario.google_image_url }}"/>
-                    {% else %}
-                        <img alt="Profile picture" class="rounded-full mx-auto" height="175px" width="175px" src="https://www.pngall.com/wp-content/uploads/5/Profile-PNG-File.png"/>                   
+    <div id="page-content">
+        <div class="max-w-7xl mx-auto">
+            <div class="bg-white p-6 rounded-lg">
+                <div class="sm:flex items-center space-x-6">
+                    <!-- Imagen de perfil -->
+                    <div class="sm:w-1/4 sm:text-center mb-4 sm:mb-0">
+                        {% if usuario.google_image_url %}
+                            <img alt="Profile picture" class="rounded-full mx-auto" height="175px" width="175px" src="{{ usuario.google_image_url }}"/>
+                        {% else %}
+                            <img alt="Profile picture" class="rounded-full mx-auto" height="175px" width="175px" src="https://www.pngall.com/wp-content/uploads/5/Profile-PNG-File.png"/>                   
+                        {% endif %}
+                        {% if session['id_usuario'] == usuario.id_usuario %}
+                            <!-- versión PC -->
+                            <a class="editar-perfil hidden md:block font-bold" href="editar-perfil">
+                                Editar Perfil
+                            </a>
+                            <!-- versión móvil -->
+                            <a class="editar-perfil block md:hidden font-bold" href="editar-perfil">
+                                Editar Perfil
+                            </a>
+                        {% endif %}                
+                    </div>
+                    <!-- Información del usuario -->
+                    <div class="sm:w-3/4">
+                        <p class="text-lg font-bold">Nombre completo</p>
+                        <p>{{ usuario.nombre_completo }}</p>
+                        <p class="text-lg font-bold mt-2">Nombre de usuario</p>
+                        <p>{{ usuario.nombre_usuario }}</p>
+                        <p class="text-lg font-bold mt-2">Biografía</p>
+                        <p>{{ usuario.biografia }}</p>
+                        <div class="flex space-x-8 mt-4">
+                            <div>
+                                <p class="text-lg font-bold">Año de ingreso</p>
+                                <p>{{ usuario.año_ingreso }}</p>
+                            </div>
+                            <div>
+                                <p class="text-lg font-bold">Año en curso</p>
+                                <p>{{ año_cursando }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <section class="mt-8">
+                <h2 class="text-2xl font-bold pl-4">Cursos</h2>
+                <div class="grid grid-cols-3 md:grid-cols-6 gap-4 mt-4">
+                    <!-- Condiciona la representación de estos bloques según los datos del usuario -->
+                    {% set colors = ['bg-gray-400', 'bg-gray-500', 'bg-yellow-200', 'bg-blue-200', 'bg-purple-400', 'bg-pink-400'] %}
+
+                    {% for curso in cursos %}
+                        {% set color = colors[loop.index0 % colors|length] %}
+                        <div class="flex flex-col items-center">
+                            <a href="{{ url_for('biblioteca.biblioteca_cursos', id_curso=curso.id_curso) }}" target="_blank">
+                                <div class="{{ color }} h-24 w-24"></div>
+                            </a>
+                            <p class="text-center mt-2">{{ curso.nombre_curso }}<br/>{{ curso.semestre }}</p>
+                        </div>
+                    {% endfor %}
+                </div>
+            </section>
+
+            <section class="mt-8">
+                <div class="flex justify-between items-center"> 
+                    <h2 class="text-2xl font-bold pl-4">Archivos compartidos</h2>
+                    {% if total_archivos > 6 %}
+                    <a href="shared" class="text-blue-500 font-semibold">Ver más</a>
                     {% endif %}
-                    {% if session['id_usuario'] == usuario.id_usuario %}
-                        <!-- versión PC -->
-                        <a class="editar-perfil hidden md:block font-bold" href="editar-perfil">
-                            Editar Perfil
-                        </a>
-                        <!-- versión móvil -->
-                        <a class="editar-perfil block md:hidden font-bold" href="editar-perfil">
-                            Editar Perfil
-                        </a>
-                    {% endif %}                
                 </div>
-                <!-- Información del usuario -->
-                <div class="sm:w-3/4">
-                    <p class="text-lg font-bold">Nombre completo</p>
-                    <p>{{ usuario.nombre_completo }}</p>
-                    <p class="text-lg font-bold mt-2">Nombre de usuario</p>
-                    <p>{{ usuario.nombre_usuario }}</p>
-                    <p class="text-lg font-bold mt-2">Biografía</p>
-                    <p>{{ usuario.biografia }}</p>
-                    <div class="flex space-x-8 mt-4">
-                        <div>
-                            <p class="text-lg font-bold">Año de ingreso</p>
-                            <p>{{ usuario.año_ingreso }}</p>
-                        </div>
-                        <div>
-                            <p class="text-lg font-bold">Año en curso</p>
-                            <p>{{ año_cursando }}</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <section class="mt-8">
-            <h2 class="text-2xl font-bold pl-4">Cursos</h2>
-            <div class="grid grid-cols-3 md:grid-cols-6 gap-4 mt-4">
-                <!-- Condiciona la representación de estos bloques según los datos del usuario -->
-                {% set colors = ['bg-gray-400', 'bg-gray-500', 'bg-yellow-200', 'bg-blue-200', 'bg-purple-400', 'bg-pink-400'] %}
-
-                {% for curso in cursos %}
-                    {% set color = colors[loop.index0 % colors|length] %}
+        
+                <div class="grid grid-cols-3 md:grid-cols-6 gap-4 mt-4">
+                    {% if archivos|length == 0 %}
+                        <p class="pl-4" style=" width: 300px">No hay archivos compartidos.</p>
+                    {% else %}
+                    
+                    {% for archivo in archivos %}
                     <div class="flex flex-col items-center">
-                        <a href="{{ url_for('biblioteca.biblioteca_cursos', id_curso=curso.id_curso) }}" target="_blank">
-                            <div class="{{ color }} h-24 w-24"></div>
-                        </a>
-                        <p class="text-center mt-2">{{ curso.nombre_curso }}<br/>{{ curso.semestre }}</p>
-                    </div>
-                {% endfor %}
-            </div>
-        </section>
+                        <a href="{{ archivo.ruta_archivo }}" target="_blank" download>
+                            {% if archivo.tipo in ['jpg', 'jpeg', 'png', 'gif'] %}
+                                <img src="{{ archivo.ruta_archivo }}" alt="{{ archivo.nombre_archivo }}" class="file-preview"/>
+                            {% elif archivo.tipo == 'pdf' %}
+                                <canvas id="pdf-canvas-{{ archivo.id }}" class="file-preview"></canvas>
+                                <script>
+                                    document.addEventListener('DOMContentLoaded', function() {
+                                        const url = "{{ archivo.ruta_archivo }}";
+                                        const canvas = document.getElementById('pdf-canvas-{{ archivo.id }}');
+                                        const context = canvas.getContext('2d');
 
-        <section class="mt-8">
-            <div class="flex justify-between items-center"> 
-                <h2 class="text-2xl font-bold pl-4">Archivos compartidos</h2>
-                {% if total_archivos > 6 %}
-                <a href="shared" class="text-blue-500 font-semibold">Ver más</a>
-                {% endif %}
-            </div>
-     
-            <div class="grid grid-cols-3 md:grid-cols-6 gap-4 mt-4">
-                {% if archivos|length == 0 %}
-                    <p class="pl-4" style=" width: 300px">No hay archivos compartidos.</p>
-                {% else %}
-                
-                {% for archivo in archivos %}
-                <div class="flex flex-col items-center">
-                    <a href="{{ archivo.ruta_archivo }}" target="_blank" download>
-                        {% if archivo.tipo in ['jpg', 'jpeg', 'png', 'gif'] %}
-                            <img src="{{ archivo.ruta_archivo }}" alt="{{ archivo.nombre_archivo }}" class="file-preview"/>
-                        {% elif archivo.tipo == 'pdf' %}
-                            <canvas id="pdf-canvas-{{ archivo.id }}" class="file-preview"></canvas>
-                            <script>
-                                document.addEventListener('DOMContentLoaded', function() {
-                                    const url = "{{ archivo.ruta_archivo }}";
-                                    const canvas = document.getElementById('pdf-canvas-{{ archivo.id }}');
-                                    const context = canvas.getContext('2d');
+                                        pdfjsLib.getDocument(url).promise.then((pdf) => {
+                                            pdf.getPage(1).then((page) => {
+                                                const viewport = page.getViewport({ scale: 1.0 });
+                                                canvas.height = viewport.height;
+                                                canvas.width = viewport.width;
 
-                                    pdfjsLib.getDocument(url).promise.then((pdf) => {
-                                        pdf.getPage(1).then((page) => {
-                                            const viewport = page.getViewport({ scale: 1.0 });
-                                            canvas.height = viewport.height;
-                                            canvas.width = viewport.width;
-
-                                            const renderContext = {
-                                                canvasContext: context,
-                                                viewport: viewport
-                                            };
-                                            page.render(renderContext);
+                                                const renderContext = {
+                                                    canvasContext: context,
+                                                    viewport: viewport
+                                                };
+                                                page.render(renderContext);
+                                            });
                                         });
                                     });
-                                });
-                            </script>
-                        {% else %}
-                            <div class="flex items-center justify-center file-preview">
-                                <i class="fas fa-file-alt text-3xl text-gray-600"></i>
-                            </div>
-                        {% endif %}
-                    </a>
-                    <p class="text-center mt-2">{{ archivo.nombre_archivo }}<br/>{{ archivo.asignatura }}</p>
+                                </script>
+                            {% else %}
+                                <div class="flex items-center justify-center file-preview">
+                                    <i class="fas fa-file-alt text-3xl text-gray-600"></i>
+                                </div>
+                            {% endif %}
+                        </a>
+                        <p class="text-center mt-2">{{ archivo.nombre_archivo }}<br/>{{ archivo.asignatura }}</p>
+                    </div>
+                    {% endfor %}
+                    {% endif %}
                 </div>
-                {% endfor %}
-                {% endif %}
-            </div>
-            <div class="bottom-page"></div>
-        </section>
+                <div class="bottom-page"></div>
+            </section>
+        </div>
     </div>
     <div id="footer_content"></div>
 </body>
 <script>
     $(document).ready(function() {
         $('#header_content').load('../static/header.html', function() {
-            // Reattach the event listeners after loading the content
             const hamburger = document.getElementById('hamburger');
             const mobileMenu = document.getElementById('mobileMenu');
             const overlay = document.getElementById('overlay');
@@ -151,7 +152,10 @@
                 hamburger.classList.remove('open'); 
             });
         });
-        $('#footer_content').load('../static/footer.html');
+
+        $('#footer_content').load('../static/footer.html', function() {
+            adjustFooter();
+        });
     });
 </script>
 </html>
