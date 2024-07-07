@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, request, redirect, url_for, sessio
 from werkzeug.utils import secure_filename
 from datetime import datetime
 import os
-from .models import Archivos, Cursos, db
+from .models import Archivos, Cursos, Archivos_Cursos, db
 
 upload_bp = Blueprint('upload', __name__)
 
@@ -59,12 +59,20 @@ def upload_file():
 
             # Agregar el nuevo archivo a la sesión de la base de datos
             db.session.add(nuevo_archivo)
+            db.session.commit()
 
-            try:
-                db.session.commit()
-                return redirect(url_for('profile.perfil'))
-            except Exception as e:
-                return f'Error al guardar en la base de datos: {str(e)}', 500
+            nuevo_archivo_curso = Archivos_Cursos(
+                id_archivo = Archivos.query.filter(
+                    Archivos.nombre_archivo == nombre_archivo,
+                    Archivos.usuario_que_lo_subio == id_usuario
+                ).first().id_archivo,
+                id_curso= Cursos.query.filter_by(nombre_curso=asignatura).first().id_curso
+            )
+
+            db.session.add(nuevo_archivo_curso)
+            db.session.commit()
+
+            return redirect(url_for('profile.perfil'))
 
 
     return render_template('upload.html', cursos=cursos)

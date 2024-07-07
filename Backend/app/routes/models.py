@@ -42,6 +42,11 @@ class Archivos(db.Model):
     ruta_archivo = db.Column(db.String(255), nullable=False)
     estado = db.Column(db.String(50), default='pendiente')
     unidad = db.Column(db.String(10))
-    comentarios_rechazo = db.Column(db.String(255))
-
+    comentarios_rechazo = db.Column(db.String(255)
+                                    )
     usuario = db.relationship('Usuarios', backref=db.backref('archivos', lazy=True))
+
+class Archivos_Cursos(db.Model):
+    __tablename__= 'archivos_cursos'
+    id_curso = db.Column(db.Integer, db.ForeignKey('cursos.id_curso'), primary_key=True)
+    id_archivo = db.Column(db.Integer, db.ForeignKey('archivos.id_archivo'), primary_key=True)

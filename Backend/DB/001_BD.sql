@@ -51,9 +51,9 @@ CREATE TABLE Archivos (
 
 -- Crear la tabla intermedia Archivos_Cursos
 CREATE TABLE Archivos_Cursos (
-    id SERIAL PRIMARY KEY,
-    id_archivo INT REFERENCES Archivos(id_archivo) ON DELETE CASCADE,
-    id_curso INT REFERENCES Cursos(id_curso) ON DELETE CASCADE
+    id_curso INTEGER REFERENCES Cursos(id_curso),
+    id_archivo INTEGER REFERENCES Archivos(id_archivo),
+    PRIMARY KEY (id_curso, id_archivo)
 );
 
 -- Crear la tabla Notificaciones
