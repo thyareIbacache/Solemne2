@@ -11,10 +11,14 @@ def biblioteca():
 
 @biblioteca_bp.route('/biblioteca-cursos')
 def biblioteca_cursos():
-    archivos = Archivos.query.all()
-    return render_template('bibliocursos.html', archivos=archivos)
+    archivos = Archivos.query.filter_by(curso='').all()
+    return render_template('bibliocursos.html', archivos=archivos, nombre_curso='')
 
 @biblioteca_bp.route('/shared')
 def shared():
-    archivos = Archivos.query.all()
-    return render_template('shared_files.html', archivos=archivos)
+    if 'id_usuario' in session:
+        id_usuario = session['id_usuario']
+        archivos = Archivos.query.filter_by(usuario_que_lo_subio=id_usuario).all()
+        return render_template('shared_files.html', archivos=archivos)
+    else:
+        return redirect(url_for('auth.home'))
