@@ -13,49 +13,55 @@
 </head>
 <body class="bg-white">
     <div id="header_content"></div>
-    <div class="max-w-7xl mx-auto">
-        <section class="mt-8">
-            <h2 class="text-2xl font-bold pl-4">Archivos compartidos por Usuario</h2>
-            <div class="grid grid-cols-3 md:grid-cols-6 gap-4 mt-4">
-                {% for archivo in archivos %}
-                <div class="flex flex-col items-center">
-                    <a href="{{ archivo.ruta_archivo }}" target="_blank" download>
-                        {% if archivo.tipo in ['jpg', 'jpeg', 'png', 'gif'] %}
-                            <img src="{{ archivo.ruta_archivo }}" alt="{{ archivo.nombre_archivo }}" class="file-preview"/>
-                        {% elif archivo.tipo == 'pdf' %}
-                            <canvas id="pdf-canvas-{{ archivo.id }}" class="file-preview"></canvas>
-                            <script>
-                                document.addEventListener('DOMContentLoaded', function() {
-                                    const url = "{{ archivo.ruta_archivo }}";
-                                    const canvas = document.getElementById('pdf-canvas-{{ archivo.id }}');
-                                    const context = canvas.getContext('2d');
+    <div id="page-content">
+        <div class="max-w-7xl mx-auto">
+            <section class="mt-8">
+                <h2 class="text-2xl font-bold pl-4">Archivos compartidos por: &nbsp;&nbsp;&nbsp;{{ nombre_completo }}</h2>
+                <div class="grid grid-cols-3 md:grid-cols-6 gap-4 mt-4">
+                    {% if archivos|length == 0 %}
+                            <p class="pl-4" style=" width: 300px">No hay archivos compartidos.</p>
+                    {% else %}
+                    {% for archivo in archivos %}
+                    <div class="flex flex-col items-center">
+                        <a href="{{ archivo.ruta_archivo }}" target="_blank" download>
+                            {% if archivo.tipo in ['jpg', 'jpeg', 'png', 'gif'] %}
+                                <img src="{{ archivo.ruta_archivo }}" alt="{{ archivo.nombre_archivo }}" class="file-preview"/>
+                            {% elif archivo.tipo == 'pdf' %}
+                                <canvas id="pdf-canvas-{{ archivo.id }}" class="file-preview"></canvas>
+                                <script>
+                                    document.addEventListener('DOMContentLoaded', function() {
+                                        const url = "{{ archivo.ruta_archivo }}";
+                                        const canvas = document.getElementById('pdf-canvas-{{ archivo.id }}');
+                                        const context = canvas.getContext('2d');
 
-                                    pdfjsLib.getDocument(url).promise.then((pdf) => {
-                                        pdf.getPage(1).then((page) => {
-                                            const viewport = page.getViewport({ scale: 1.0 });
-                                            canvas.height = viewport.height;
-                                            canvas.width = viewport.width;
+                                        pdfjsLib.getDocument(url).promise.then((pdf) => {
+                                            pdf.getPage(1).then((page) => {
+                                                const viewport = page.getViewport({ scale: 1.0 });
+                                                canvas.height = viewport.height;
+                                                canvas.width = viewport.width;
 
-                                            const renderContext = {
-                                                canvasContext: context,
-                                                viewport: viewport
-                                            };
-                                            page.render(renderContext);
+                                                const renderContext = {
+                                                    canvasContext: context,
+                                                    viewport: viewport
+                                                };
+                                                page.render(renderContext);
+                                            });
                                         });
                                     });
-                                });
-                            </script>
-                        {% else %}
-                            <div class="flex items-center justify-center file-preview">
-                                <i class="fas fa-file-alt text-3xl text-gray-600"></i>
-                            </div>
-                        {% endif %}
-                    </a>
-                    <p class="text-center mt-2">{{ archivo.nombre_archivo }}<br/>{{ archivo.asignatura }}</p>
+                                </script>
+                            {% else %}
+                                <div class="flex items-center justify-center file-preview">
+                                    <i class="fas fa-file-alt text-3xl text-gray-600"></i>
+                                </div>
+                            {% endif %}
+                        </a>
+                        <p class="text-center mt-2">{{ archivo.nombre_archivo }}<br/>{{ archivo.asignatura }}</p>
+                    </div>
+                    {% endfor %}
+                    {% endif %}
                 </div>
-                {% endfor %}
-            </div>
-        </section>
+            </section>
+        </div>
     </div>
     <div id="footer_content"></div>
 </body>
