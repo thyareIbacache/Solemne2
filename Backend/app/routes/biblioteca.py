@@ -9,7 +9,7 @@ def biblioteca():
     archivos = Archivos.query.all()
     return render_template('biblioteca.html', archivos=archivos)
 
-@biblioteca_bp.route('/biblioteca-cursos/<int:id_curso>')
+@biblioteca_bp.route('/biblioteca-cursos-<int:id_curso>')
 def biblioteca_cursos(id_curso):
     archivos = Archivos.query.filter_by(id_curso=id_curso).all()
     nombre_curso = Cursos.query.filter_by(id_curso=id_curso).first().nombre_curso
