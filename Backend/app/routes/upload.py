@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, request, redirect, url_for, sessio
 from werkzeug.utils import secure_filename
 from datetime import datetime
 import os
-from .models import Archivos, db
+from .models import Archivos, Cursos, db
 
 upload_bp = Blueprint('upload', __name__)
 
@@ -12,15 +12,20 @@ def uploaded_file(filename):
 
 @upload_bp.route('/upload', methods=['GET', 'POST'])
 def upload_file():
+
+    cursos = Cursos.query.with_entities(Cursos.nombre_curso).all()
+
     if request.method == 'POST':
         id_usuario = session['id_usuario']
 
         nombre_archivo = request.form.get('nombre_archivo')
-        asignatura = request.form.get('asignatura')
+        asignatura = request.form.get('curso')
         unidad = request.form.get('unidad')
+        curso_seleccionado = request.form.get('curso')
+
         if not nombre_archivo or not asignatura or not unidad:
             mensaje = 'Por favor, completa todos los campos del formulario.'
-            return render_template('upload.html', error_message=mensaje, nombre_archivo=nombre_archivo, asignatura=asignatura, unidad=unidad)
+            return render_template('upload.html', error_message=mensaje, curso_seleccionado=curso_seleccionado ,cursos=cursos, nombre_archivo=nombre_archivo, asignatura=asignatura, unidad=unidad)
 
         if 'archivo' not in request.files:
             return 'No se encontró el archivo', 400
@@ -48,7 +53,7 @@ def upload_file():
                 etiquetas='',
                 ruta_archivo=os.path.join(current_app.config['UPLOAD_FOLDER'], filename),
                 estado='pendiente',
-                asignatura=request.form['asignatura'],
+                asignatura=request.form['curso'],
                 unidad=request.form['unidad'],
             )
 
@@ -61,4 +66,5 @@ def upload_file():
             except Exception as e:
                 return f'Error al guardar en la base de datos: {str(e)}', 500
 
-    return render_template('upload.html')
+
+    return render_template('upload.html', cursos=cursos)
