@@ -47,7 +47,8 @@ CREATE TABLE Archivos (
     ruta_archivo VARCHAR(255) NOT NULL,
     estado VARCHAR(50) CHECK (estado IN ('pendiente', 'aprobado', 'rechazado')) DEFAULT 'pendiente',
     comentarios_rechazo VARCHAR(255),
-    unidad VARCHAR(10)
+    unidad VARCHAR(10),
+    auditado BOOLEAN DEFAULT FALSE  -- Corrección en la definición de la columna auditado
 );
 
 -- Crear la tabla intermedia Archivos_Cursos
