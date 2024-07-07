@@ -6,7 +6,7 @@ profile_bp = Blueprint('profile', __name__)
 
 @profile_bp.route('/perfil/', defaults={'id_usuario': None})
 @profile_bp.route('/perfil', defaults={'id_usuario': None})
-@profile_bp.route('/perfil/<int:id_usuario>')
+@profile_bp.route('/perfil-<int:id_usuario>')
 def perfil(id_usuario):
     if 'id_usuario' in session:
 
