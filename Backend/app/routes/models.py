@@ -51,3 +51,11 @@ class Archivos_Cursos(db.Model):
     __tablename__ = 'archivos_cursos'
     id_curso = db.Column(db.Integer, db.ForeignKey('cursos.id_curso'), primary_key=True)
     id_archivo = db.Column(db.Integer, db.ForeignKey('archivos.id_archivo'), primary_key=True)
+
+class Anuncio(db.Model):
+    __tablename__ = 'anuncios'  
+    id_anuncio = db.Column(db.Integer, primary_key=True)
+    titulo = db.Column(db.String(255), nullable=False)
+    cuerpo = db.Column(db.String(255), nullable=False)
+    imagen = db.Column(db.String(50), nullable=True)
+    fecha_creacion = db.Column(db.DateTime, default=db.func.current_timestamp())

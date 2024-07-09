@@ -75,6 +75,15 @@ CREATE TABLE Logs (
     fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+-- Crear la tabla Anuncios
+CREATE TABLE Anuncios (
+    id_anuncio SERIAL PRIMARY KEY,
+    titulo VARCHAR(255) NOT NULL,
+    cuerpo VARCHAR(255) NOT NULL,
+    imagen VARCHAR(50),
+    fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
 -- Índices adicionales para optimización
 CREATE INDEX idx_usuarios_correo ON Usuarios(correo);
 CREATE INDEX idx_archivos_nombre ON Archivos(nombre_archivo);
