@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="/static/CSS/administrador.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <link rel="stylesheet" href="../static/CSS/messageBox.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
 </head>
 <body class="bg-white">
     <div id="header-container"></div>
@@ -18,23 +19,27 @@
             <button class="btn btn-primary" onclick="mostrarFormulario()">Agregar Anuncio</button>
             <div id="formulario" style="display:none;">
                 <h3>Nuevo Anuncio</h3>
-                <form id="nuevoAnuncioForm" action="{{ url_for('anunciosA.nuevo_anuncio') }}" method="POST">
-                    <div class="form-group">
+                <form id="nuevoAnuncioForm" action="{{ url_for('anunciosA.nuevo_anuncio') }}" method="POST" enctype="multipart/form-data">
+                    <div class="form-group mb-3">
                         <label for="titulo">Título</label>
                         <input type="text" class="form-control" id="titulo" name="titulo" required>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group mb-3">
                         <label for="cuerpo">Cuerpo</label>
-                        <input type="text" class="form-control" id="cuerpo" name="cuerpo" required>
+                        <textarea class="form-control" id="cuerpo" name="cuerpo" rows="3" required></textarea>
                     </div>
-                    <div class="form-group">
-                        <label for="imagen">Imagen</label>
-                        <input type="text" class="form-control" id="imagen" name="imagen">
+                    <div class="form-group mb-3">
+                        <label for="imagen" class="form-label">Imagen</label>
+                        <input type="file" id="imagen" name="imagen" class="form-control" style="display: none;" onchange="document.getElementById('imagen-name').innerText = this.files[0].name">
+                        <label for="imagen" class="btn btn-outline-secondary w-100">
+                            <i class="fas fa-cloud-upload-alt me-2"></i>Selecciona una imagen
+                        </label>
+                        <p id="imagen-name" class="mt-2"></p>
                     </div>
                     <button type="submit" class="btn btn-success">Agregar</button>
                 </form>
             </div>
-            <h3>Lista de Anuncios</h3>
+            <h3 class="mt-4">Lista de Anuncios</h3>
             <table class="table table-striped">
                 <thead>
                     <tr>
@@ -60,12 +65,11 @@
     <footer class="bg-dark text-white text-center p-3">
         &copy; 2024 Modo Supervisor
     </footer>
-    <!-- Mostrar mensaje si existe -->
+    
     {% if message %}
         <div class="message-box {{ msgType }}" id="message-box">{{ message }}</div>
     {% endif %}
 
-    <!-- JavaScript para mostrar y ocultar el mensaje -->
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             var messageBox = document.getElementById("message-box");
@@ -75,12 +79,11 @@
                     messageBox.style.opacity = "0";
                     setTimeout(function() {
                         messageBox.style.display = "none";
-                    }, 500); // Esperar 500ms después de la animación para ocultar completamente
-                }, 7000); // Ocultar después de 7 segundos (7000 milisegundos)
+                    }, 500);
+                }, 7000);
             }
         });
-    </script>
-    <script>
+
         function loadHTML(id, url) {
             fetch(url)
                 .then(response => response.text())
