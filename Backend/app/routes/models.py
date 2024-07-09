@@ -53,9 +53,9 @@ class Archivos_Cursos(db.Model):
     id_archivo = db.Column(db.Integer, db.ForeignKey('archivos.id_archivo'), primary_key=True)
 
 class Anuncio(db.Model):
-    __tablename__ = 'anuncios'  
+    __tablename__ = 'anuncios'
     id_anuncio = db.Column(db.Integer, primary_key=True)
     titulo = db.Column(db.String(255), nullable=False)
-    cuerpo = db.Column(db.String(255), nullable=False)
-    imagen = db.Column(db.String(50), nullable=True)
-    fecha_creacion = db.Column(db.DateTime, default=db.func.current_timestamp())
+    cuerpo = db.Column(db.Text, nullable=False)  # Cambiado a Text para permitir contenido más largo
+    imagen = db.Column(db.String(255), nullable=True)  # Almacenará la ruta del archivo
+    fecha_creacion = db.Column(db.DateTime, default=datetime.utcnow)

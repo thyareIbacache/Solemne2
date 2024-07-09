@@ -80,7 +80,7 @@ CREATE TABLE Anuncios (
     id_anuncio SERIAL PRIMARY KEY,
     titulo VARCHAR(255) NOT NULL,
     cuerpo VARCHAR(255) NOT NULL,
-    imagen VARCHAR(50),
+    imagen VARCHAR(255),
     fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
