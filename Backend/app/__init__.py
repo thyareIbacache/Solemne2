@@ -14,15 +14,26 @@ from authlib.integrations.flask_client import OAuth
 from dotenv import load_dotenv
 import os
 
+# Cargar variables de entorno desde el archivo .env
 load_dotenv()
 
 def create_app():
+    """
+    Crea y configura una instancia de la aplicación Flask.
+    
+    Returns:
+        Flask: La instancia de la aplicación configurada.
+    """
+    # Crear la aplicación Flask
     app = Flask(__name__, template_folder='templates', static_folder='static')
+    
+    # Configurar la aplicación con la configuración especificada en Config
     app.config.from_object(Config)
     
+    # Inicializar la base de datos con la aplicación
     db.init_app(app)
 
-    # Configuración de OAuth
+    # Configuración de OAuth para autenticación con Google
     oauth = OAuth(app)
     app.oauth = oauth
 
@@ -34,6 +45,7 @@ def create_app():
         client_kwargs={'scope': 'openid email profile', 'prompt': 'consent'}
     )
 
+    # Registrar blueprints para cada módulo de la aplicación
     app.register_blueprint(auth_bp)
     app.register_blueprint(profile_bp)
     app.register_blueprint(upload_bp)
