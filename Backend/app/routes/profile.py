@@ -8,6 +8,13 @@ profile_bp = Blueprint('profile', __name__)
 @profile_bp.route('/perfil', defaults={'id_usuario': None})
 @profile_bp.route('/perfil-<int:id_usuario>')
 def perfil(id_usuario):
+    """
+    Ruta para mostrar el perfil del usuario.
+
+    Si no se proporciona un ID de usuario, se utiliza el ID de usuario de la sesión.
+    Redirige a la biblioteca si el usuario es un moderador y no está viendo su propio perfil.
+    Muestra la información del usuario, sus cursos y archivos subidos.
+    """
     if 'id_usuario' in session:
 
         if id_usuario is None:
@@ -61,6 +68,12 @@ def perfil(id_usuario):
 
 @profile_bp.route('/update-perfil', methods=['GET', 'POST'])
 def update_perfil():
+    """
+    Ruta para actualizar el perfil del usuario.
+
+    Si se recibe una solicitud POST, se procesan los datos del formulario y se actualiza el perfil del usuario.
+    Se valida que todos los campos estén completos y que no se seleccionen más de 6 cursos.
+    """
     if request.method == 'POST':
         usuario = request.form.get('usuario')
         nombre_completo = request.form.get('nombre_completo')
@@ -73,40 +86,45 @@ def update_perfil():
 
         cursos = Cursos.query.with_entities(Cursos.nombre_curso).all()
     
-    if not nombre_completo or not nombre_usuario or not biografia or not año_ingreso:
-        mensaje = 'Por favor, completa todos los campos del formulario.'
-        return render_template('editarPerfil.html', error_message=mensaje, cursos=cursos, cursos_inscritos=cursos_inscritos, usuario=usuario, año_ingreso=año_ingreso, años_ingreso=años_ingreso, nombre_completo=nombre_completo, nombre_usuario=nombre_usuario, biografia=biografia)
+        if not nombre_completo or not nombre_usuario or not biografia or not año_ingreso:
+            mensaje = 'Por favor, completa todos los campos del formulario.'
+            return render_template('editarPerfil.html', error_message=mensaje, cursos=cursos, cursos_inscritos=cursos_inscritos, usuario=usuario, año_ingreso=año_ingreso, años_ingreso=años_ingreso, nombre_completo=nombre_completo, nombre_usuario=nombre_usuario, biografia=biografia)
     
-    if not cursos_inscritos:
-        mensaje = 'Debes seleccionar almenos un curso.'
-        return render_template('editarPerfil.html', error_message=mensaje, cursos=cursos, cursos_inscritos=cursos_inscritos, usuario=usuario, año_ingreso=año_ingreso, años_ingreso=años_ingreso, nombre_completo=nombre_completo, nombre_usuario=nombre_usuario, biografia=biografia)
+        if not cursos_inscritos:
+            mensaje = 'Debes seleccionar al menos un curso.'
+            return render_template('editarPerfil.html', error_message=mensaje, cursos=cursos, cursos_inscritos=cursos_inscritos, usuario=usuario, año_ingreso=año_ingreso, años_ingreso=años_ingreso, nombre_completo=nombre_completo, nombre_usuario=nombre_usuario, biografia=biografia)
 
-    if len(cursos_inscritos) > 6:
-        mensaje = 'Puedes seleccionar maximo 6 cursos.'
-        return render_template('editarPerfil.html', error_message=mensaje, cursos=cursos, cursos_inscritos=cursos_inscritos, usuario=usuario, año_ingreso=año_ingreso, años_ingreso=años_ingreso, nombre_completo=nombre_completo, nombre_usuario=nombre_usuario, biografia=biografia)
+        if len(cursos_inscritos) > 6:
+            mensaje = 'Puedes seleccionar máximo 6 cursos.'
+            return render_template('editarPerfil.html', error_message=mensaje, cursos=cursos, cursos_inscritos=cursos_inscritos, usuario=usuario, año_ingreso=año_ingreso, años_ingreso=años_ingreso, nombre_completo=nombre_completo, nombre_usuario=nombre_usuario, biografia=biografia)
 
-    id_usuario = session['id_usuario']
-    usuario = Usuarios.query.get(id_usuario)
+        id_usuario = session['id_usuario']
+        usuario = Usuarios.query.get(id_usuario)
 
-    usuario.nombre_usuario = nombre_usuario
-    usuario.biografia = biografia
-    usuario.año_ingreso = int(año_ingreso)
+        usuario.nombre_usuario = nombre_usuario
+        usuario.biografia = biografia
+        usuario.año_ingreso = int(año_ingreso)
 
-    Cursos_Usuarios.query.filter(Cursos_Usuarios.id_usuario == id_usuario).delete()
-    db.session.commit()
+        Cursos_Usuarios.query.filter(Cursos_Usuarios.id_usuario == id_usuario).delete()
+        db.session.commit()
 
-    for curso in cursos_inscritos:
-        inscripcion_curso = Cursos_Usuarios(
-            id_usuario=id_usuario,
-            id_curso=Cursos.query.filter_by(nombre_curso=curso).first().id_curso
-        )
-        db.session.add(inscripcion_curso)
-    db.session.commit()
+        for curso in cursos_inscritos:
+            inscripcion_curso = Cursos_Usuarios(
+                id_usuario=id_usuario,
+                id_curso=Cursos.query.filter_by(nombre_curso=curso).first().id_curso
+            )
+            db.session.add(inscripcion_curso)
+        db.session.commit()
 
-    return redirect(url_for('auth.home'))
+        return redirect(url_for('auth.home'))
 
 @profile_bp.route('/update-clave', methods=['GET', 'POST'])
 def update_clave():
+    """
+    Ruta para actualizar la contraseña del usuario.
+
+    Valida que la contraseña actual coincida con la del usuario y que la nueva contraseña se repita correctamente.
+    """
     contraseña_actual = request.form.get('contraseña_actual')
     contraseña_nueva = request.form.get('contraseña')
     rep_contraseña_nueva = request.form.get('rep_contraseña')
@@ -132,6 +150,11 @@ def update_clave():
 
 @profile_bp.route('/editar-perfil')
 def editar_perfil():
+    """
+    Ruta para mostrar la página de edición del perfil del usuario.
+
+    Carga la información del usuario y los cursos en los que está inscrito.
+    """
     id_usuario = session['id_usuario']
     if id_usuario:
         usuario = Usuarios.query.get(id_usuario)
@@ -145,7 +168,6 @@ def editar_perfil():
 
     cursos = Cursos.query.with_entities(Cursos.nombre_curso).all()
 
-
     años_ingreso = [year for year in range(datetime.now().year, datetime.now().year - 21, -1)]
     return render_template('editarPerfil.html',
                             usuario=usuario, 
@@ -156,4 +178,4 @@ def editar_perfil():
                             años_ingreso=años_ingreso,
                             cursos_inscritos=nombres_cursos,
                             cursos=cursos
-                            ) 
+                            )
