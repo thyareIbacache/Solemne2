@@ -1,6 +1,6 @@
 # Solemne2
 
-Antes de ejecutar, es necesario agregar un archivo .env en la carpeta 'Backend', esta debe contener:
+Antes de ejecutar, es necesario agregar un archivo .env en la carpeta 'Sistema', esta debe contener:
 ```
 POSTGRES_USER=
 POSTGRES_PASSWORD=
@@ -15,7 +15,7 @@ GOOGLE_METADATA_URL=
 
 ## Ejecutar
 
-Para ejecutar la base de datos y la app de flask se debe correr en la carpeta 'Backend' el comando:
+Para ejecutar la base de datos y la app de flask se debe correr en la carpeta 'Sistema' el comando:
 ```
 docker compose up
 ```
