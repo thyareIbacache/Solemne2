@@ -1,8 +1,8 @@
-Backend/app/routes/__pycache__
-Backend/app/__pycache__
-Backend/__pycache__
-Backend/.env
-Backend/uploads/*
-Backend/app/uploads/*
-!Backend/app/uploads/.gitkeep
-!Backend/uploads/.gitkeep
+Sistema/app/routes/__pycache__
+Sistema/app/__pycache__
+Sistema/__pycache__
+Sistema/.env
+Sistema/uploads/*
+Sistema/app/uploads/*
+!Sistema/app/uploads/.gitkeep
+!Sistema/uploads/.gitkeep
