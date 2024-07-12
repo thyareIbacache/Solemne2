@@ -13,16 +13,16 @@ El diagrama de Arquitectura es el siguiente:
 
 ![Arquitectura_sistema](https://github.com/user-attachments/assets/b183e393-2000-4755-ac70-37a06b775b8d)
 
-Más especificaciones de la arquitectura se encuentran en el documento [arquitectura]{docs/arquitectura.md}.
+Más especificaciones de la arquitectura se encuentran en el documento [arquitectura](docs/arquitectura.md).
 
 ## Componentes del Sistema
 ### Interfaz usuario
 
-Más especificaciones de la interfaz de usuario y el frontend se encuentran en el documento [frontend]{docs/frontend.md}
+Más especificaciones de la interfaz de usuario y el frontend se encuentran en el documento [frontend](docs/frontend.md).
 
 ### Backend
 
-Más especificaciones del backend se encuentran en el documento [backend]{docs/backend.md}
+Más especificaciones del backend se encuentran en el documento [backend](docs/backend.md).
 
 
 ## Metodología de uso
