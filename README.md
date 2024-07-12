@@ -10,10 +10,9 @@ El sistema sigue una arquitectura repositorio con la infraestructura de la nube 
 
 ### Diagrama de Arquitectura
 El diagrama de Arquitectura es el siguiente:
-```
-Aquí va el diagrama
 
-```
+![Arquitectura_sistema](https://github.com/user-attachments/assets/b183e393-2000-4755-ac70-37a06b775b8d)
+
 ## Componentes del Sistema
 ### Interfaz usuario
 - La interfaz de usuario permite a los estudiantes y moderadores interactuar con el sistema, accediendo a sus respectivas funcionalidades. 
