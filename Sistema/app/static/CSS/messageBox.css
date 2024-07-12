@@ -1,0 +1,21 @@
+.message-box {
+    text-align: center;
+    display: none;
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    z-index: 1000;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+.message-box.show {
+    display: block;
+    opacity: 1;
+}
+.message-box.success { background-color: green; }
+.message-box.alert { background-color: red; }
+.message-box.black { background-color: black; }

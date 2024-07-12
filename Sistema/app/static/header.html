@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="../static/CSS/header.css">
+</head>
+<body class="bg-white">
+    <div class="max-w-7xl mx-auto">
+        <header class="flex justify-between items-center py-4">
+            <div class="flex items-center pl-4">
+                <img alt="Header image with UDP Facultad de Psicología logo" class="mr-2 logo-header" height="50" src="https://admision.udp.cl/cms/wp-content/uploads/2022/09/facultad-psicologia-logo@2x.png" width="200"/>
+            </div>
+            <nav class="sm:flex space-x-4 relative hamburger-register">
+                <a href="#" class="block sm:hidden hamburger-container">
+                    <div class="hamburger" id="hamburger">
+                        <div></div>
+                    </div>
+                </a>
+                <div class="nav-list hidden sm:flex space-x-4">
+                    <a href="perfil" class="nav-link">Perfil</a>
+                    <a href="biblioteca" class="nav-link">Biblioteca</a>
+                    <a href="anunciosE" class="nav-link">Anuncios</a>
+                    <a href="upload" class="nav-link">Cargar</a>
+                    <a href="logout" class="nav-link nav-link-logout">Cerrar sesión</a>
+                </div>
+            </nav>
+        </header>
+
+        <!-- Overlay para el menú dropdown móvil -->
+        <div class="overlay" id="overlay"></div>
+
+        <!-- Menú dropdown móvil -->
+        <div class="mobile-dropdown" id="mobileMenu">
+            <ul>
+                <li><a class="nav-link nav-link-mobile" href="perfil">Perfil</a></li>
+                <li><a class="nav-link nav-link-mobile" href="#">Biblioteca</a></li>
+                <li><a class="nav-link nav-link-mobile" href="#">Anuncios</a></li>
+                <li><a class="nav-link nav-link-mobile" href="upload">Cargar</a></li>
+                <li><a class="nav-link nav-link-logout nav-link-mobile" href="logout">Cerrar sesión</a></li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

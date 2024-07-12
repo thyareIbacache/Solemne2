@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Titulo de Pagina</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <style>
+        .error-message {
+            display: none;
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #f44336;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+        .error-message.show {
+            display: block;
+            opacity: 1;
+        }
+    </style>
+</head>
+
+<body class="bg-white">
+    <div id="header_content"></div>
+    <div id="page-content">
+        <!-- Contenido de la pagina -->
+
+    </div>
+    <!-- Mostrar mensaje de error si existe -->
+    {% if error_message %}
+            <div class="error-message" id="error-message">{{ error_message }}</div>
+            {% endif %}
+        </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var errorMessage = document.getElementById("error-message");
+            if (errorMessage) {
+                errorMessage.classList.add("show");
+                setTimeout(function() {
+                    errorMessage.style.opacity = "0";
+                    setTimeout(function() {
+                        errorMessage.style.display = "none";
+                    }, 500); // Esperar 500ms después de la animación para ocultar completamente
+                }, 3000); // Ocultar después de 3 segundos
+            }
+        });
+    </script>
+    <div id="footer_content"></div>
+</body>
+<script>
+    $(document).ready(function() {
+        $('#header_content').load('../static/header.html', function() {
+            const hamburger = document.getElementById('hamburger');
+            const mobileMenu = document.getElementById('mobileMenu');
+            const overlay = document.getElementById('overlay');
+
+            hamburger.addEventListener('click', function() {
+                mobileMenu.classList.toggle('open');
+                overlay.classList.toggle('open');
+                hamburger.classList.toggle('open'); 
+            });
+
+            overlay.addEventListener('click', function() {
+                mobileMenu.classList.remove('open');
+                overlay.classList.remove('open');
+                hamburger.classList.remove('open'); 
+            });
+        });
+
+        $('#footer_content').load('../static/footer.html', function() {
+            adjustFooter();
+        });
+    });
+</script>
+</html>

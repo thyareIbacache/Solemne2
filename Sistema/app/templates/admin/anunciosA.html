@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Anuncios</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/CSS/administrador.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="../static/CSS/messageBox.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+</head>
+<body class="bg-white">
+    <div id="header-container"></div>
+    <div class="main">
+        <div id="sidebar-container"></div>
+        <main class="content">
+            <h1>Gestión de Anuncios</h1>
+            <button class="btn btn-primary" onclick="mostrarFormulario()">Agregar Anuncio</button>
+            <div id="formulario" style="display:none;">
+                <h3>Nuevo Anuncio</h3>
+                <form id="nuevoAnuncioForm" action="{{ url_for('anunciosA.nuevo_anuncio') }}" method="POST" enctype="multipart/form-data">
+                    <div class="form-group mb-3">
+                        <label for="titulo">Título</label>
+                        <input type="text" class="form-control" id="titulo" name="titulo" required>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="cuerpo">Cuerpo</label>
+                        <textarea class="form-control" id="cuerpo" name="cuerpo" rows="3" required></textarea>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="imagen" class="form-label">Imagen</label>
+                        <input type="file" id="imagen" name="imagen" class="form-control" style="display: none;" onchange="document.getElementById('imagen-name').innerText = this.files[0].name">
+                        <label for="imagen" class="btn btn-outline-secondary w-100">
+                            <i class="fas fa-cloud-upload-alt me-2"></i>Selecciona una imagen
+                        </label>
+                        <p id="imagen-name" class="mt-2"></p>
+                    </div>
+                    <button type="submit" class="btn btn-success">Agregar</button>
+                </form>
+            </div>
+            <h3 class="mt-4">Lista de Anuncios</h3>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Título</th>
+                        <th>Cuerpo</th>
+                        <th>Imagen</th>
+                        <th>Fecha de Creación</th>
+                    </tr>
+                </thead>
+                <tbody id="anunciosLista">
+                    {% for anuncio in anuncios %}
+                    <tr>
+                        <td>{{ anuncio.titulo }}</td>
+                        <td>{{ anuncio.cuerpo }}</td>
+                        <td>{{ anuncio.imagen }}</td>
+                        <td>{{ anuncio.fecha_creacion }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </main>
+    </div>
+    <footer class="bg-dark text-white text-center p-3">
+        &copy; 2024 Modo Supervisor
+    </footer>
+    
+    {% if message %}
+        <div class="message-box {{ msgType }}" id="message-box">{{ message }}</div>
+    {% endif %}
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var messageBox = document.getElementById("message-box");
+            if (messageBox) {
+                messageBox.classList.add("show");
+                setTimeout(function() {
+                    messageBox.style.opacity = "0";
+                    setTimeout(function() {
+                        messageBox.style.display = "none";
+                    }, 500);
+                }, 7000);
+            }
+        });
+
+        function loadHTML(id, url) {
+            fetch(url)
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById(id).innerHTML = data;
+                })
+                .catch(error => console.error('Error cargando el archivo:', error));
+        }
+
+        $(document).ready(function() {
+            $('#header-container').load('/static/headerAd.html');
+            $('#sidebar-container').load('/static/sidebar.html');
+        });
+
+        function mostrarFormulario() {
+            document.getElementById('formulario').style.display = 'block';
+        }
+    </script>
+</body>
+</html>

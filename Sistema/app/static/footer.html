@@ -1,0 +1,67 @@
+<head>
+    <link rel="stylesheet" type="text/css" href="../static/CSS/footer.css">
+</head>
+<footer class="footer text-center lg:text-left">
+    <div class="flex-wrapper">
+        <div class="flex flex-col items-center py-4 sm:hidden">
+            <div class="relative">
+                <img class="logo-footer mx-auto" src="../static/images/figma_udp 1.png" alt="Footer logo mobile">
+            </div>
+        </div>
+        <div class="hidden sm:flex justify-between items-center py-4 px-6">
+            <div class="relative">
+                <img class="logo-footer" src="../static/images/udp-logo.png" alt="Footer logo desktop left">
+            </div>
+            <div class="relative">
+                <img class="text-footer" src="../static/images/udp-footer.png" alt="Footer text desktop right">
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script>
+    function adjustFooter() {
+        
+        const footer = document.querySelector('.footer');
+       /*  const footerHeight = footer.offsetHeight;
+        const header = document.getElementById("header_content");
+        const headerHeight = header.offsetHeight; */
+        const bodyWidth = document.body.offsetWidth;
+        
+        if (bodyWidth < 640) {
+            footerHeight = 91;
+            headerHeight = 86;
+        }else{
+            footerHeight = 112;
+            headerHeight = 97;
+        }
+        
+        const ContentDiv = document.getElementById("page-content");
+        const windowHeight = window.innerHeight;
+        /* console.log("Altura del sitio:", windowHeight); */
+
+        if (ContentDiv) {
+            const ContentDivHeight = ContentDiv.offsetHeight;
+            /* console.log("Altura del div:", ContentDivHeight);
+            console.log("Altura del footer:", footerHeight);
+            console.log("Altura del header:", headerHeight); */
+            footerOffset = windowHeight-ContentDivHeight-footerHeight-headerHeight;
+            if ( windowHeight > ContentDivHeight ) {
+                if (footerOffset > 0) {
+                    footer.style.marginTop = `${footerOffset}px`;
+                    /* console.log(`Footer Modificado: ${footerOffset}px`); */
+                }
+            } else {
+                footer.style.marginTop = '20px';
+                /* console.log("Footer sin cambios"); */
+            }
+
+        } else {
+            /* console.log("No se encontró el div con id 'test'."); */
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', adjustFooter);
+    window.addEventListener('resize', adjustFooter);
+    window.addEventListener('load', adjustFooter);
+</script>

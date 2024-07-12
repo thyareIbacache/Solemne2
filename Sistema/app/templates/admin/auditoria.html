@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auditoría - Modo Supervisor</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../static/CSS/administrador.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="../static/CSS/messageBox.css">
+</head>
+<body class="bg-white">
+    <div id="header-container"></div>
+    <div class="main">
+        <div id="sidebar-container"></div>
+        <main class="content">
+            <h1>Archivos Pendientes de Revisión</h1>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Nombre del Archivo</th>
+                        <th>Usuario</th>
+                        <th>Fecha de Carga</th>
+                        <th>Acción</th>
+                    </tr>
+                </thead>
+                <tbody id="archivosLista">
+                    <!-- Lista de archivos cargados dinámicamente -->
+                </tbody>
+            </table>
+        </main>
+    </div>
+    <footer class="bg-dark text-white text-center p-3">
+        &copy; 2024 Modo Supervisor
+    </footer>
+    <script>
+        function loadHTML(id, url) {
+            fetch(url)
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById(id).innerHTML = data;
+                })
+                .catch(error => console.error('Error cargando el archivo:', error));
+        }
+
+        $(document).ready(function() {
+            $('#header-container').load('../static/headerAd.html');
+            $('#sidebar-container').load('../static/sidebar.html');
+            cargarArchivos();
+        });
+
+        function cargarArchivos() {
+            fetch('/api/archivos')
+                .then(response => response.json())
+                .then(data => {
+                    const archivosLista = document.getElementById('archivosLista');
+                    archivosLista.innerHTML = '';
+                    data.forEach(archivo => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td><a href="${ archivo.ruta_archivo }" target="_blank" download>${archivo.nombre}</a></td>
+                            <td>${archivo.usuario}</td>
+                            <td>${archivo.fecha_carga}</td>
+                            <td>
+                                <button class="btn btn-success" onclick="aprobarArchivo(${archivo.id})">✔️</button>
+                                <button class="btn btn-danger" onclick="rechazarArchivo(${archivo.id})">❌</button>
+                            </td>`;
+                        archivosLista.appendChild(row);
+                    });
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        function aprobarArchivo(id) {
+            fetch(`/api/archivos/${id}/aprobar`, {
+                method: 'POST'
+            })
+            .then(response => {
+                if (response.ok) {
+                    cargarArchivos();
+                } else {
+                    console.error('Error al aprobar el archivo');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        function rechazarArchivo(id) {
+            fetch(`/api/archivos/${id}/rechazar`, {
+                method: 'POST'
+            })
+            .then(response => {
+                if (response.ok) {
+                    cargarArchivos();
+                } else {
+                    console.error('Error al rechazar el archivo');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    </script>
+    <!-- Mostrar mensaje si existe -->
+    {% if message %}
+        <div class="message-box {{ msgType }}" id="message-box">{{ message }}</div>
+    {% endif %}
+
+    <!-- JavaScript para mostrar y ocultar el mensaje -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var messageBox = document.getElementById("message-box");
+            if (messageBox) {
+                messageBox.classList.add("show");
+                setTimeout(function() {
+                    messageBox.style.opacity = "0";
+                    setTimeout(function() {
+                        messageBox.style.display = "none";
+                    }, 500); // Esperar 500ms después de la animación para ocultar completamente
+                }, 7000); // Ocultar después de 7 segundos (7000 milisegundos)
+            }
+        });
+    </script>
+</body>
+</html>
