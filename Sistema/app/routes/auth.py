@@ -19,6 +19,8 @@ def home():
 
         if usuario and (usuario.contraseña == contraseña):
             session['id_usuario'] = usuario.id_usuario
+            if usuario.rol == 'moderador':
+                return redirect(url_for('admin.get_usuarios'))
             return redirect(url_for('profile.perfil'))
         else:
             mensaje = 'Credenciales inválidas'

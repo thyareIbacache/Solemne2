@@ -14,6 +14,7 @@ def get_usuarios():
         # Recuperar datos del formulario
         nombre_completo = request.form['nombre_completo']
         correo = request.form['correo']
+        clave = request.form['clave']
         rol = request.form['rol']
         
         # Crear un nuevo objeto Usuario con los datos del formulario y contraseñas por defecto hasheada
@@ -21,7 +22,7 @@ def get_usuarios():
             nombre_completo=nombre_completo,
             correo=correo,
             rol=rol,
-            contraseña=generate_password_hash('defaultpassword'),  # Generar un hash de la contraseña por defecto
+            contraseña=clave,
             nombre_usuario='',
             biografia='',
             año_ingreso=datetime.now().year  # Asignar el año actual como año de ingreso
