@@ -13,31 +13,18 @@ El diagrama de Arquitectura es el siguiente:
 
 ![Arquitectura_sistema](https://github.com/user-attachments/assets/b183e393-2000-4755-ac70-37a06b775b8d)
 
-Más especificaciones de la arquitectura se encuentran en el documento [arquitectura]{./docs/arquitectura.md}.
+Más especificaciones de la arquitectura se encuentran en el documento [arquitectura]{docs/arquitectura.md}.
 
 ## Componentes del Sistema
 ### Interfaz usuario
-- La interfaz de usuario permite a los estudiantes y moderadores interactuar con el sistema, accediendo a sus respectivas funcionalidades. 
-- **Tecnologías Utilizadas:** HTML, Tailwind CSS, JavaScript.
-- **Funcionalidades clave:** Autenticación de usuarios, incorporación de cursos, navegación por categorías, subida y descarga de documentos, generación de anuncios, validación o rechazo de documentos, búsqueda de perfiles.
 
-Más especificaciones de la interfaz de usuario y el frontend se encuentran en el documento [frontend]{./docs/frontend.md}
+Más especificaciones de la interfaz de usuario y el frontend se encuentran en el documento [frontend]{docs/frontend.md}
 
 ### Backend
-1. API?
-2. Autenticación
-3. Almacenamiento
-4. Base de Datos
-5. Moderación?
 
-Más especificaciones del backend se encuentran en el documento [backend]{./docs/backend.md}
+Más especificaciones del backend se encuentran en el documento [backend]{docs/backend.md}
 
-## Interacción entre Componentes
-El siguiente diagrama presenta la interacción entre los componentes del sistema:
-```
-Aquí va el diagrama
 
-```
 ## Metodología de uso
 
 Antes de ejecutar, es necesario agregar un archivo .env en la carpeta 'Backend', esta debe contener:
