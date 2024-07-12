@@ -25,6 +25,7 @@ def get_archivos():
         'id': archivo.id_archivo,
         'nombre': archivo.nombre_archivo,
         'usuario': archivo.usuario_que_lo_subio,
+        'ruta_archivo': archivo.ruta_archivo,
         'fecha_carga': archivo.fecha_subida.strftime("%Y-%m-%d %H:%M:%S")
     } for archivo in archivos]
     return jsonify(archivos_list)

@@ -58,7 +58,7 @@
                     data.forEach(archivo => {
                         const row = document.createElement('tr');
                         row.innerHTML = `
-                            <td>${archivo.nombre}</td>
+                            <td><a href="${ archivo.ruta_archivo }" target="_blank" download>${archivo.nombre}</a></td>
                             <td>${archivo.usuario}</td>
                             <td>${archivo.fecha_carga}</td>
                             <td>
