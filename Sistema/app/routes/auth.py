@@ -52,16 +52,15 @@ def authorize():
     resp = oauth.google.get('https://openidconnect.googleapis.com/v1/userinfo')
     user_info = resp.json()
     google_id = user_info['sub']
-    usuario = Usuarios.query.filter_by(google_id=google_id).first()
-
-    if usuario.estado == "Bloqueado":
-        mensaje = 'La cuenta de este usuario se encuentra bloqueada.'
-        return render_template('login.html', message=mensaje, msgType='alert')
-            
+    usuario = Usuarios.query.filter_by(google_id=google_id).first()            
 
     if usuario:
         session['id_usuario'] = usuario.id_usuario
         updated = False
+
+        if usuario.estado == "Bloqueado":
+            mensaje = 'La cuenta de este usuario se encuentra bloqueada.'
+            return render_template('login.html', message=mensaje, msgType='alert')
 
         if usuario.google_image_url != user_info['picture']:
             usuario.google_image_url = user_info['picture']

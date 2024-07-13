@@ -25,7 +25,8 @@ def get_usuarios():
             contraseña=clave,
             nombre_usuario='',
             biografia='',
-            año_ingreso=datetime.now().year  # Asignar el año actual como año de ingreso
+            año_ingreso=datetime.now().year,  # Asignar el año actual como año de ingreso
+            estado= 'Activo'
         )
         
         # Añadir el nuevo usuario a la sesión de la base de datos y confirmar la transacción
