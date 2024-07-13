@@ -3,8 +3,8 @@
 "UDP Apuntes en Línea - Facultad de Psicología" es una plataforma colaborativa para los estudiantes de la facultad de Psicología de la Universidad Diego Portales. Su objetivo es facilitar el intercambio de materiales complementarios de estudio, permitiendo que los estudiantes suban, accedan y descarguen apuntes, guías, solemnes y otros recursos académicos. Los documentos subidos son revisados y aprobados o rechazados por los coordinadores de carrera.
 
 Los usuarios principales son:
--**Estudiantes:** Pueden subir y acceder a material de estudio.
--**Moderadores (Coordinadores de carrera):** Revisan y moderan el contenido subido.
+- **Estudiantes:** Pueden subir y acceder a material de estudio.
+- **Moderadores (Coordinadores de carrera):** Revisan y moderan el contenido subido.
 
 ## Diagrama de Arquitectura
 El diagrama de arquitectura muestra la relación y comunicación entre los componentes del sistema:
