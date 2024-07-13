@@ -41,6 +41,27 @@ def get_usuarios():
     # Renderizar la plantilla 'usuarios.html' con los datos de los usuarios
     return render_template('admin/usuarios.html', usuarios=usuarios)
 
+@admin_bp.route('/usuarios/estado', methods=['POST'])
+def cambiar_estado_usuario():
+    # Recuperar datos del formulario
+    usuario_id = request.form['usuario_id']
+    accion = request.form['accion']
+    
+    # Recuperar el usuario de la base de datos
+    usuario = Usuarios.query.get(usuario_id)
+    
+    # Cambiar el estado del usuario
+    if accion == 'bloquear':
+        usuario.estado = 'Bloqueado'
+    elif accion == 'desbloquear':
+        usuario.estado = 'Activo'
+    
+    # Confirmar la transacción en la base de datos
+    db.session.commit()
+    
+    # Redirigir a la lista de usuarios después de cambiar el estado del usuario
+    return redirect(url_for('admin.get_usuarios'))
+
 # Ruta para gestionar anuncios
 @admin_bp.route('/admin-anuncios', methods=['GET', 'POST'])
 def admin_anuncios():

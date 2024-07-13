@@ -19,6 +19,7 @@ class Usuarios(db.Model):
     google_id = db.Column(db.String(255), unique=True, nullable=True)  # ID de Google para integración SSO
     google_image_url = db.Column(db.String(500), nullable=True)  # URL de la imagen de perfil de Google
     refresh_token = db.Column(db.String(255), nullable=True)  # Token de actualización para integración SSO
+    estado = db.Column(db.String(255), nullable=True) # Estado de la cuenta Bloqueado/Activo
 
 # Modelo para la tabla 'cursos'
 class Cursos(db.Model):

@@ -67,6 +67,7 @@
                         <th>Nombre</th>
                         <th>Correo Electrónico</th>
                         <th>Rol</th>
+                        <th>Acción</th>
                     </tr>
                 </thead>
                 <tbody id="usuariosLista">
@@ -75,6 +76,14 @@
                         <td>{{ usuario.nombre_completo }}</td>
                         <td>{{ usuario.correo }}</td>
                         <td>{{ usuario.rol }}</td>
+                        <form action="/usuarios/estado" method="POST">
+                            <input type="hidden" name="usuario_id" value="{{ usuario.id_usuario }}">
+                            {% if usuario.estado == "Activo" %}
+                            <td><button type="submit" class="btn btn-danger" name="accion" value="bloquear">Bloquear 🛑</button></td>
+                            {% else %}
+                            <td><button type="submit" class="btn btn-success" name="accion" value="desbloquear">Desbloquear ✅</button></td>
+                            {% endif %}
+                        </form>
                     </tr>
                     {% endfor %}
                 </tbody>

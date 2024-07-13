@@ -19,6 +19,9 @@ def home():
 
         if usuario and (usuario.contraseña == contraseña):
             session['id_usuario'] = usuario.id_usuario
+            if usuario.estado == "Bloqueado":
+                mensaje = 'La cuenta de este usuario se encuentra bloqueada.'
+                return render_template('login.html', message=mensaje, msgType='alert')
             if usuario.rol == 'moderador':
                 return redirect(url_for('admin.get_usuarios'))
             return redirect(url_for('profile.perfil'))
@@ -51,6 +54,11 @@ def authorize():
     google_id = user_info['sub']
     usuario = Usuarios.query.filter_by(google_id=google_id).first()
 
+    if usuario.estado == "Bloqueado":
+        mensaje = 'La cuenta de este usuario se encuentra bloqueada.'
+        return render_template('login.html', message=mensaje, msgType='alert')
+            
+
     if usuario:
         session['id_usuario'] = usuario.id_usuario
         updated = False
@@ -63,6 +71,8 @@ def authorize():
             updated = True
         if updated:
             db.session.commit()
+        if usuario.rol == 'moderador':
+            return redirect(url_for('admin.get_usuarios'))
         return redirect(url_for('profile.perfil'))
 
     google_id_verifiq = Usuarios.query.filter_by(google_id=google_id).first()
@@ -116,7 +126,8 @@ def register():
             biografia=biografia,
             google_id=google_id,
             google_image_url=google_image_url,
-            refresh_token=session.get('refresh_token')
+            refresh_token=session.get('refresh_token'),
+            estado="Activo"
         )
         db.session.add(nuevo_usuario)
 

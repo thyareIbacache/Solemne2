@@ -17,7 +17,8 @@ CREATE TABLE Usuarios (
     año_ingreso INTEGER DEFAULT EXTRACT(YEAR FROM CURRENT_DATE),
     google_id VARCHAR(255) UNIQUE,
     google_image_url VARCHAR(500),
-    refresh_token VARCHAR(255)
+    refresh_token VARCHAR(255),
+    estado VARCHAR(255)
 );
 
 -- Crear la tabla Cursos
