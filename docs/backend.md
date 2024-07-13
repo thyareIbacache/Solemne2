@@ -121,7 +121,7 @@ CREATE INDEX idx_logs_fecha ON Logs(fecha);
 
 ### Roles de Usuario
 - **Estudiantes:** Pueden subir y descargar archivos, ver anuncios y editar su información.
-- **Moderadores:** Pueden revisar, aprobar o rechazar archivos.
+- **Moderadores:** Pueden revisar, aprobar o rechazar archivos. Crear, bloquear y desbloquear usuarios. Ademas, pueden enviar anuncios.
 
 ## Gestión de Archivos
 ### Subida de Archivos
