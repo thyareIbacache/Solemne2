@@ -43,6 +43,28 @@ INSERT INTO Usuarios (
     'Activo'
 );
 
+INSERT INTO Usuarios (
+    correo,
+    contraseña,
+    rol,
+    nombre_completo,
+    nombre_usuario,
+    biografia,
+    google_id,
+    google_image_url,
+    estado
+) VALUES (
+    'moderador@mail.udp.cl',
+    '12345',
+    'moderador',
+    'USUARIO MODERADOR',
+    'USUARIO MODERADOR',
+    'Soy moderador de este sitio.',
+    NULL,
+    NULL,
+    'Activo'
+);
+
 INSERT INTO Cursos (
     nombre_curso,
     facultad,
