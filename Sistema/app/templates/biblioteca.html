@@ -37,12 +37,12 @@
                         <p class="pl-4" style=" width: 300px">No hay archivos compartidos.</p>
                     {% else %}
                     {% for archivo in archivos %}
-                    <div class="flex flex-col items-center">
+                    <div class="flex flex-col items-center" style="max-width: 160px;">
                         <a href="{{ archivo.ruta_archivo }}" target="_blank" download>
                             {% if archivo.tipo in ['jpg', 'jpeg', 'png', 'gif'] %}
-                                <img src="{{ archivo.ruta_archivo }}" alt="{{ archivo.nombre_archivo }}" class="file-preview"/>
+                                <img src="{{ archivo.ruta_archivo }}" alt="{{ archivo.nombre_archivo }}" class="file-preview" style="max-height: 140px;"/>
                             {% elif archivo.tipo == 'pdf' %}
-                                <canvas id="pdf-canvas-{{ archivo.id }}" class="file-preview"></canvas>
+                                <canvas id="pdf-canvas-{{ archivo.id }}" class="file-preview" style="max-height: 140px;"></canvas>
                                 <script>
                                     document.addEventListener('DOMContentLoaded', function() {
                                         const url = "{{ archivo.ruta_archivo }}";
